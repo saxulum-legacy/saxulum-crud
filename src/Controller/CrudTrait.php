@@ -1,6 +1,6 @@
 <?php
 
-namespace Dominikzogg\EnergyCalculator\Controller;
+namespace Saxulum\Crud\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
