@@ -630,6 +630,16 @@ trait CrudTrait
     protected function crudPostRemove($object) {}
 
     /**
+     * @return string
+     */
+    abstract protected function crudName();
+
+    /**
+     * @return string
+     */
+    abstract protected function crudObjectClass();
+
+    /**
      * @return FormFactory
      */
     abstract protected function getFormFactory();
@@ -658,14 +668,4 @@ trait CrudTrait
      * @return AuthorizationCheckerInterface
      */
     abstract protected function getSecurity();
-
-    /**
-     * @return string
-     */
-    abstract protected function crudName();
-
-    /**
-     * @return string
-     */
-    abstract protected function crudObjectClass();
 }
