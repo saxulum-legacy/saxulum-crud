@@ -31,14 +31,14 @@ trait CrudTrait
      * @param array $templateVars
      * @return Response
      */
-    public function listObjects(Request $request, array $templateVars = array())
+    public function crudListObjects(Request $request, array $templateVars = array())
     {
-        if(!$this->getListIsGranted()) {
+        if(!$this->crudListIsGranted()) {
             throw new AccessDeniedException("You need the permission to list entities!");
         }
 
-        if(null !== $formType = $this->getListFormType()) {
-            $form = $this->createForm($formType);
+        if(null !== $formType = $this->crudListFormType()) {
+            $form = $this->crudForm($formType);
             $form->handleRequest($request);
             $formData = $form->getData();
         }
@@ -47,29 +47,29 @@ trait CrudTrait
             $formData = array();
         }
 
-        $formData = array_replace_recursive($formData, $this->getListDefaultData());
+        $formData = array_replace_recursive($formData, $this->crudListDefaultData());
 
         /** @var QueryBuilderForFilterFormInterface $repo */
-        $repo = $this->getRepositoryForClass($this->getObjectClass());
+        $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         $qb = $repo->getQueryBuilderForFilterForm($formData);
 
-        $pagination = $this->paginate($qb, $request);
+        $pagination = $this->crudPaginate($qb, $request);
 
         $baseTemplateVars = array(
             'request' => $request,
             'form' => isset($form) ? $form->createView() : null,
             'pagination' => $pagination,
-            'listRoute' => $this->getListRoute(),
-            'createRoute' => $this->getCreateRoute(),
-            'editRoute' => $this->getEditRoute(),
-            'viewRoute' => $this->getViewRoute(),
-            'deleteRoute' => $this->getDeleteRoute(),
-            'identifier' => $this->getIdentifier(),
-            'transPrefix' => $this->getName(),
+            'listRoute' => $this->crudListRoute(),
+            'createRoute' => $this->crudCreateRoute(),
+            'editRoute' => $this->crudEditRoute(),
+            'viewRoute' => $this->crudViewRoute(),
+            'deleteRoute' => $this->crudDeleteRoute(),
+            'identifier' => $this->crudIdentifier(),
+            'transPrefix' => $this->crudName(),
         );
 
-        return $this->render(
-            $this->getListTemplate(),
+        return $this->crudRender(
+            $this->crudListTemplate(),
             array_replace_recursive($baseTemplateVars, $templateVars)
         );
     }
@@ -79,31 +79,31 @@ trait CrudTrait
      * @param array   $templateVars
      * @return Response|RedirectResponse
      */
-    protected function createObject(Request $request, array $templateVars = array())
+    protected function crudCreateObject(Request $request, array $templateVars = array())
     {
-        if(!$this->getCreateIsGranted()) {
+        if(!$this->crudCreateIsGranted()) {
             throw new AccessDeniedException("You need the permission to create an object!");
         }
 
-        $object = $this->getCreateObject();
-        $form = $this->createForm($this->getCreateFormType(), $object);
+        $object = $this->crudCreateFactory();
+        $form = $this->crudForm($this->crudCreateFormType(), $object);
 
         if('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if($form->isValid()) {
                 $this->prePersist($object);
 
-                $em = $this->getManagerForClass($this->getObjectClass());
+                $em = $this->crudManagerForClass($this->crudObjectClass());
                 $em->persist($object);
                 $em->flush();
 
                 $this->postPersist($object);
 
-                $this->addFlashMessage($request, 'success', $this->getName() . '.create.flash.success');
+                $this->crudFlashMessage($request, 'success', $this->crudName() . '.create.flash.success');
 
-                return new RedirectResponse($this->getCreateRedirectUrl($object), 302);
+                return new RedirectResponse($this->crudCreateRedirectUrl($object), 302);
             } else {
-                $this->addFlashMessage($request, 'error', $this->getName() . '.create.flash.error');
+                $this->crudFlashMessage($request, 'error', $this->crudName() . '.create.flash.error');
             }
         }
 
@@ -111,17 +111,17 @@ trait CrudTrait
             'request' => $request,
             'object' => $object,
             'form' => $form->createView(),
-            'createRoute' => $this->getCreateRoute(),
-            'listRoute' => $this->getListRoute(),
-            'editRoute' => $this->getEditRoute(),
-            'viewRoute' => $this->getViewRoute(),
-            'deleteRoute' => $this->getDeleteRoute(),
-            'identifier' => $this->getIdentifier(),
-            'transPrefix' => $this->getName(),
+            'createRoute' => $this->crudCreateRoute(),
+            'listRoute' => $this->crudListRoute(),
+            'editRoute' => $this->crudEditRoute(),
+            'viewRoute' => $this->crudViewRoute(),
+            'deleteRoute' => $this->crudDeleteRoute(),
+            'identifier' => $this->crudIdentifier(),
+            'transPrefix' => $this->crudName(),
         );
 
-        return $this->render(
-            $this->getCreateTemplate(),
+        return $this->crudRender(
+            $this->crudCreateTemplate(),
             array_replace_recursive($baseTemplateVars, $templateVars)
         );
     }
@@ -132,36 +132,36 @@ trait CrudTrait
      * @param array   $templateVars
      * @return Response|RedirectResponse
      */
-    protected function editObject(Request $request, $id, array $templateVars = array())
+    protected function crudEditObject(Request $request, $id, array $templateVars = array())
     {
         /** @var ObjectRepository $repo */
-        $repo = $this->getRepositoryForClass($this->getObjectClass());
+        $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         $object = $repo->find($id);
 
         if(null === $object) {
             throw new NotFoundHttpException("There is no object with this id");
         }
 
-        if(!$this->getEditIsGranted($object)) {
+        if(!$this->crudEditIsGranted($object)) {
             throw new AccessDeniedException("You need the permission to edit this object!");
         }
 
-        $form = $this->createForm($this->getEditFormType(), $object);
+        $form = $this->crudForm($this->crudEditFormType(), $object);
 
         if('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if($form->isValid()) {
                 $this->preUpdate($object);
 
-                $em = $this->getManagerForClass($this->getObjectClass());
+                $em = $this->crudManagerForClass($this->crudObjectClass());
                 $em->persist($object);
                 $em->flush();
 
                 $this->postUpdate($object);
 
-                $this->addFlashMessage($request, 'success', $this->getName() . '.edit.flash.success');
+                $this->crudFlashMessage($request, 'success', $this->crudName() . '.edit.flash.success');
             } else {
-                $this->addFlashMessage($request, 'error', $this->getName() . '.edit.flash.error');
+                $this->crudFlashMessage($request, 'error', $this->crudName() . '.edit.flash.error');
             }
         }
 
@@ -169,17 +169,17 @@ trait CrudTrait
             'request' => $request,
             'object' => $object,
             'form' => $form->createView(),
-            'createRoute' => $this->getCreateRoute(),
-            'listRoute' => $this->getListRoute(),
-            'editRoute' => $this->getEditRoute(),
-            'viewRoute' => $this->getViewRoute(),
-            'deleteRoute' => $this->getDeleteRoute(),
-            'identifier' => $this->getIdentifier(),
-            'transPrefix' => $this->getName(),
+            'createRoute' => $this->crudCreateRoute(),
+            'listRoute' => $this->crudListRoute(),
+            'editRoute' => $this->crudEditRoute(),
+            'viewRoute' => $this->crudViewRoute(),
+            'deleteRoute' => $this->crudDeleteRoute(),
+            'identifier' => $this->crudIdentifier(),
+            'transPrefix' => $this->crudName(),
         );
 
-        return $this->render(
-            $this->getEditTemplate(),
+        return $this->crudRender(
+            $this->crudEditTemplate(),
             array_replace_recursive($baseTemplateVars, $templateVars)
         );
     }
@@ -190,34 +190,34 @@ trait CrudTrait
      * @param array   $templateVars
      * @return Response|RedirectResponse
      */
-    protected function viewObject(Request $request, $id, array $templateVars = array())
+    protected function crudViewObject(Request $request, $id, array $templateVars = array())
     {
         /** @var ObjectRepository $repo */
-        $repo = $this->getRepositoryForClass($this->getObjectClass());
+        $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         $object = $repo->find($id);
 
         if(null === $object) {
             throw new NotFoundHttpException("There is no object with this id");
         }
 
-        if(!$this->getViewIsGranted($object)) {
+        if(!$this->crudViewIsGranted($object)) {
             throw new AccessDeniedException("You need the permission to view this object!");
         }
 
         $baseTemplateVars = array(
             'request' => $request,
             'object' => $object,
-            'createRoute' => $this->getCreateRoute(),
-            'listRoute' => $this->getListRoute(),
-            'editRoute' => $this->getEditRoute(),
-            'viewRoute' => $this->getViewRoute(),
-            'deleteRoute' => $this->getDeleteRoute(),
-            'identifier' => $this->getIdentifier(),
-            'transPrefix' => $this->getName(),
+            'createRoute' => $this->crudCreateRoute(),
+            'listRoute' => $this->crudListRoute(),
+            'editRoute' => $this->crudEditRoute(),
+            'viewRoute' => $this->crudViewRoute(),
+            'deleteRoute' => $this->crudDeleteRoute(),
+            'identifier' => $this->crudIdentifier(),
+            'transPrefix' => $this->crudName(),
         );
 
-        return $this->render(
-            $this->getViewTemplate(),
+        return $this->crudRender(
+            $this->crudViewTemplate(),
             array_replace_recursive($baseTemplateVars, $templateVars)
         );
     }
@@ -227,37 +227,32 @@ trait CrudTrait
      * @param int $id
      * @return Response|RedirectResponse
      */
-    protected function deleteObject(Request $request, $id)
+    protected function crudDeleteObject(Request $request, $id)
     {
         /** @var ObjectRepository $repo */
-        $repo = $this->getRepositoryForClass($this->getObjectClass());
+        $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         $object = $repo->find($id);
 
         if(null === $object) {
             throw new NotFoundHttpException("There is no object with this id");
         }
 
-        if(!$this->getDeleteIsGranted($object)) {
+        if(!$this->crudDeleteIsGranted($object)) {
             throw new AccessDeniedException("You need the permission to delete this object!");
         }
 
         $this->preRemove($object);
 
-        $em = $this->getManagerForClass($this->getObjectClass());
+        $em = $this->crudManagerForClass($this->crudObjectClass());
         $em->remove($object);
         $em->flush();
 
         $this->postRemove($object);
 
-        $this->addFlashMessage($request, 'success', $this->getName() . '.delete.flash.success');
+        $this->crudFlashMessage($request, 'success', $this->crudName() . '.delete.flash.success');
 
-        return new RedirectResponse($this->getListRedirectUrl(), 302);
+        return new RedirectResponse($this->crudListRedirectUrl(), 302);
     }
-
-    /**
-     * @return FormFactory
-     */
-    abstract protected function getFormFactory();
 
     /**
      * @param  string               $type
@@ -266,21 +261,16 @@ trait CrudTrait
      * @param  FormBuilderInterface $parent
      * @return Form
      */
-    protected function createForm($type = 'form', $data = null, array $options = array(), FormBuilderInterface $parent = null)
+    protected function crudForm($type = 'form', $data = null, array $options = array(), FormBuilderInterface $parent = null)
     {
         return $this->getFormFactory()->createBuilder($type, $data, $options, $parent)->getForm();
     }
 
     /**
-     * @return ManagerRegistry
-     */
-    abstract protected function getDoctrine();
-
-    /**
      * @param string $class
      * @return ObjectManager|null
      */
-    protected function getManagerForClass($class)
+    protected function crudManagerForClass($class)
     {
         return $this->getDoctrine()->getManagerForClass($class);
     }
@@ -289,71 +279,51 @@ trait CrudTrait
      * @param string $class
      * @return ObjectRepository
      */
-    protected function getRepositoryForClass($class)
+    protected function crudRepositoryForClass($class)
     {
-        return $this->getManagerForClass($class)->getRepository($class);
+        return $this->crudManagerForClass($class)->getRepository($class);
     }
-
-    /**
-     * @return Paginator
-     */
-    abstract protected function getPaginator();
 
     /**
      * @param object  $qb
      * @param Request $request
      * @return AbstractPagination
      */
-    protected function paginate($qb, Request $request)
+    protected function crudPaginate($qb, Request $request)
     {
         return $this->getPaginator()->paginate(
             $qb,
             $request->query->get('page', 1),
-            $request->query->get('perPage', $this->getPerPage())
+            $request->query->get('perPage', $this->crudPaginatePerPage())
         );
     }
-
-    /**
-     * @return \Twig_Environment
-     */
-    abstract protected function getTwig();
 
     /**
      * @param string $view
      * @param  array  $parameters
      * @return Response
      */
-    protected function render($view, array $parameters = array())
+    protected function crudRender($view, array $parameters = array())
     {
         return new Response($this->getTwig()->render($view, $parameters));
     }
-
-    /**
-     * @return UrlGeneratorInterface
-     */
-    abstract protected function getUrlGenerator();
 
     /**
      * @param string $name
      * @param array  $parameters
      * @return string
      */
-    protected function generateRoute($name, array $parameters = array())
+    protected function crudGenerateRoute($name, array $parameters = array())
     {
         return $this->getUrlGenerator()->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
-
-    /**
-     * @return AuthorizationCheckerInterface
-     */
-    abstract protected function getSecurity();
 
     /**
      * @param Request $request
      * @param string  $type
      * @param string  $message
      */
-    protected function addFlashMessage(Request $request, $type, $message)
+    protected function crudFlashMessage(Request $request, $type, $message)
     {
         /** @var Session $session */
         $session = $request->getSession();
@@ -364,10 +334,10 @@ trait CrudTrait
      * @return string
      * @throws \Exception
      */
-    protected function getIdentifier()
+    protected function crudIdentifier()
     {
-        $em = $this->getManagerForClass($this->getObjectClass());
-        $meta = $em->getClassMetadata($this->getObjectClass());
+        $em = $this->crudManagerForClass($this->crudObjectClass());
+        $meta = $em->getClassMetadata($this->crudObjectClass());
 
         $identifier = $meta->getIdentifier();
 
@@ -382,9 +352,9 @@ trait CrudTrait
      * @return string
      * @throws \Exception
      */
-    protected function getIdentifierMethod()
+    protected function crudIdentifierMethod()
     {
-        $identifier = $this->getIdentifier();
+        $identifier = $this->crudIdentifier();
 
         return 'get'. ucfirst($identifier);
     }
@@ -392,7 +362,7 @@ trait CrudTrait
     /**
      * @return string
      */
-    protected function getTwigTemplatePattern()
+    protected function crudTwigTemplatePattern()
     {
         return '@SaxulumCrud/%s/%s.html.twig';
     }
@@ -400,7 +370,7 @@ trait CrudTrait
     /**
      * @return int
      */
-    protected function getPerPage()
+    protected function crudPaginatePerPage()
     {
         return 10;
     }
@@ -408,31 +378,31 @@ trait CrudTrait
     /**
      * @return string
      */
-    protected function getListRoute()
+    protected function crudListRoute()
     {
-        return $this->getName() . '_list';
+        return $this->crudName() . '_list';
     }
 
     /**
      * @return bool
      */
-    protected function getListIsGranted()
+    protected function crudListIsGranted()
     {
-        return $this->getSecurity()->isGranted($this->getListRole());
+        return $this->getSecurity()->isGranted($this->crudListRole());
     }
 
     /**
      * @return string
      */
-    protected function getListRole()
+    protected function crudListRole()
     {
-        return 'ROLE_' . strtoupper($this->getName()) . '_LIST';
+        return 'ROLE_' . strtoupper($this->crudName()) . '_LIST';
     }
 
     /**
      * @return FormTypeInterface|null
      */
-    protected function getListFormType()
+    protected function crudListFormType()
     {
         return null;
     }
@@ -440,7 +410,7 @@ trait CrudTrait
     /**
      * @return array
      */
-    protected function getListDefaultData()
+    protected function crudListDefaultData()
     {
         return array();
     }
@@ -448,49 +418,49 @@ trait CrudTrait
     /**
      * @return string
      */
-    protected function getListTemplate()
+    protected function crudListTemplate()
     {
-        return sprintf($this->getTwigTemplatePattern(), ucfirst($this->getName()), 'list');
+        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'list');
     }
 
     /**
      * @return string
      */
-    protected function getListRedirectUrl()
+    protected function crudListRedirectUrl()
     {
-        return $this->generateRoute($this->getListRoute());
+        return $this->crudGenerateRoute($this->crudListRoute());
     }
 
     /**
      * @return string
      */
-    protected function getCreateRoute()
+    protected function crudCreateRoute()
     {
-        return $this->getName() . '_create';
+        return $this->crudName() . '_create';
     }
 
     /**
      * @return bool
      */
-    protected function getCreateIsGranted()
+    protected function crudCreateIsGranted()
     {
-        return $this->getSecurity()->isGranted($this->getCreateRole());
+        return $this->getSecurity()->isGranted($this->crudCreateRole());
     }
 
     /**
      * @return string
      */
-    protected function getCreateRole()
+    protected function crudCreateRole()
     {
-        return 'ROLE_' . strtoupper($this->getName()) . '_CREATE';
+        return 'ROLE_' . strtoupper($this->crudName()) . '_CREATE';
     }
 
     /**
      * @return object
      */
-    protected function getCreateObject()
+    protected function crudCreateFactory()
     {
-        $objectClass = $this->getObjectClass();
+        $objectClass = $this->crudObjectClass();
 
         return new $objectClass;
     }
@@ -499,7 +469,7 @@ trait CrudTrait
      * @return FormTypeInterface
      * @throws \Exception
      */
-    protected function getCreateFormType()
+    protected function crudCreateFormType()
     {
         throw new \Exception('You need to implement this method, if you use the createObject method!');
     }
@@ -508,51 +478,51 @@ trait CrudTrait
      * @param object
      * @return string
      */
-    protected function getCreateRedirectUrl($object)
+    protected function crudCreateRedirectUrl($object)
     {
-        $identifierMethod = $this->getIdentifierMethod();
+        $identifierMethod = $this->crudIdentifierMethod();
 
-        return $this->generateRoute($this->getEditRoute(), array('id' => $object->$identifierMethod()));
+        return $this->crudGenerateRoute($this->crudEditRoute(), array('id' => $object->$identifierMethod()));
     }
 
     /**
      * @return string
      */
-    protected function getCreateTemplate()
+    protected function crudCreateTemplate()
     {
-        return sprintf($this->getTwigTemplatePattern(), ucfirst($this->getName()), 'create');
+        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'create');
     }
 
     /**
      * @return string
      */
-    protected function getEditRoute()
+    protected function crudEditRoute()
     {
-        return $this->getName() . '_edit';
+        return $this->crudName() . '_edit';
     }
 
     /**
      * @param object
      * @return bool
      */
-    protected function getEditIsGranted($object)
+    protected function crudEditIsGranted($object)
     {
-        return $this->getSecurity()->isGranted($this->getEditRole(), $object);
+        return $this->getSecurity()->isGranted($this->crudEditRole(), $object);
     }
 
     /**
      * @return string
      */
-    protected function getEditRole()
+    protected function crudEditRole()
     {
-        return 'ROLE_' . strtoupper($this->getName()) . '_EDIT';
+        return 'ROLE_' . strtoupper($this->crudName()) . '_EDIT';
     }
 
     /**
      * @return FormTypeInterface
      * @throws \Exception
      */
-    protected function getEditFormType()
+    protected function crudEditFormType()
     {
         throw new \Exception('You need to implement this method, if you use the editObject method!');
     }
@@ -560,67 +530,67 @@ trait CrudTrait
     /**
      * @return string
      */
-    protected function getEditTemplate()
+    protected function crudEditTemplate()
     {
-        return sprintf($this->getTwigTemplatePattern(), ucfirst($this->getName()), 'edit');
+        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'edit');
     }
 
     /**
      * @return string
      */
-    protected function getViewRoute()
+    protected function crudViewRoute()
     {
-        return $this->getName() . '_view';
+        return $this->crudName() . '_view';
     }
 
     /**
      * @param object
      * @return bool
      */
-    protected function getViewIsGranted($object)
+    protected function crudViewIsGranted($object)
     {
-        return $this->getSecurity()->isGranted($this->getViewRole(), $object);
+        return $this->getSecurity()->isGranted($this->crudViewRole(), $object);
     }
 
     /**
      * @return string
      */
-    protected function getViewRole()
+    protected function crudViewRole()
     {
-        return 'ROLE_' . strtoupper($this->getName()) . '_VIEW';
+        return 'ROLE_' . strtoupper($this->crudName()) . '_VIEW';
     }
 
     /**
      * @return string
      */
-    protected function getViewTemplate()
+    protected function crudViewTemplate()
     {
-        return sprintf($this->getTwigTemplatePattern(), ucfirst($this->getName()), 'view');
+        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'view');
     }
 
     /**
      * @return string
      */
-    protected function getDeleteRoute()
+    protected function crudDeleteRoute()
     {
-        return $this->getName() . '_delete';
+        return $this->crudName() . '_delete';
     }
 
     /**
      * @param $object
      * @return bool
      */
-    protected function getDeleteIsGranted($object)
+    protected function crudDeleteIsGranted($object)
     {
-        return $this->getSecurity()->isGranted($this->getDeleteRole(), $object);
+        return $this->getSecurity()->isGranted($this->crudDeleteRole(), $object);
     }
 
     /**
      * @return string
      */
-    protected function getDeleteRole()
+    protected function crudDeleteRole()
     {
-        return 'ROLE_' . strtoupper($this->getName()) . '_DELETE';
+        return 'ROLE_' . strtoupper($this->crudName()) . '_DELETE';
     }
 
     /**
@@ -660,12 +630,42 @@ trait CrudTrait
     protected function postRemove($object) {}
 
     /**
-     * @return string
+     * @return FormFactory
      */
-    abstract protected function getName();
+    abstract protected function getFormFactory();
+
+    /**
+     * @return ManagerRegistry
+     */
+    abstract protected function getDoctrine();
+
+    /**
+     * @return Paginator
+     */
+    abstract protected function getPaginator();
+
+    /**
+     * @return \Twig_Environment
+     */
+    abstract protected function getTwig();
+
+    /**
+     * @return UrlGeneratorInterface
+     */
+    abstract protected function getUrlGenerator();
+
+    /**
+     * @return AuthorizationCheckerInterface
+     */
+    abstract protected function getSecurity();
 
     /**
      * @return string
      */
-    abstract protected function getObjectClass();
+    abstract protected function crudName();
+
+    /**
+     * @return string
+     */
+    abstract protected function crudObjectClass();
 }
