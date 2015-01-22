@@ -1,0 +1,28 @@
+{
+  "name": "saxulum/saxulum-crud",
+  "description": "Saxulum CRUD",
+  "keywords": ["saxulum", "crud", "symfony", "silex"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Dominik Zogg",
+      "email": "dominik.zogg@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "doctrine/common": "~2.4",
+    "knplabs/knp-components": "~1.3,>=1.3.1",
+    "symfony/form": "~2.3",
+    "symfony/http-kernel": "~2.3",
+    "symfony/routing": "~2.3",
+    "symfony/security": "~2.3",
+    "symfony/translation": "~2.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0"
+  },
+  "autoload": {
+    "psr-4": { "Saxulum\\Crud\\": "src/" }
+  }
+}
