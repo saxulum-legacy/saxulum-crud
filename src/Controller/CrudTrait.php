@@ -9,7 +9,6 @@ use Knp\Component\Pager\Paginator;
 use Knp\Component\Pager\Pagination\AbstractPagination;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,10 +18,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 trait CrudTrait
 {
@@ -664,7 +662,7 @@ trait CrudTrait
     abstract protected function getUrlGenerator();
 
     /**
-     * @return AuthorizationCheckerInterface
+     * @return SecurityContextInterface
      */
     abstract protected function getSecurity();
 }
