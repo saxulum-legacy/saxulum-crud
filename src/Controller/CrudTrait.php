@@ -258,12 +258,11 @@ trait CrudTrait
      * @param  string               $type
      * @param  null                 $data
      * @param  array                $options
-     * @param  FormBuilderInterface $parent
      * @return Form
      */
-    protected function crudForm($type = 'form', $data = null, array $options = array(), FormBuilderInterface $parent = null)
+    protected function crudForm($type = 'form', $data = null, array $options = array())
     {
-        return $this->getFormFactory()->createBuilder($type, $data, $options, $parent)->getForm();
+        return $this->getFormFactory()->create($type, $data, $options);
     }
 
     /**
