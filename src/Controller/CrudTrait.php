@@ -91,13 +91,13 @@ trait CrudTrait
         if('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if($form->isValid()) {
-                $this->prePersist($object);
+                $this->crudPrePersist($object);
 
                 $em = $this->crudManagerForClass($this->crudObjectClass());
                 $em->persist($object);
                 $em->flush();
 
-                $this->postPersist($object);
+                $this->crudPostPersist($object);
 
                 $this->crudFlashMessage($request, 'success', $this->crudName() . '.create.flash.success');
 
@@ -151,13 +151,13 @@ trait CrudTrait
         if('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if($form->isValid()) {
-                $this->preUpdate($object);
+                $this->crudPreUpdate($object);
 
                 $em = $this->crudManagerForClass($this->crudObjectClass());
                 $em->persist($object);
                 $em->flush();
 
-                $this->postUpdate($object);
+                $this->crudPostUpdate($object);
 
                 $this->crudFlashMessage($request, 'success', $this->crudName() . '.edit.flash.success');
             } else {
@@ -241,13 +241,13 @@ trait CrudTrait
             throw new AccessDeniedException("You need the permission to delete this object!");
         }
 
-        $this->preRemove($object);
+        $this->crudPreRemove($object);
 
         $em = $this->crudManagerForClass($this->crudObjectClass());
         $em->remove($object);
         $em->flush();
 
-        $this->postRemove($object);
+        $this->crudPostRemove($object);
 
         $this->crudFlashMessage($request, 'success', $this->crudName() . '.delete.flash.success');
 
@@ -597,37 +597,37 @@ trait CrudTrait
      * @param object $object
      * @return void
      */
-    protected function prePersist($object) {}
+    protected function crudPrePersist($object) {}
 
     /**
      * @param object $object
      * @return void
      */
-    protected function postPersist($object) {}
+    protected function crudPostPersist($object) {}
 
     /**
      * @param object $object
      * @return void
      */
-    protected function preUpdate($object) {}
+    protected function crudPreUpdate($object) {}
 
     /**
      * @param object $object
      * @return void
      */
-    protected function postUpdate($object) {}
+    protected function crudPostUpdate($object) {}
 
     /**
      * @param object $object
      * @return void
      */
-    protected function preRemove($object) {}
+    protected function crudPreRemove($object) {}
 
     /**
      * @param object $object
      * @return void
      */
-    protected function postRemove($object) {}
+    protected function crudPostRemove($object) {}
 
     /**
      * @return FormFactory
