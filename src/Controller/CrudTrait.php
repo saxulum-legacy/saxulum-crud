@@ -161,6 +161,8 @@ trait CrudTrait
                 $this->crudPostUpdate($object);
 
                 $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.success', $this->crudName()));
+
+                return new RedirectResponse($this->crudCreateRedirectUrl($object), 302);
             } else {
                 $this->crudFlashMessage($request, 'error', sprintf('%s.edit.flash.error', $this->crudName()));
             }
