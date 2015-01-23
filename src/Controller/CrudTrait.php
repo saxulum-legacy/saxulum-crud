@@ -26,22 +26,23 @@ trait CrudTrait
 {
     /**
      * @param Request $request
-     * @param array $templateVars
+     * @param array   $templateVars
      * @return Response
+     * @throws \Exception
      */
     public function crudListObjects(Request $request, array $templateVars = array())
     {
-        if(!$this->crudListIsGranted()) {
+        if (!$this->crudListIsGranted()) {
             throw new AccessDeniedException("You need the permission to list entities!");
         }
 
-        if(null !== $formType = $this->crudListFormType()) {
+        if (null !== $formType = $this->crudListFormType()) {
             $form = $this->crudForm($formType);
             $form->handleRequest($request);
             $formData = $form->getData();
         }
 
-        if(!isset($formData) || null === $formData) {
+        if (!isset($formData) || null === $formData) {
             $formData = array();
         }
 
@@ -82,16 +83,16 @@ trait CrudTrait
      */
     protected function crudCreateObject(Request $request, array $templateVars = array())
     {
-        if(!$this->crudCreateIsGranted()) {
+        if (!$this->crudCreateIsGranted()) {
             throw new AccessDeniedException("You need the permission to create an object!");
         }
 
         $object = $this->crudCreateFactory();
         $form = $this->crudForm($this->crudCreateFormType(), $object);
 
-        if('POST' === $request->getMethod()) {
+        if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $this->crudPrePersist($object);
 
                 $em = $this->crudManagerForClass($this->crudObjectClass());
@@ -139,19 +140,19 @@ trait CrudTrait
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         $object = $repo->find($id);
 
-        if(null === $object) {
+        if (null === $object) {
             throw new NotFoundHttpException("There is no object with this id");
         }
 
-        if(!$this->crudEditIsGranted($object)) {
+        if (!$this->crudEditIsGranted($object)) {
             throw new AccessDeniedException("You need the permission to edit this object!");
         }
 
         $form = $this->crudForm($this->crudEditFormType(), $object);
 
-        if('POST' === $request->getMethod()) {
+        if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $this->crudPreUpdate($object);
 
                 $em = $this->crudManagerForClass($this->crudObjectClass());
@@ -199,11 +200,11 @@ trait CrudTrait
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         $object = $repo->find($id);
 
-        if(null === $object) {
+        if (null === $object) {
             throw new NotFoundHttpException("There is no object with this id");
         }
 
-        if(!$this->crudViewIsGranted($object)) {
+        if (!$this->crudViewIsGranted($object)) {
             throw new AccessDeniedException("You need the permission to view this object!");
         }
 
@@ -236,11 +237,11 @@ trait CrudTrait
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         $object = $repo->find($id);
 
-        if(null === $object) {
+        if (null === $object) {
             throw new NotFoundHttpException("There is no object with this id");
         }
 
-        if(!$this->crudDeleteIsGranted($object)) {
+        if (!$this->crudDeleteIsGranted($object)) {
             throw new AccessDeniedException("You need the permission to delete this object!");
         }
 
@@ -343,7 +344,7 @@ trait CrudTrait
 
         $identifier = $meta->getIdentifier();
 
-        if(1 !== count($identifier)) {
+        if (1 !== count($identifier)) {
             throw new \Exception('There are multiple fields define the identifier, which is not supported!');
         }
 
@@ -599,37 +600,49 @@ trait CrudTrait
      * @param object $object
      * @return void
      */
-    protected function crudPrePersist($object) {}
+    protected function crudPrePersist($object)
+    {
+    }
 
     /**
      * @param object $object
      * @return void
      */
-    protected function crudPostPersist($object) {}
+    protected function crudPostPersist($object)
+    {
+    }
 
     /**
      * @param object $object
      * @return void
      */
-    protected function crudPreUpdate($object) {}
+    protected function crudPreUpdate($object)
+    {
+    }
 
     /**
      * @param object $object
      * @return void
      */
-    protected function crudPostUpdate($object) {}
+    protected function crudPostUpdate($object)
+    {
+    }
 
     /**
      * @param object $object
      * @return void
      */
-    protected function crudPreRemove($object) {}
+    protected function crudPreRemove($object)
+    {
+    }
 
     /**
      * @param object $object
      * @return void
      */
-    protected function crudPostRemove($object) {}
+    protected function crudPostRemove($object)
+    {
+    }
 
     /**
      * @return string
