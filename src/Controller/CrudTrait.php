@@ -100,11 +100,11 @@ trait CrudTrait
 
                 $this->crudPostPersist($object);
 
-                $this->crudFlashMessage($request, 'success', $this->crudName() . '.create.flash.success');
+                $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.success', $this->crudName()));
 
                 return new RedirectResponse($this->crudCreateRedirectUrl($object), 302);
             } else {
-                $this->crudFlashMessage($request, 'error', $this->crudName() . '.create.flash.error');
+                $this->crudFlashMessage($request, 'error', sprintf('%s.create.flash.error', $this->crudName()));
             }
         }
 
@@ -160,9 +160,9 @@ trait CrudTrait
 
                 $this->crudPostUpdate($object);
 
-                $this->crudFlashMessage($request, 'success', $this->crudName() . '.edit.flash.success');
+                $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.success', $this->crudName()));
             } else {
-                $this->crudFlashMessage($request, 'error', $this->crudName() . '.edit.flash.error');
+                $this->crudFlashMessage($request, 'error', sprintf('%s.edit.flash.error', $this->crudName()));
             }
         }
 
@@ -250,7 +250,7 @@ trait CrudTrait
 
         $this->crudPostRemove($object);
 
-        $this->crudFlashMessage($request, 'success', $this->crudName() . '.delete.flash.success');
+        $this->crudFlashMessage($request, 'success', sprintf('%s.delete.flash.success', $this->crudName()));
 
         return new RedirectResponse($this->crudListRedirectUrl(), 302);
     }
