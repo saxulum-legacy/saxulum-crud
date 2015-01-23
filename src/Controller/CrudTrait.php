@@ -47,8 +47,11 @@ trait CrudTrait
 
         $formData = array_replace_recursive($formData, $this->crudListDefaultData());
 
-        /** @var QueryBuilderForFilterFormInterface $repo */
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
+        if (!$repo instanceof QueryBuilderForFilterFormInterface) {
+            throw new \Exception(sprintf('A repo used for crudListObjects needs to implement: %', QueryBuilderForFilterFormInterface::class));
+        }
+
         $qb = $repo->getQueryBuilderForFilterForm($formData);
 
         $pagination = $this->crudPaginate($qb, $request);
