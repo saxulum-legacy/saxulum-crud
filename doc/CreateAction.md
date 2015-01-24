@@ -109,3 +109,29 @@ This method defines the template path.
  */
 protected function crudCreateTemplate()
 ```
+
+## Hooks
+
+#### Create pre persist
+
+This method allows to manipulate the object before persist
+
+```{.php}
+/**
+ * @param  object $object
+ * @return void
+ */
+protected function crudCreatePrePersist($object)
+```
+
+#### Create post flush
+
+This method allows to manipulate the object after flush
+
+```{.php}
+/**
+ * @param  object $object
+ * @return void
+ */
+protected function crudCreatePostFlush($object)
+```

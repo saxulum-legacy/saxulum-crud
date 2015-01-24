@@ -91,13 +91,13 @@ trait CrudTrait
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->crudPrePersist($object);
+                $this->crudCreatePrePersist($object);
 
                 $em = $this->crudManagerForClass($this->crudObjectClass());
                 $em->persist($object);
                 $em->flush();
 
-                $this->crudPostPersist($object);
+                $this->crudCreatePostFlush($object);
 
                 $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.success', $this->crudName()));
 
@@ -609,7 +609,7 @@ trait CrudTrait
      * @param  object $object
      * @return void
      */
-    protected function crudPrePersist($object)
+    protected function crudCreatePrePersist($object)
     {
     }
 
@@ -617,7 +617,7 @@ trait CrudTrait
      * @param  object $object
      * @return void
      */
-    protected function crudPostPersist($object)
+    protected function crudCreatePostFlush($object)
     {
     }
 
