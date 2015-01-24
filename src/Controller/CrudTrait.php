@@ -46,7 +46,7 @@ trait CrudTrait
             $formData = array();
         }
 
-        $formData = array_replace_recursive($formData, $this->crudListDefaultData());
+        $formData = array_replace_recursive($formData, $this->crudListFormDataEnrich());
 
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         if (!$repo instanceof QueryBuilderForFilterFormInterface) {
@@ -81,7 +81,7 @@ trait CrudTrait
      * @param array   $templateVars
      * @return Response|RedirectResponse
      */
-    protected function crudCreateObject(Request $request, array $templateVars = array())
+    public function crudCreateObject(Request $request, array $templateVars = array())
     {
         if (!$this->crudCreateIsGranted()) {
             throw new AccessDeniedException("You need the permission to create an object!");
@@ -134,7 +134,7 @@ trait CrudTrait
      * @param array   $templateVars
      * @return Response|RedirectResponse
      */
-    protected function crudEditObject(Request $request, $id, array $templateVars = array())
+    public function crudEditObject(Request $request, $id, array $templateVars = array())
     {
         /** @var ObjectRepository $repo */
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
@@ -194,7 +194,7 @@ trait CrudTrait
      * @param array   $templateVars
      * @return Response|RedirectResponse
      */
-    protected function crudViewObject(Request $request, $id, array $templateVars = array())
+    public function crudViewObject(Request $request, $id, array $templateVars = array())
     {
         /** @var ObjectRepository $repo */
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
@@ -231,7 +231,7 @@ trait CrudTrait
      * @param int $id
      * @return Response|RedirectResponse
      */
-    protected function crudDeleteObject(Request $request, $id)
+    public function crudDeleteObject(Request $request, $id)
     {
         /** @var ObjectRepository $repo */
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
@@ -297,7 +297,7 @@ trait CrudTrait
         return $this->getPaginator()->paginate(
             $qb,
             $request->query->get('page', 1),
-            $request->query->get('perPage', $this->crudPaginatePerPage())
+            $request->query->get('perPage', $this->crudListPerPage())
         );
     }
 
@@ -373,7 +373,7 @@ trait CrudTrait
     /**
      * @return int
      */
-    protected function crudPaginatePerPage()
+    protected function crudListPerPage()
     {
         return 10;
     }
@@ -413,7 +413,7 @@ trait CrudTrait
     /**
      * @return array
      */
-    protected function crudListDefaultData()
+    protected function crudListFormDataEnrich()
     {
         return array();
     }
