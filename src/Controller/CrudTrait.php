@@ -289,8 +289,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  FormTypeInterface|string $type
-     * @param  object|null              $data
+     * @param  string|FormTypeInterface $type
+     * @param  mixed                    $data
      * @param  array                    $options
      * @return Form
      */
