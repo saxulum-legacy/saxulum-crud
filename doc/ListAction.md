@@ -1,4 +1,4 @@
-# Saxulum CRUD List
+# List action
 
 This methods implements a simple, but usefull listing with pagination.
 
