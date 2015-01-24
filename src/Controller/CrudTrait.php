@@ -259,17 +259,6 @@ trait CrudTrait
     }
 
     /**
-     * @param  string               $type
-     * @param  null                 $data
-     * @param  array                $options
-     * @return Form
-     */
-    protected function crudForm($type = 'form', $data = null, array $options = array())
-    {
-        return $this->getFormFactory()->create($type, $data, $options);
-    }
-
-    /**
      * @param string $class
      * @return ObjectManager|null
      */
@@ -302,13 +291,14 @@ trait CrudTrait
     }
 
     /**
-     * @param string $view
-     * @param  array  $parameters
-     * @return Response
+     * @param  string               $type
+     * @param  null                 $data
+     * @param  array                $options
+     * @return Form
      */
-    protected function crudRender($view, array $parameters = array())
+    protected function crudForm($type = 'form', $data = null, array $options = array())
     {
-        return new Response($this->getTwig()->render($view, $parameters));
+        return $this->getFormFactory()->create($type, $data, $options);
     }
 
     /**
@@ -319,6 +309,16 @@ trait CrudTrait
     protected function crudGenerateRoute($name, array $parameters = array())
     {
         return $this->getUrlGenerator()->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    /**
+     * @param string $view
+     * @param  array  $parameters
+     * @return Response
+     */
+    protected function crudRender($view, array $parameters = array())
+    {
+        return new Response($this->getTwig()->render($view, $parameters));
     }
 
     /**
@@ -655,11 +655,6 @@ trait CrudTrait
     abstract protected function crudObjectClass();
 
     /**
-     * @return FormFactory
-     */
-    abstract protected function getFormFactory();
-
-    /**
      * @return ManagerRegistry
      */
     abstract protected function getDoctrine();
@@ -670,9 +665,9 @@ trait CrudTrait
     abstract protected function getPaginator();
 
     /**
-     * @return \Twig_Environment
+     * @return FormFactory
      */
-    abstract protected function getTwig();
+    abstract protected function getFormFactory();
 
     /**
      * @return UrlGeneratorInterface
@@ -683,4 +678,9 @@ trait CrudTrait
      * @return SecurityContextInterface
      */
     abstract protected function getSecurity();
+
+    /**
+     * @return \Twig_Environment
+     */
+    abstract protected function getTwig();
 }
