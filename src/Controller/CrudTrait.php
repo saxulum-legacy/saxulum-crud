@@ -57,8 +57,8 @@ trait CrudTrait
 
         $baseTemplateVars = array(
             'request' => $request,
-            'form' => isset($form) ? $form->createView() : null,
             'pagination' => $pagination,
+            'form' => isset($form) ? $form->createView() : null,
             'listRoute' => $this->crudListRoute(),
             'createRoute' => $this->crudCreateRoute(),
             'editRoute' => $this->crudEditRoute(),
