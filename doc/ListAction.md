@@ -1,8 +1,8 @@
 # List action
 
-This methods implements a simple, but usefull listing with pagination.
+This methods implements a simple, but usefull object list action with pagination.
 
-*IMPORTANT*: An object using listing needs a own `Repository` which implements
+*IMPORTANT*: An object using object list action needs a own `Repository` which implements
 the interface `Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface`.
 
 ## Api
@@ -20,8 +20,8 @@ public function crudListObjects(Request $request, array $templateVars = array())
 ## Template Vars
 
  * `request`: contains the Request object
- * `form`: contains a form view or null
  * `pagination`: contains the objects within a pagination object
+ * `form`: contains a form view or null
  * `listRoute`: contains the name of the list route
  * `createRoute`: contains the name of the create route
  * `editRoute`: contains the name of the edit route
@@ -30,11 +30,11 @@ public function crudListObjects(Request $request, array $templateVars = array())
  * `identifier`: contains property name of the id of the object (`id` in most cases)
  * `transPrefix`: contains the translation prefix (`Controller::crudName()`)
 
-## Hooks
+## Overwrites
 
-*IMPORTANT*: All those hooks are facultative, you do not override this.
+### Facultative
 
-### List per page
+#### List per page
 
 This method defines the amount of objects per page
 
@@ -47,7 +47,7 @@ This method defines the amount of objects per page
 protected function crudListPerPage()
 ```
 
-### List route
+#### List route
 
 This method defines the list route name
 
@@ -58,9 +58,9 @@ This method defines the list route name
 protected function crudListRoute()
 ```
 
-### List is granted
+#### List is granted
 
-This methods return if its allowed to call this listing.
+This methods return if its allowed to call this object list action.
 
 ```{.php}
 /**
@@ -69,7 +69,7 @@ This methods return if its allowed to call this listing.
 protected function crudListIsGranted()
 ```
 
-### List role
+#### List role
 
 This method defines the list role (for security check).
 
@@ -80,7 +80,7 @@ This method defines the list role (for security check).
 protected function crudListRole()
 ```
 
-### List form type
+#### List form type
 
 This method defines a form type used for filtering objects (default: no filter).
 
@@ -93,7 +93,7 @@ This method defines a form type used for filtering objects (default: no filter).
 protected function crudListFormType()
 ```
 
-### List form data enrich
+#### List form data enrich
 
 This method enrich and overrides (by key) the submitted form data.
 
@@ -104,7 +104,7 @@ This method enrich and overrides (by key) the submitted form data.
 protected function crudListFormDataEnrich()
 ```
 
-### Template
+#### Template
 
 This method defines the template path.
 
@@ -115,7 +115,7 @@ This method defines the template path.
 protected function crudListTemplate()
 ```
 
-### Redirect url
+#### Redirect url
 
 This method generates the route to list action.
 
