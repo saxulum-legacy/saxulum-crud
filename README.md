@@ -7,11 +7,11 @@
 
 ## Features
 
- * list action
- * create action
- * edit action
- * view action
- * delete action
+ * [list action][2]
+ * [create action][3]
+ * [edit action][4]
+ * [view action][5]
+ * [delete action][6]
 
 ## Requirements
 
@@ -48,3 +48,8 @@ Use the trait `Saxulum\Crud\Controller\CrudTrait` and implement the following me
 
 
 [1]: https://packagist.org/packages/saxulum/saxulum-crud
+[2]: doc/ListAction.md
+[3]: doc/CreateAction.md
+[4]: doc/EditAction.md
+[5]: doc/ViewAction.md
+[6]: doc/DeleteAction.md
