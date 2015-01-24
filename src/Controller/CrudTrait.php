@@ -258,7 +258,7 @@ trait CrudTrait
 
     /**
      * @param  string             $class
-     * @return ObjectManager|null
+     * @return ObjectManager
      * @throws \Exception
      */
     protected function crudManagerForClass($class)
