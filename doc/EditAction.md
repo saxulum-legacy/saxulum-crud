@@ -77,7 +77,7 @@ This method defines the edit role (for security check).
 protected function crudEditRole()
 ```
 
-#### Redirect url
+#### Edit Redirect url
 
 This method defines the redirect url after edit object
 
