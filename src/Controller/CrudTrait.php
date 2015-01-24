@@ -101,7 +101,7 @@ trait CrudTrait
 
                 $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.success', $this->crudName()));
 
-                return new RedirectResponse($this->crudEditRedirectUrl($object), 302);
+                return new RedirectResponse($this->crudCreateRedirectUrl($object), 302);
             } else {
                 $this->crudFlashMessage($request, 'error', sprintf('%s.create.flash.error', $this->crudName()));
             }
@@ -473,6 +473,17 @@ trait CrudTrait
     protected function crudCreateFormType()
     {
         throw new \Exception('You need to implement this method, if you use the createObject method!');
+    }
+
+    /**
+     * @param object
+     * @return string
+     */
+    protected function crudCreateRedirectUrl($object)
+    {
+        $identifierMethod = $this->crudIdentifierMethod();
+
+        return $this->crudGenerateRoute($this->crudEditRoute(), array('id' => $object->$identifierMethod()));
     }
 
     /**

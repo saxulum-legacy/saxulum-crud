@@ -86,6 +86,17 @@ This method creates a new object.
  */
 protected function crudCreateFactory()
 ```
+#### Redirect url
+
+This method defines the redirect url after create object
+
+```{.php}
+/**
+ * @param object
+ * @return string
+ */
+protected function crudCreateRedirectUrl($object)
+```
 
 #### Template
 
