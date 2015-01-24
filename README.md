@@ -30,7 +30,9 @@ Through [Composer](http://getcomposer.org) as [saxulum/saxulum-crud][1].
 
 ## Usage
 
-Use the trait `Saxulum\Crud\Controller\CrudTrait` and implement the following methods:
+Use the trait `Saxulum\Crud\Controller\CrudTrait`
+
+### Implement
 
 #### Base configuration
 
