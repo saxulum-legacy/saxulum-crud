@@ -151,13 +151,13 @@ trait CrudTrait
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->crudPreUpdate($object);
+                $this->crudEditPrePersist($object);
 
                 $em = $this->crudManagerForClass($this->crudObjectClass());
                 $em->persist($object);
                 $em->flush();
 
-                $this->crudPostUpdate($object);
+                $this->crudEditPostFlush($object);
 
                 $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.success', $this->crudName()));
 
@@ -625,7 +625,7 @@ trait CrudTrait
      * @param  object $object
      * @return void
      */
-    protected function crudPreUpdate($object)
+    protected function crudEditPrePersist($object)
     {
     }
 
@@ -633,7 +633,7 @@ trait CrudTrait
      * @param  object $object
      * @return void
      */
-    protected function crudPostUpdate($object)
+    protected function crudEditPostFlush($object)
     {
     }
 

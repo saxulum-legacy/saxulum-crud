@@ -99,3 +99,29 @@ This method defines the template path.
  */
 protected function crudEditTemplate()
 ```
+
+## Hooks
+
+#### Edit pre persist
+
+This method allows to manipulate the object before persist
+
+```{.php}
+/**
+ * @param  object $object
+ * @return void
+ */
+protected function crudEditPrePersist($object)
+```
+
+#### Edit post flush
+
+This method allows to manipulate the object after flush
+
+```{.php}
+/**
+ * @param  object $object
+ * @return void
+ */
+protected function crudEditPostFlush($object)
+```
