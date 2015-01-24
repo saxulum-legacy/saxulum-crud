@@ -32,6 +32,8 @@ public function crudListObjects(Request $request, array $templateVars = array())
 
 ## Hooks
 
+*IMPORTANT*: All those hooks are facultative, you do not override this.
+
 ### List per page
 
 This method defines the amount of objects per page
