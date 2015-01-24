@@ -114,14 +114,3 @@ This method defines the template path.
  */
 protected function crudListTemplate()
 ```
-
-#### Redirect url
-
-This method generates the route to list action.
-
-```{.php}
-/**
- * @return string
- */
-protected function crudListRedirectUrl()
-```
