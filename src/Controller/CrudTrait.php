@@ -259,10 +259,17 @@ trait CrudTrait
     /**
      * @param  string             $class
      * @return ObjectManager|null
+     * @throws \Exception
      */
     protected function crudManagerForClass($class)
     {
-        return $this->getDoctrine()->getManagerForClass($class);
+        $om = $this->getDoctrine()->getManagerForClass($class);
+
+        if (null === $om) {
+            throw new \Exception(sprintf('There is no object manager for class: %s', $class));
+        }
+
+        return $om;
     }
 
     /**
