@@ -32,12 +32,12 @@ Through [Composer](http://getcomposer.org) as [saxulum/saxulum-crud][1].
 
 Use the trait `Saxulum\Crud\Controller\CrudTrait` and implement the following methods:
 
-### Base configuration
+#### Base configuration
 
  * `crudName`: contains the lowercase name of the object, example: `sample`
  * `crudObjectClass`: contains the class name of the object, example: `Saxulum\Crud\Entity\Sample`
 
-### Services
+#### Services
 
  * `getDoctrine`: contains an instance of the doctrine manager registry
  * `getPaginator`: contains an instance of a knp paginator
