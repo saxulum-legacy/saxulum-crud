@@ -16,17 +16,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 trait CrudTrait
 {
     /**
-     * @param Request $request
-     * @param array   $templateVars
+     * @param  Request    $request
+     * @param  array      $templateVars
      * @return Response
      * @throws \Exception
      */
@@ -77,8 +75,8 @@ trait CrudTrait
     }
 
     /**
-     * @param Request $request
-     * @param array   $templateVars
+     * @param  Request                   $request
+     * @param  array                     $templateVars
      * @return Response|RedirectResponse
      */
     public function crudCreateObject(Request $request, array $templateVars = array())
@@ -129,9 +127,9 @@ trait CrudTrait
     }
 
     /**
-     * @param Request $request
-     * @param int $id
-     * @param array   $templateVars
+     * @param  Request                   $request
+     * @param  int                       $id
+     * @param  array                     $templateVars
      * @return Response|RedirectResponse
      */
     public function crudEditObject(Request $request, $id, array $templateVars = array())
@@ -189,9 +187,9 @@ trait CrudTrait
     }
 
     /**
-     * @param Request $request
-     * @param int $id
-     * @param array   $templateVars
+     * @param  Request                   $request
+     * @param  int                       $id
+     * @param  array                     $templateVars
      * @return Response|RedirectResponse
      */
     public function crudViewObject(Request $request, $id, array $templateVars = array())
@@ -227,8 +225,8 @@ trait CrudTrait
     }
 
     /**
-     * @param Request $request
-     * @param int $id
+     * @param  Request                   $request
+     * @param  int                       $id
      * @return Response|RedirectResponse
      */
     public function crudDeleteObject(Request $request, $id)
@@ -259,7 +257,7 @@ trait CrudTrait
     }
 
     /**
-     * @param string $class
+     * @param  string             $class
      * @return ObjectManager|null
      */
     protected function crudManagerForClass($class)
@@ -268,7 +266,7 @@ trait CrudTrait
     }
 
     /**
-     * @param string $class
+     * @param  string           $class
      * @return ObjectRepository
      */
     protected function crudRepositoryForClass($class)
@@ -277,8 +275,8 @@ trait CrudTrait
     }
 
     /**
-     * @param object  $qb
-     * @param Request $request
+     * @param  object             $qb
+     * @param  Request            $request
      * @return AbstractPagination
      */
     protected function crudPaginate($qb, Request $request)
@@ -291,9 +289,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  string               $type
-     * @param  null                 $data
-     * @param  array                $options
+     * @param  FormTypeInterface|string $type
+     * @param  object|null              $data
+     * @param  array                    $options
      * @return Form
      */
     protected function crudForm($type = 'form', $data = null, array $options = array())
@@ -302,8 +300,8 @@ trait CrudTrait
     }
 
     /**
-     * @param string $name
-     * @param array  $parameters
+     * @param  string $name
+     * @param  array  $parameters
      * @return string
      */
     protected function crudGenerateRoute($name, array $parameters = array())
@@ -312,8 +310,8 @@ trait CrudTrait
     }
 
     /**
-     * @param string $view
-     * @param  array  $parameters
+     * @param  string   $view
+     * @param  array    $parameters
      * @return Response
      */
     protected function crudRender($view, array $parameters = array())
@@ -359,7 +357,7 @@ trait CrudTrait
     {
         $identifier = $this->crudIdentifier();
 
-        return 'get'. ucfirst($identifier);
+        return 'get'.ucfirst($identifier);
     }
 
     /**
@@ -383,7 +381,7 @@ trait CrudTrait
      */
     protected function crudListRoute()
     {
-        return $this->crudName() . '_list';
+        return $this->crudName().'_list';
     }
 
     /**
@@ -399,7 +397,7 @@ trait CrudTrait
      */
     protected function crudListRole()
     {
-        return 'ROLE_' . strtoupper($this->crudName()) . '_LIST';
+        return 'ROLE_'.strtoupper($this->crudName()).'_LIST';
     }
 
     /**
@@ -407,7 +405,7 @@ trait CrudTrait
      */
     protected function crudListFormType()
     {
-        return null;
+        return;
     }
 
     /**
@@ -439,7 +437,7 @@ trait CrudTrait
      */
     protected function crudCreateRoute()
     {
-        return $this->crudName() . '_create';
+        return $this->crudName().'_create';
     }
 
     /**
@@ -455,7 +453,7 @@ trait CrudTrait
      */
     protected function crudCreateRole()
     {
-        return 'ROLE_' . strtoupper($this->crudName()) . '_CREATE';
+        return 'ROLE_'.strtoupper($this->crudName()).'_CREATE';
     }
 
     /**
@@ -465,7 +463,7 @@ trait CrudTrait
     {
         $objectClass = $this->crudObjectClass();
 
-        return new $objectClass;
+        return new $objectClass();
     }
 
     /**
@@ -501,7 +499,7 @@ trait CrudTrait
      */
     protected function crudEditRoute()
     {
-        return $this->crudName() . '_edit';
+        return $this->crudName().'_edit';
     }
 
     /**
@@ -518,7 +516,7 @@ trait CrudTrait
      */
     protected function crudEditRole()
     {
-        return 'ROLE_' . strtoupper($this->crudName()) . '_EDIT';
+        return 'ROLE_'.strtoupper($this->crudName()).'_EDIT';
     }
 
     /**
@@ -543,7 +541,7 @@ trait CrudTrait
      */
     protected function crudViewRoute()
     {
-        return $this->crudName() . '_view';
+        return $this->crudName().'_view';
     }
 
     /**
@@ -560,7 +558,7 @@ trait CrudTrait
      */
     protected function crudViewRole()
     {
-        return 'ROLE_' . strtoupper($this->crudName()) . '_VIEW';
+        return 'ROLE_'.strtoupper($this->crudName()).'_VIEW';
     }
 
     /**
@@ -576,7 +574,7 @@ trait CrudTrait
      */
     protected function crudDeleteRoute()
     {
-        return $this->crudName() . '_delete';
+        return $this->crudName().'_delete';
     }
 
     /**
@@ -593,11 +591,11 @@ trait CrudTrait
      */
     protected function crudDeleteRole()
     {
-        return 'ROLE_' . strtoupper($this->crudName()) . '_DELETE';
+        return 'ROLE_'.strtoupper($this->crudName()).'_DELETE';
     }
 
     /**
-     * @param object $object
+     * @param  object $object
      * @return void
      */
     protected function crudPrePersist($object)
@@ -605,7 +603,7 @@ trait CrudTrait
     }
 
     /**
-     * @param object $object
+     * @param  object $object
      * @return void
      */
     protected function crudPostPersist($object)
@@ -613,7 +611,7 @@ trait CrudTrait
     }
 
     /**
-     * @param object $object
+     * @param  object $object
      * @return void
      */
     protected function crudPreUpdate($object)
@@ -621,7 +619,7 @@ trait CrudTrait
     }
 
     /**
-     * @param object $object
+     * @param  object $object
      * @return void
      */
     protected function crudPostUpdate($object)
@@ -629,7 +627,7 @@ trait CrudTrait
     }
 
     /**
-     * @param object $object
+     * @param  object $object
      * @return void
      */
     protected function crudPreRemove($object)
@@ -637,7 +635,7 @@ trait CrudTrait
     }
 
     /**
-     * @param object $object
+     * @param  object $object
      * @return void
      */
     protected function crudPostRemove($object)
