@@ -257,14 +257,6 @@ trait CrudTrait
     }
 
     /**
-     * @return string
-     */
-    protected function crudTwigTemplatePattern()
-    {
-        return '@SaxulumCrud/%s/%s.html.twig';
-    }
-
-    /**
      * @return int
      */
     protected function crudListPerPage()
@@ -317,7 +309,7 @@ trait CrudTrait
      */
     protected function crudListTemplate()
     {
-        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'list');
+        return sprintf($this->crudTemplatePattern(), ucfirst($this->crudName()), 'list');
     }
 
     /**
@@ -379,7 +371,7 @@ trait CrudTrait
      */
     protected function crudCreateTemplate()
     {
-        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'create');
+        return sprintf($this->crudTemplatePattern(), ucfirst($this->crudName()), 'create');
     }
 
     /**
@@ -448,7 +440,7 @@ trait CrudTrait
      */
     protected function crudEditTemplate()
     {
-        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'edit');
+        return sprintf($this->crudTemplatePattern(), ucfirst($this->crudName()), 'edit');
     }
 
     /**
@@ -497,7 +489,7 @@ trait CrudTrait
      */
     protected function crudViewTemplate()
     {
-        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'view');
+        return sprintf($this->crudTemplatePattern(), ucfirst($this->crudName()), 'view');
     }
 
     /**
@@ -547,6 +539,18 @@ trait CrudTrait
      */
     protected function crudDeletePostFlush($object)
     {
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    protected function crudTemplatePattern()
+    {
+        throw new \Exception(sprintf(
+            'For actions using a template you need to define the template pattern like this: %s',
+            '@SaxulumCrud/%s/%s.html.twig'
+        ));
     }
 
     /**
