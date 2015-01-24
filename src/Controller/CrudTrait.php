@@ -243,13 +243,13 @@ trait CrudTrait
             throw new AccessDeniedException("You need the permission to delete this object!");
         }
 
-        $this->crudPreRemove($object);
+        $this->crudDeletePreRemove($object);
 
         $em = $this->crudManagerForClass($this->crudObjectClass());
         $em->remove($object);
         $em->flush();
 
-        $this->crudPostRemove($object);
+        $this->crudDeletePostFlush($object);
 
         $this->crudFlashMessage($request, 'success', sprintf('%s.delete.flash.success', $this->crudName()));
 
@@ -494,6 +494,22 @@ trait CrudTrait
     }
 
     /**
+     * @param  object $object
+     * @return void
+     */
+    protected function crudCreatePrePersist($object)
+    {
+    }
+
+    /**
+     * @param  object $object
+     * @return void
+     */
+    protected function crudCreatePostFlush($object)
+    {
+    }
+
+    /**
      * @return string
      */
     protected function crudEditRoute()
@@ -544,6 +560,22 @@ trait CrudTrait
     protected function crudEditTemplate()
     {
         return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'edit');
+    }
+
+    /**
+     * @param  object $object
+     * @return void
+     */
+    protected function crudEditPrePersist($object)
+    {
+    }
+
+    /**
+     * @param  object $object
+     * @return void
+     */
+    protected function crudEditPostFlush($object)
+    {
     }
 
     /**
@@ -616,7 +648,7 @@ trait CrudTrait
      * @param  object $object
      * @return void
      */
-    protected function crudCreatePrePersist($object)
+    protected function crudDeletePreRemove($object)
     {
     }
 
@@ -624,39 +656,7 @@ trait CrudTrait
      * @param  object $object
      * @return void
      */
-    protected function crudCreatePostFlush($object)
-    {
-    }
-
-    /**
-     * @param  object $object
-     * @return void
-     */
-    protected function crudEditPrePersist($object)
-    {
-    }
-
-    /**
-     * @param  object $object
-     * @return void
-     */
-    protected function crudEditPostFlush($object)
-    {
-    }
-
-    /**
-     * @param  object $object
-     * @return void
-     */
-    protected function crudPreRemove($object)
-    {
-    }
-
-    /**
-     * @param  object $object
-     * @return void
-     */
-    protected function crudPostRemove($object)
+    protected function crudDeletePostFlush($object)
     {
     }
 
