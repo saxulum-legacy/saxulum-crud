@@ -5,11 +5,11 @@ namespace Saxulum\Crud\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Knp\Component\Pager\Paginator;
-use Knp\Component\Pager\Pagination\AbstractPagination;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -569,12 +569,12 @@ trait CrudTrait
     abstract protected function getDoctrine();
 
     /**
-     * @return Paginator
+     * @return PaginatorInterface
      */
     abstract protected function getPaginator();
 
     /**
-     * @return FormFactory
+     * @return FormFactoryInterface
      */
     abstract protected function getFormFactory();
 
@@ -624,7 +624,7 @@ trait CrudTrait
      * @internal
      * @param  object             $qb
      * @param  Request            $request
-     * @return AbstractPagination
+     * @return PaginationInterface
      */
     protected function crudPaginate($qb, Request $request)
     {
@@ -642,7 +642,7 @@ trait CrudTrait
      * @param  array             $options
      * @return Form
      */
-    protected function crudForm($type = 'form', $data = null, array $options = array())
+    protected function crudForm(FormTypeInterface $type, $data = null, array $options = array())
     {
         return $this->getFormFactory()->create($type, $data, $options);
     }
