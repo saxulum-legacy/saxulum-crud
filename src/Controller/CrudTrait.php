@@ -257,117 +257,6 @@ trait CrudTrait
     }
 
     /**
-     * @param  string        $class
-     * @return ObjectManager
-     * @throws \Exception
-     */
-    protected function crudManagerForClass($class)
-    {
-        $om = $this->getDoctrine()->getManagerForClass($class);
-
-        if (null === $om) {
-            throw new \Exception(sprintf('There is no object manager for class: %s', $class));
-        }
-
-        return $om;
-    }
-
-    /**
-     * @param  string           $class
-     * @return ObjectRepository
-     */
-    protected function crudRepositoryForClass($class)
-    {
-        return $this->crudManagerForClass($class)->getRepository($class);
-    }
-
-    /**
-     * @param  object             $qb
-     * @param  Request            $request
-     * @return AbstractPagination
-     */
-    protected function crudPaginate($qb, Request $request)
-    {
-        return $this->getPaginator()->paginate(
-            $qb,
-            $request->query->get('page', 1),
-            $request->query->get('perPage', $this->crudListPerPage())
-        );
-    }
-
-    /**
-     * @param  FormTypeInterface $type
-     * @param  mixed             $data
-     * @param  array             $options
-     * @return Form
-     */
-    protected function crudForm($type = 'form', $data = null, array $options = array())
-    {
-        return $this->getFormFactory()->create($type, $data, $options);
-    }
-
-    /**
-     * @param  string $name
-     * @param  array  $parameters
-     * @return string
-     */
-    protected function crudGenerateRoute($name, array $parameters = array())
-    {
-        return $this->getUrlGenerator()->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
-    }
-
-    /**
-     * @param  string   $view
-     * @param  array    $parameters
-     * @return Response
-     */
-    protected function crudRender($view, array $parameters = array())
-    {
-        return new Response($this->getTwig()->render($view, $parameters));
-    }
-
-    /**
-     * @param Request $request
-     * @param string  $type
-     * @param string  $message
-     */
-    protected function crudFlashMessage(Request $request, $type, $message)
-    {
-        /** @var Session $session */
-        $session = $request->getSession();
-        $session->getFlashBag()->add($type, $message);
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    protected function crudIdentifier()
-    {
-        $em = $this->crudManagerForClass($this->crudObjectClass());
-        $meta = $em->getClassMetadata($this->crudObjectClass());
-
-        $identifier = $meta->getIdentifier();
-
-        if (1 !== count($identifier)) {
-            throw new \Exception('There are multiple fields define the identifier, which is not supported!');
-        }
-
-        return reset($identifier);
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    protected function crudIdentifierMethod()
-    {
-        $identifier = $this->crudIdentifier();
-
-        return 'get'.ucfirst($identifier);
-    }
-
-    /**
      * @return string
      */
     protected function crudTwigTemplatePattern()
@@ -699,4 +588,115 @@ trait CrudTrait
      * @return \Twig_Environment
      */
     abstract protected function getTwig();
+
+    /**
+     * @param  string        $class
+     * @return ObjectManager
+     * @throws \Exception
+     */
+    protected function crudManagerForClass($class)
+    {
+        $om = $this->getDoctrine()->getManagerForClass($class);
+
+        if (null === $om) {
+            throw new \Exception(sprintf('There is no object manager for class: %s', $class));
+        }
+
+        return $om;
+    }
+
+    /**
+     * @param  string           $class
+     * @return ObjectRepository
+     */
+    protected function crudRepositoryForClass($class)
+    {
+        return $this->crudManagerForClass($class)->getRepository($class);
+    }
+
+    /**
+     * @param  object             $qb
+     * @param  Request            $request
+     * @return AbstractPagination
+     */
+    protected function crudPaginate($qb, Request $request)
+    {
+        return $this->getPaginator()->paginate(
+            $qb,
+            $request->query->get('page', 1),
+            $request->query->get('perPage', $this->crudListPerPage())
+        );
+    }
+
+    /**
+     * @param  FormTypeInterface $type
+     * @param  mixed             $data
+     * @param  array             $options
+     * @return Form
+     */
+    protected function crudForm($type = 'form', $data = null, array $options = array())
+    {
+        return $this->getFormFactory()->create($type, $data, $options);
+    }
+
+    /**
+     * @param  string $name
+     * @param  array  $parameters
+     * @return string
+     */
+    protected function crudGenerateRoute($name, array $parameters = array())
+    {
+        return $this->getUrlGenerator()->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    /**
+     * @param  string   $view
+     * @param  array    $parameters
+     * @return Response
+     */
+    protected function crudRender($view, array $parameters = array())
+    {
+        return new Response($this->getTwig()->render($view, $parameters));
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $type
+     * @param string  $message
+     */
+    protected function crudFlashMessage(Request $request, $type, $message)
+    {
+        /** @var Session $session */
+        $session = $request->getSession();
+        $session->getFlashBag()->add($type, $message);
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    protected function crudIdentifier()
+    {
+        $em = $this->crudManagerForClass($this->crudObjectClass());
+        $meta = $em->getClassMetadata($this->crudObjectClass());
+
+        $identifier = $meta->getIdentifier();
+
+        if (1 !== count($identifier)) {
+            throw new \Exception('There are multiple fields define the identifier, which is not supported!');
+        }
+
+        return reset($identifier);
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    protected function crudIdentifierMethod()
+    {
+        $identifier = $this->crudIdentifier();
+
+        return 'get'.ucfirst($identifier);
+    }
 }
