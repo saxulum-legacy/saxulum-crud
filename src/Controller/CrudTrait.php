@@ -419,17 +419,17 @@ trait CrudTrait
     /**
      * @return string
      */
-    protected function crudListTemplate()
+    protected function crudListRedirectUrl()
     {
-        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'list');
+        return $this->crudGenerateRoute($this->crudListRoute());
     }
 
     /**
      * @return string
      */
-    protected function crudListRedirectUrl()
+    protected function crudListTemplate()
     {
-        return $this->crudGenerateRoute($this->crudListRoute());
+        return sprintf($this->crudTwigTemplatePattern(), ucfirst($this->crudName()), 'list');
     }
 
     /**
