@@ -39,6 +39,10 @@ Use the trait `Saxulum\Crud\Controller\CrudTrait`
  * `crudName`: contains the lowercase name of the object, example: `sample`
  * `crudObjectClass`: contains the class name of the object, example: `Saxulum\Crud\Entity\Sample`
 
+#### Advanced configuration
+
+ * `crudTemplatePattern`: contains a template pattern like: `@SaxulumCrud/%s/%s.html.twig`
+
 #### Services
 
  * `getDoctrine`: contains an instance of the doctrine manager registry
