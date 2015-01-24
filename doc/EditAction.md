@@ -89,7 +89,7 @@ This method defines the redirect url after edit object
 protected function crudEditRedirectUrl($object)
 ```
 
-#### Template
+#### Edit Template
 
 This method defines the template path.
 

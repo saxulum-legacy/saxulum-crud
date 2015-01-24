@@ -99,7 +99,7 @@ This method defines the redirect url after create object
 protected function crudCreateRedirectUrl($object)
 ```
 
-#### Template
+#### Create Template
 
 This method defines the template path.
 

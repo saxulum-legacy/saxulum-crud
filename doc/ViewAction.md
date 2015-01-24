@@ -64,7 +64,7 @@ This method defines the view role (for security check).
 protected function crudViewRole()
 ```
 
-#### Template
+#### View Template
 
 This method defines the template path.
 
