@@ -253,7 +253,7 @@ trait CrudTrait
 
         $this->crudFlashMessage($request, 'success', sprintf('%s.delete.flash.success', $this->crudName()));
 
-        return new RedirectResponse($this->crudListRedirectUrl(), 302);
+        return new RedirectResponse($this->crudDeleteRedirectUrl(), 302);
     }
 
     /**
@@ -414,14 +414,6 @@ trait CrudTrait
     protected function crudListFormDataEnrich()
     {
         return array();
-    }
-
-    /**
-     * @return string
-     */
-    protected function crudListRedirectUrl()
-    {
-        return $this->crudGenerateRoute($this->crudListRoute());
     }
 
     /**
@@ -603,6 +595,14 @@ trait CrudTrait
     protected function crudDeleteRole()
     {
         return 'ROLE_'.strtoupper($this->crudName()).'_DELETE';
+    }
+
+    /**
+     * @return string
+     */
+    protected function crudDeleteRedirectUrl()
+    {
+        return $this->crudGenerateRoute($this->crudListRoute());
     }
 
     /**
