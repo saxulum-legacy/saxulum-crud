@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -640,7 +640,7 @@ trait CrudTrait
      * @param  FormTypeInterface $type
      * @param  mixed             $data
      * @param  array             $options
-     * @return Form
+     * @return FormInterface
      */
     protected function crudForm(FormTypeInterface $type, $data = null, array $options = array())
     {
