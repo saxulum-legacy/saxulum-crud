@@ -257,7 +257,7 @@ trait CrudTrait
     }
 
     /**
-     * @param  string             $class
+     * @param  string        $class
      * @return ObjectManager
      * @throws \Exception
      */
@@ -296,9 +296,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  string|FormTypeInterface $type
-     * @param  mixed                    $data
-     * @param  array                    $options
+     * @param  FormTypeInterface $type
+     * @param  mixed             $data
+     * @param  array             $options
      * @return Form
      */
     protected function crudForm($type = 'form', $data = null, array $options = array())
