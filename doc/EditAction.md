@@ -24,6 +24,11 @@ public function crudEditObject(Request $request, $id, array $templateVars = arra
  * `editRoute`: contains the name of the edit route
  * `viewRoute`: contains the name of the view route
  * `deleteRoute`: contains the name of the delete route
+ * `listRole`: contains the name of the delete role
+ * `createRole`: contains the name of the delete role
+ * `editRole`: contains the name of the delete role
+ * `viewRole`: contains the name of the delete role
+ * `deleteRole`: contains the name of the delete role
  * `identifier`: contains property name of the id of the object (`id` in most cases)
  * `transPrefix`: contains the translation prefix (`Controller::crudName()`)
 
