@@ -9,6 +9,7 @@ use Saxulum\Tests\Crud\Model\Sample;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -21,22 +22,23 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     public function testList()
     {
         $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
         $request->query->set('sample_list', array('title' => 't'));
 
         $controller = new SampleController(
+            $this->getSecurity('ROLE_SAMPLE_LIST'),
             $this->getDoctrine(Sample::classname),
-            $this->getPaginator('QueryBuilder', 1, 10, array()),
             $this->getFormFactory(
                 'Saxulum\Tests\Crud\Form\SampleListType',
                 array('title' => 't'),
                 'query'
-             ),
-            $this->getDummyUrlGenerator(),
-            $this->getSecurity('ROLE_SAMPLE_LIST'),
+            ),
+            $this->getPaginator('QueryBuilder', 1, 10, array()),
+            null,
             $this->getTwig('@SaxulumCrud/Sample/list.html.twig', array(
                 'request' => $request,
                 'pagination' => $this->getPaginationMock(),
-                'form' => null,
+                'form' => $this->getFormView(),
                 'listRoute' => 'sample_list',
                 'createRoute' => 'sample_create',
                 'editRoute' => 'sample_edit',
@@ -64,21 +66,21 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $request = new Request();
         $request->setSession(new Session(new MockArraySessionStorage()));
 
-        $sample = new Sample();
+        $model = new Sample();
 
         $controller = new SampleController(
+            $this->getSecurity('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
-            $this->getDummyPaginator(),
             $this->getFormFactory(
                 'Saxulum\Tests\Crud\Form\SampleType',
-                $sample
+                $model
             ),
-            $this->getDummyUrlGenerator(),
-            $this->getSecurity('ROLE_SAMPLE_CREATE'),
+            null,
+            null,
             $this->getTwig('@SaxulumCrud/Sample/create.html.twig', array(
                 'request' => $request,
-                'object' => $sample,
-                'form' => null,
+                'object' => $model,
+                'form' => $this->getFormView(),
                 'listRoute' => 'sample_list',
                 'createRoute' => 'sample_create',
                 'editRoute' => 'sample_edit',
@@ -108,28 +110,170 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $request->setMethod('POST');
         $request->request->set('sample_edit', array('title' => 'title'));
 
-        $sample = new Sample();
-        $sample->setTitle('title');
+        $model = new Sample();
+        $model->setTitle('title');
 
         $controller = new SampleController(
+            $this->getSecurity('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
-            $this->getPaginator('QueryBuilder', 1, 10, array()),
             $this->getFormFactory(
                 'Saxulum\Tests\Crud\Form\SampleType',
-                $sample,
+                $model,
                 'request'
             ),
+            null,
             $this->getUrlGenerator(
                 'sample_edit',
                 array(
-                    'id' => null,
+                    'id' => 1,
                 )
             ),
-            $this->getSecurity('ROLE_SAMPLE_CREATE'),
-            $this->getDummyTwig()
+            null
         );
 
         $response = $controller->crudCreateObject($request);
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals('http://test.lo', $response->headers->get('location'));
+    }
+
+    public function testEditGet()
+    {
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
+        $model = new Sample();
+        $this->setModelId($model, 1);
+
+        $controller = new SampleController(
+            $this->getSecurity('ROLE_SAMPLE_EDIT'),
+            $this->getDoctrine(Sample::classname),
+            $this->getFormFactory(
+                'Saxulum\Tests\Crud\Form\SampleType',
+                $model
+            ),
+            null,
+            null,
+            $this->getTwig('@SaxulumCrud/Sample/edit.html.twig', array(
+                'request' => $request,
+                'object' => $model,
+                'form' => $this->getFormView(),
+                'listRoute' => 'sample_list',
+                'createRoute' => 'sample_create',
+                'editRoute' => 'sample_edit',
+                'viewRoute' => 'sample_view',
+                'deleteRoute' => 'sample_delete',
+                'listRole' => 'ROLE_SAMPLE_LIST',
+                'createRole' => 'ROLE_SAMPLE_CREATE',
+                'editRole' => 'ROLE_SAMPLE_EDIT',
+                'viewRole' => 'ROLE_SAMPLE_VIEW',
+                'deleteRole' => 'ROLE_SAMPLE_DELETE',
+                'identifier' => 'id',
+                'transPrefix' => 'sample'
+            ))
+        );
+
+        $response = $controller->crudEditObject($request, 1);
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('renderedcontent', $response->getContent());
+    }
+
+    public function testEditPost()
+    {
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+        $request->setMethod('POST');
+        $request->request->set('sample_edit', array('title' => 'title'));
+
+        $model = new Sample();
+        $model->setTitle('title');
+        $this->setModelId($model, 1);
+
+        $controller = new SampleController(
+            $this->getSecurity('ROLE_SAMPLE_EDIT'),
+            $this->getDoctrine(Sample::classname),
+            $this->getFormFactory(
+                'Saxulum\Tests\Crud\Form\SampleType',
+                $model,
+                'request'
+            ),
+            null,
+            $this->getUrlGenerator(
+                'sample_edit',
+                array(
+                    'id' => 1,
+                )
+            ),
+            null
+        );
+
+        $response = $controller->crudEditObject($request, 1);
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals('http://test.lo', $response->headers->get('location'));
+    }
+
+    public function testView()
+    {
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
+        $model = new Sample();
+        $this->setModelId($model, 1);
+
+        $controller = new SampleController(
+            $this->getSecurity('ROLE_SAMPLE_VIEW'),
+            $this->getDoctrine(Sample::classname),
+            null,
+            null,
+            null,
+            $this->getTwig('@SaxulumCrud/Sample/view.html.twig', array(
+                'request' => $request,
+                'object' => $model,
+                'listRoute' => 'sample_list',
+                'createRoute' => 'sample_create',
+                'editRoute' => 'sample_edit',
+                'viewRoute' => 'sample_view',
+                'deleteRoute' => 'sample_delete',
+                'listRole' => 'ROLE_SAMPLE_LIST',
+                'createRole' => 'ROLE_SAMPLE_CREATE',
+                'editRole' => 'ROLE_SAMPLE_EDIT',
+                'viewRole' => 'ROLE_SAMPLE_VIEW',
+                'deleteRole' => 'ROLE_SAMPLE_DELETE',
+                'identifier' => 'id',
+                'transPrefix' => 'sample'
+            ))
+        );
+
+        $response = $controller->crudViewObject($request, 1);
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('renderedcontent', $response->getContent());
+    }
+
+    public function testDelete()
+    {
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
+        $model = new Sample();
+        $this->setModelId($model, 1);
+
+        $controller = new SampleController(
+            $this->getSecurity('ROLE_SAMPLE_DELETE'),
+            $this->getDoctrine(Sample::classname),
+            null,
+            null,
+            $this->getUrlGenerator('sample_list'),
+            null
+        );
+
+        $response = $controller->crudDeleteObject($request, 1);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals(302, $response->getStatusCode());
@@ -181,6 +325,15 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 ;
                 $objectManagerMock
                     ->expects($this->any())
+                    ->method('persist')
+                    ->will($this->returnCallback(function(Sample $model) {
+                        $this->setModelId($model, 1);
+
+                        return null;
+                    }));
+                ;
+                $objectManagerMock
+                    ->expects($this->any())
                     ->method('getClassMetadata')
                     ->will($this->returnCallback(function() {
 
@@ -200,14 +353,6 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         ;
 
         return $managerRegistyMock;
-    }
-
-    /**
-     * @return PaginatorInterface
-     */
-    protected function getDummyPaginator()
-    {
-        return $this->getMock('Knp\Component\Pager\PaginatorInterface');
     }
 
     /**
@@ -247,7 +392,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
      * @param FormTypeInterface $expectedType
      * @param mixed      $expectedData
      * @param string $requestProperty
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return FormFactoryInterface
      */
     protected function getFormFactory($expectedType, $expectedData, $requestProperty = null)
     {
@@ -300,6 +445,12 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                     ->willReturn(true)
                 ;
 
+                $formMock
+                    ->expects($this->any())
+                    ->method('createView')
+                    ->willReturn($this->getFormView())
+                ;
+
                 return $formMock;
             }))
         ;
@@ -308,17 +459,19 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return UrlGeneratorInterface
+     * @return FormView
      */
-    protected function getDummyUrlGenerator()
+    protected function getFormView()
     {
-        return $this->getMock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
+        return $this->getMock('Symfony\Component\Form\FormView');
     }
 
     /**
+     * @param string $expectedName
+     * @param array $expectedParameters
      * @return UrlGeneratorInterface
      */
-    protected function getUrlGenerator($expectedName, $expectedParameters)
+    protected function getUrlGenerator($expectedName, array $expectedParameters = array())
     {
         $mock =  $this->getMock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
 
@@ -355,15 +508,10 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
-    protected function getDummyTwig()
-    {
-        return $this->getMock('\Twig_Environment');
-    }
-
     /**
      * @param string      $expectedView
      * @param array $expectedParameters
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \Twig_Environment
      */
     protected function getTwig($expectedView, array $expectedParameters)
     {
@@ -379,5 +527,19 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         ;
 
         return $mock;
+    }
+
+    /**
+     * @param Sample $model
+     * @param int $id
+     */
+    protected function setModelId(Sample $model, $id)
+    {
+        $reflectionClass = new \ReflectionClass(Sample::classname);
+
+        $reflectionProperty = $reflectionClass->getProperty('id');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($model, $id);
+        $reflectionProperty->setAccessible(false);
     }
 }
