@@ -71,8 +71,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getDummyPaginator(),
             $this->getFormFactory(
                 'Saxulum\Tests\Crud\Form\SampleType',
-                $sample,
-                'request'
+                $sample
             ),
             $this->getDummyUrlGenerator(),
             $this->getSecurity('ROLE_SAMPLE_CREATE'),
@@ -250,7 +249,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
      * @param string $requestProperty
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getFormFactory($expectedType, $expectedData, $requestProperty)
+    protected function getFormFactory($expectedType, $expectedData, $requestProperty = null)
     {
         $formFactoryMock = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
 
@@ -274,6 +273,11 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                     ->expects($this->any())
                     ->method('handleRequest')
                     ->will($this->returnCallback(function(Request $request) use($givenData, $expectedData, $requestProperty, $formName) {
+
+                        if(null === $requestProperty) {
+                            return $givenData;
+                        }
+
                         /** @var array $requestData */
                         $requestData = $request->$requestProperty->get($formName);
                         $propertyAccessor = new PropertyAccessor();
