@@ -41,6 +41,8 @@ Use the trait `Saxulum\Crud\Controller\CrudTrait`
 
 #### Advanced configuration
 
+ * `crudRoutePattern`: contains a template pattern like: `%s_%s`
+ * `crudRolePattern`: contains a template pattern like: `role_%s_%s`
  * `crudTemplatePattern`: contains a template pattern like: `@SaxulumCrud/%s/%s.html.twig`
 
 #### Services

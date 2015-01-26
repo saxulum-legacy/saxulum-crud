@@ -269,7 +269,7 @@ trait CrudTrait
      */
     protected function crudListRoute()
     {
-        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'list'));
+        return strtolower(sprintf($this->crudRoutePattern(), $this->crudName(), 'list'));
     }
 
     /**
@@ -285,7 +285,7 @@ trait CrudTrait
      */
     protected function crudListRole()
     {
-        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'list'));
+        return strtoupper(sprintf($this->crudRolePattern(), $this->crudName(), 'list'));
     }
 
     /**
@@ -317,7 +317,7 @@ trait CrudTrait
      */
     protected function crudCreateRoute()
     {
-        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'create'));
+        return strtolower(sprintf($this->crudRoutePattern(), $this->crudName(), 'create'));
     }
 
     /**
@@ -333,7 +333,7 @@ trait CrudTrait
      */
     protected function crudCreateRole()
     {
-        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'create'));
+        return strtoupper(sprintf($this->crudRolePattern(), $this->crudName(), 'create'));
     }
 
     /**
@@ -395,7 +395,7 @@ trait CrudTrait
      */
     protected function crudEditRoute()
     {
-        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'edit'));
+        return strtolower(sprintf($this->crudRoutePattern(), $this->crudName(), 'edit'));
     }
 
     /**
@@ -412,7 +412,7 @@ trait CrudTrait
      */
     protected function crudEditRole()
     {
-        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'edit'));
+        return strtoupper(sprintf($this->crudRolePattern(), $this->crudName(), 'edit'));
     }
 
     /**
@@ -464,7 +464,7 @@ trait CrudTrait
      */
     protected function crudViewRoute()
     {
-        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'view'));
+        return strtolower(sprintf($this->crudRoutePattern(), $this->crudName(), 'view'));
     }
 
     /**
@@ -481,7 +481,7 @@ trait CrudTrait
      */
     protected function crudViewRole()
     {
-        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'view'));
+        return strtoupper(sprintf($this->crudRolePattern(), $this->crudName(), 'view'));
     }
 
     /**
@@ -497,7 +497,7 @@ trait CrudTrait
      */
     protected function crudDeleteRoute()
     {
-        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'delete'));
+        return strtolower(sprintf($this->crudRoutePattern(), $this->crudName(), 'delete'));
     }
 
     /**
@@ -514,7 +514,7 @@ trait CrudTrait
      */
     protected function crudDeleteRole()
     {
-        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'delete'));
+        return strtoupper(sprintf($this->crudRolePattern(), $this->crudName(), 'delete'));
     }
 
     /**
@@ -544,7 +544,7 @@ trait CrudTrait
     /**
      * @return string
      */
-    protected function getRoutePattern()
+    protected function crudRoutePattern()
     {
         return '%s_%s';
     }
@@ -552,7 +552,7 @@ trait CrudTrait
     /**
      * @return string
      */
-    protected function getRolePattern()
+    protected function crudRolePattern()
     {
         return 'role_%s_%s';
     }
