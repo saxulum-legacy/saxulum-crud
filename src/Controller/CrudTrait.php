@@ -35,12 +35,10 @@ trait CrudTrait
         }
 
         if (null !== $formType = $this->crudListFormType()) {
-            $form = $this->crudForm($formType);
+            $form = $this->crudForm($formType, array());
             $form->handleRequest($request);
             $formData = $form->getData();
-        }
-
-        if (!isset($formData) || null === $formData) {
+        } else {
             $formData = array();
         }
 
