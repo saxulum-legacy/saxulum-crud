@@ -17,14 +17,14 @@ class SampleController
     use CrudTrait;
 
     /**
+     * @var SecurityContextInterface
+     */
+    protected $security;
+
+    /**
      * @var ManagerRegistry
      */
     protected $doctrine;
-
-    /**
-     * @var PaginatorInterface
-     */
-    protected $paginator;
 
     /**
      * @var FormFactoryInterface
@@ -32,14 +32,14 @@ class SampleController
     protected $formFactory;
 
     /**
+     * @var PaginatorInterface
+     */
+    protected $paginator;
+
+    /**
      * @var UrlGeneratorInterface
      */
     protected $urlGenerator;
-
-    /**
-     * @var SecurityContextInterface
-     */
-    protected $security;
 
     /**
      * @var \Twig_Environment
@@ -47,20 +47,20 @@ class SampleController
     protected $twig;
 
     /**
-     * @param ManagerRegistry $doctrine
-     * @param PaginatorInterface $paginator
-     * @param FormFactoryInterface $formFactory
-     * @param UrlGeneratorInterface $urlGenerator
      * @param SecurityContextInterface $security
+     * @param ManagerRegistry $doctrine
+     * @param FormFactoryInterface $formFactory
+     * @param PaginatorInterface $paginator
+     * @param UrlGeneratorInterface $urlGenerator
      * @param \Twig_Environment $twig
      */
     public function __construct(
-        ManagerRegistry $doctrine,
-        PaginatorInterface $paginator,
-        FormFactoryInterface $formFactory,
-        UrlGeneratorInterface $urlGenerator,
         SecurityContextInterface $security,
-        \Twig_Environment $twig
+        ManagerRegistry $doctrine,
+        FormFactoryInterface $formFactory = null,
+        PaginatorInterface $paginator = null,
+        UrlGeneratorInterface $urlGenerator = null,
+        \Twig_Environment $twig = null
     )
     {
         $this->doctrine = $doctrine;
@@ -131,6 +131,14 @@ class SampleController
      * @return SampleType
      */
     protected function crudCreateFormType()
+    {
+        return new SampleType();
+    }
+
+    /**
+     * @return SampleType
+     */
+    protected function crudEditFormType()
     {
         return new SampleType();
     }
