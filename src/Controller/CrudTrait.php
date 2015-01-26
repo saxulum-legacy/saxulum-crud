@@ -269,7 +269,7 @@ trait CrudTrait
      */
     protected function crudListRoute()
     {
-        return $this->crudName().'_list';
+        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'list'));
     }
 
     /**
@@ -317,7 +317,7 @@ trait CrudTrait
      */
     protected function crudCreateRoute()
     {
-        return $this->crudName().'_create';
+        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'create'));
     }
 
     /**
@@ -395,7 +395,7 @@ trait CrudTrait
      */
     protected function crudEditRoute()
     {
-        return $this->crudName().'_edit';
+        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'edit'));
     }
 
     /**
@@ -464,7 +464,7 @@ trait CrudTrait
      */
     protected function crudViewRoute()
     {
-        return $this->crudName().'_view';
+        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'view'));
     }
 
     /**
@@ -497,7 +497,7 @@ trait CrudTrait
      */
     protected function crudDeleteRoute()
     {
-        return $this->crudName().'_delete';
+        return strtolower(sprintf($this->getRoutePattern(), $this->crudName(), 'delete'));
     }
 
     /**
@@ -539,6 +539,14 @@ trait CrudTrait
      */
     protected function crudDeletePostFlush($object)
     {
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRoutePattern()
+    {
+        return '%s_%s';
     }
 
     /**
