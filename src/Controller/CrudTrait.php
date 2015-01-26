@@ -285,7 +285,7 @@ trait CrudTrait
      */
     protected function crudListRole()
     {
-        return 'ROLE_'.strtoupper($this->crudName()).'_LIST';
+        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'list'));
     }
 
     /**
@@ -333,7 +333,7 @@ trait CrudTrait
      */
     protected function crudCreateRole()
     {
-        return 'ROLE_'.strtoupper($this->crudName()).'_CREATE';
+        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'create'));
     }
 
     /**
@@ -412,7 +412,7 @@ trait CrudTrait
      */
     protected function crudEditRole()
     {
-        return 'ROLE_'.strtoupper($this->crudName()).'_EDIT';
+        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'edit'));
     }
 
     /**
@@ -481,7 +481,7 @@ trait CrudTrait
      */
     protected function crudViewRole()
     {
-        return 'ROLE_'.strtoupper($this->crudName()).'_VIEW';
+        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'view'));
     }
 
     /**
@@ -514,7 +514,7 @@ trait CrudTrait
      */
     protected function crudDeleteRole()
     {
-        return 'ROLE_'.strtoupper($this->crudName()).'_DELETE';
+        return strtoupper(sprintf($this->getRolePattern(), $this->crudName(), 'delete'));
     }
 
     /**
@@ -547,6 +547,14 @@ trait CrudTrait
     protected function getRoutePattern()
     {
         return '%s_%s';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRolePattern()
+    {
+        return 'role_%s_%s';
     }
 
     /**
