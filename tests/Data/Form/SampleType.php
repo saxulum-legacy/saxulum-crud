@@ -1,8 +1,8 @@
 <?php
 
-namespace Saxulum\Tests\Crud\Form;
+namespace Saxulum\Tests\Crud\Data\Form;
 
-use Saxulum\Tests\Crud\Model\Sample;
+use Saxulum\Tests\Crud\Data\Model\Sample;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

@@ -1,13 +1,13 @@
 <?php
 
-namespace Saxulum\Tests\Crud\Controller;
+namespace Saxulum\Tests\Crud\Data\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Saxulum\Crud\Controller\CrudTrait;
-use Saxulum\Tests\Crud\Form\SampleListType;
-use Saxulum\Tests\Crud\Form\SampleType;
-use Saxulum\Tests\Crud\Model\Sample;
+use Saxulum\Tests\Crud\Data\Form\SampleListType;
+use Saxulum\Tests\Crud\Data\Form\SampleType;
+use Saxulum\Tests\Crud\Data\Model\Sample;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -74,7 +74,7 @@ class SampleController
     /**
      * @return ManagerRegistry
      */
-    protected function getDoctrine()
+    protected function crudDoctrine()
     {
         return $this->doctrine;
     }
@@ -82,7 +82,7 @@ class SampleController
     /**
      * @return PaginatorInterface
      */
-    protected function getPaginator()
+    protected function crudPaginator()
     {
         return $this->paginator;
     }
@@ -90,7 +90,7 @@ class SampleController
     /**
      * @return FormFactoryInterface
      */
-    protected function getFormFactory()
+    protected function crudFormFactory()
     {
         return $this->formFactory;
     }
@@ -98,7 +98,7 @@ class SampleController
     /**
      * @return UrlGeneratorInterface
      */
-    protected function getUrlGenerator()
+    protected function crudUrlGenerator()
     {
         return $this->urlGenerator;
     }
@@ -106,7 +106,7 @@ class SampleController
     /**
      * @return SecurityContextInterface
      */
-    protected function getSecurity()
+    protected function crudSecurity()
     {
         return $this->security;
     }
@@ -114,7 +114,7 @@ class SampleController
     /**
      * @return \Twig_Environment
      */
-    protected function getTwig()
+    protected function crudTwig()
     {
         return $this->twig;
     }

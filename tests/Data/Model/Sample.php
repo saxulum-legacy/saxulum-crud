@@ -1,6 +1,6 @@
 <?php
 
-namespace Saxulum\Tests\Crud\Model;
+namespace Saxulum\Tests\Crud\Data\Model;
 
 class Sample
 {

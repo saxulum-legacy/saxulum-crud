@@ -1,6 +1,6 @@
 <?php
 
-namespace Saxulum\Tests\Crud\Form;
+namespace Saxulum\Tests\Crud\Data\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

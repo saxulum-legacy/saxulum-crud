@@ -3,9 +3,12 @@
 namespace Saxulum\Tests\Crud\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Saxulum\Tests\Crud\Model\Sample;
+use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
+use Saxulum\Tests\Crud\Data\Controller\SampleController;
+use Saxulum\Tests\Crud\Data\Model\Sample;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -29,7 +32,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getSecurity('ROLE_SAMPLE_LIST'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Form\SampleListType',
+                'Saxulum\Tests\Crud\Data\Form\SampleListType',
                 array('title' => 't'),
                 'query'
             ),
@@ -72,7 +75,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getSecurity('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleType',
                 $model
             ),
             null,
@@ -117,7 +120,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getSecurity('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleType',
                 $model,
                 'request'
             ),
@@ -150,7 +153,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getSecurity('ROLE_SAMPLE_EDIT'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleType',
                 $model
             ),
             null,
@@ -196,7 +199,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getSecurity('ROLE_SAMPLE_EDIT'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleType',
                 $model,
                 'request'
             ),
@@ -296,31 +299,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                     ->expects($this->any())
                     ->method('getRepository')
                     ->will($this->returnCallback(function() {
-
-                        $objectRepositoryMock = $this->getMock('Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface');
-                        $objectRepositoryMock
-                            ->expects($this->any())
-                            ->method('find')
-                            ->will($this->returnCallback(function() {
-
-                                $reflectionClass = new \ReflectionClass(Sample::classname);
-                                $model = $reflectionClass->newInstanceWithoutConstructor();
-
-                                $reflectionProperty = $reflectionClass->getProperty('id');
-                                $reflectionProperty->setAccessible(true);
-                                $reflectionProperty->setValue($model, 1);
-                                $reflectionProperty->setAccessible(false);
-
-                                return $model;
-                            }))
-                        ;
-                        $objectRepositoryMock
-                            ->expects($this->any())
-                            ->method('getQueryBuilderForFilterForm')
-                            ->willReturn($this->getMock('QueryBuilder'))
-                        ;
-
-                        return $objectRepositoryMock;
+                        return $this->getRepository();
                     }))
                 ;
                 $objectManagerMock
@@ -336,15 +315,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                     ->expects($this->any())
                     ->method('getClassMetadata')
                     ->will($this->returnCallback(function() {
-
-                        $objectRepositoryMock = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
-                        $objectRepositoryMock
-                            ->expects($this->once())
-                            ->method('getIdentifier')
-                            ->willReturn(array('id'))
-                        ;
-
-                        return $objectRepositoryMock;
+                        return $this->getClassMetadata();
                     }));
                 ;
 
@@ -353,6 +324,52 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         ;
 
         return $managerRegistyMock;
+    }
+
+    /**
+     * @return QueryBuilderForFilterFormInterface
+     */
+    protected function getRepository()
+    {
+        $objectRepositoryMock = $this->getMock('Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface');
+        $objectRepositoryMock
+            ->expects($this->any())
+            ->method('find')
+            ->will($this->returnCallback(function() {
+
+                $reflectionClass = new \ReflectionClass(Sample::classname);
+                $model = $reflectionClass->newInstanceWithoutConstructor();
+
+                $reflectionProperty = $reflectionClass->getProperty('id');
+                $reflectionProperty->setAccessible(true);
+                $reflectionProperty->setValue($model, 1);
+                $reflectionProperty->setAccessible(false);
+
+                return $model;
+            }))
+        ;
+        $objectRepositoryMock
+            ->expects($this->any())
+            ->method('getQueryBuilderForFilterForm')
+            ->willReturn($this->getMock('QueryBuilder'))
+        ;
+
+        return $objectRepositoryMock;
+    }
+
+    /**
+     * @return ClassMetadata
+     */
+    protected function getClassMetadata()
+    {
+        $objectRepositoryMock = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
+        $objectRepositoryMock
+            ->expects($this->once())
+            ->method('getIdentifier')
+            ->willReturn(array('id'))
+        ;
+
+        return $objectRepositoryMock;
     }
 
     /**
@@ -457,7 +474,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
 
         return $formFactoryMock;
     }
-
+    
     /**
      * @return FormView
      */
