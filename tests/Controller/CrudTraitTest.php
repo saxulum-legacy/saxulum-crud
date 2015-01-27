@@ -53,7 +53,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'viewRole' => 'ROLE_SAMPLE_VIEW',
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
-                'transPrefix' => 'sample'
+                'transPrefix' => 'sample',
             ))
         );
 
@@ -95,7 +95,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'viewRole' => 'ROLE_SAMPLE_VIEW',
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
-                'transPrefix' => 'sample'
+                'transPrefix' => 'sample',
             ))
         );
 
@@ -173,7 +173,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'viewRole' => 'ROLE_SAMPLE_VIEW',
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
-                'transPrefix' => 'sample'
+                'transPrefix' => 'sample',
             ))
         );
 
@@ -248,7 +248,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'viewRole' => 'ROLE_SAMPLE_VIEW',
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
-                'transPrefix' => 'sample'
+                'transPrefix' => 'sample',
             ))
         );
 
@@ -292,32 +292,30 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $managerRegistyMock
             ->expects($this->any())
             ->method('getManagerForClass')
-            ->will($this->returnCallback(function($givenClass) use($expectedClass) {
+            ->will($this->returnCallback(function ($givenClass) use ($expectedClass) {
                 $this->assertEquals($expectedClass, $givenClass);
                 $objectManagerMock = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
                 $objectManagerMock
                     ->expects($this->any())
                     ->method('getRepository')
-                    ->will($this->returnCallback(function() {
+                    ->will($this->returnCallback(function () {
                         return $this->getRepository();
                     }))
                 ;
                 $objectManagerMock
                     ->expects($this->any())
                     ->method('persist')
-                    ->will($this->returnCallback(function(Sample $model) {
+                    ->will($this->returnCallback(function (Sample $model) {
                         $this->setModelId($model, 1);
 
-                        return null;
+                        return;
                     }));
-                ;
                 $objectManagerMock
                     ->expects($this->any())
                     ->method('getClassMetadata')
-                    ->will($this->returnCallback(function() {
+                    ->will($this->returnCallback(function () {
                         return $this->getClassMetadata();
                     }));
-                ;
 
                 return $objectManagerMock;
             }))
@@ -335,7 +333,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $objectRepositoryMock
             ->expects($this->any())
             ->method('find')
-            ->will($this->returnCallback(function() {
+            ->will($this->returnCallback(function () {
 
                 $reflectionClass = new \ReflectionClass(Sample::classname);
                 $model = $reflectionClass->newInstanceWithoutConstructor();
@@ -382,7 +380,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects($this->any())
             ->method('paginate')
-            ->will($this->returnCallback(function($givenTarget, $givenPage, $givenLimit, $givenOptions) use ($expectedTarget, $expectedPage, $expectedLimit, $expectedOptions) {
+            ->will($this->returnCallback(function ($givenTarget, $givenPage, $givenLimit, $givenOptions) use ($expectedTarget, $expectedPage, $expectedLimit, $expectedOptions) {
                 $this->assertInstanceOf($expectedTarget, $givenTarget);
                 $this->assertEquals($expectedPage, $givenPage);
                 $this->assertEquals($expectedLimit, $givenLimit);
@@ -390,7 +388,6 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
 
                 return $this->getPaginationMock();
             }));
-        ;
 
         return $mock;
     }
@@ -406,9 +403,9 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param FormTypeInterface $expectedType
-     * @param mixed      $expectedData
-     * @param string $requestProperty
+     * @param  FormTypeInterface    $expectedType
+     * @param  mixed                $expectedData
+     * @param  string               $requestProperty
      * @return FormFactoryInterface
      */
     protected function getFormFactory($expectedType, $expectedData, $requestProperty = null)
@@ -418,11 +415,10 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $formFactoryMock
             ->expects($this->any())
             ->method('create')
-            ->will($this->returnCallback(function(AbstractType $givenType, $givenData) use ($expectedType, $expectedData, $requestProperty){
+            ->will($this->returnCallback(function (AbstractType $givenType, $givenData) use ($expectedType, $expectedData, $requestProperty) {
                 $this->assertInstanceOf($expectedType, $givenType);
 
                 $formName = $givenType->getName();
-
 
                 $formMock = $this->getMock('Symfony\Component\Form\FormInterface');
                 $formMock
@@ -434,9 +430,9 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 $formMock
                     ->expects($this->any())
                     ->method('handleRequest')
-                    ->will($this->returnCallback(function(Request $request) use($givenData, $expectedData, $requestProperty, $formName) {
+                    ->will($this->returnCallback(function (Request $request) use ($givenData, $expectedData, $requestProperty, $formName) {
 
-                        if(null === $requestProperty) {
+                        if (null === $requestProperty) {
                             return $givenData;
                         }
 
@@ -445,9 +441,9 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                         $propertyAccessor = new PropertyAccessor();
                         $isObject = is_object($givenData);
 
-                        foreach($requestData as $property => $value) {
-                            if(!$isObject) {
-                                $property = '[' . $property . ']';
+                        foreach ($requestData as $property => $value) {
+                            if (!$isObject) {
+                                $property = '['.$property.']';
                             }
                             $propertyAccessor->setValue($givenData, $property, $value);
                         }
@@ -474,7 +470,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
 
         return $formFactoryMock;
     }
-    
+
     /**
      * @return FormView
      */
@@ -484,8 +480,8 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $expectedName
-     * @param array $expectedParameters
+     * @param  string                $expectedName
+     * @param  array                 $expectedParameters
      * @return UrlGeneratorInterface
      */
     protected function getUrlGenerator($expectedName, array $expectedParameters = array())
@@ -495,7 +491,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects($this->any())
             ->method('generate')
-            ->will($this->returnCallback(function($givenName, $givenParameters, $givenReferenceType) use ($expectedName, $expectedParameters){
+            ->will($this->returnCallback(function ($givenName, $givenParameters, $givenReferenceType) use ($expectedName, $expectedParameters) {
                 $this->assertEquals($expectedName, $givenName);
                 $this->assertEquals($expectedParameters, $givenParameters);
                 $this->assertEquals(UrlGeneratorInterface::ABSOLUTE_URL, $givenReferenceType);
@@ -508,7 +504,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $expectedRole
+     * @param  string                   $expectedRole
      * @return SecurityContextInterface
      */
     protected function getSecurity($expectedRole)
@@ -517,7 +513,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects($this->once())
             ->method('isGranted')
-            ->will($this->returnCallback(function($givenRole) use($expectedRole) {
+            ->will($this->returnCallback(function ($givenRole) use ($expectedRole) {
                 return $givenRole === $expectedRole;
             }))
         ;
@@ -526,8 +522,8 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string      $expectedView
-     * @param array $expectedParameters
+     * @param  string            $expectedView
+     * @param  array             $expectedParameters
      * @return \Twig_Environment
      */
     protected function getTwig($expectedView, array $expectedParameters)
@@ -536,9 +532,10 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $mock
             ->expects($this->any())
             ->method('render')
-            ->will($this->returnCallback(function($givenView, $givenParameters) use($expectedView, $expectedParameters){
+            ->will($this->returnCallback(function ($givenView, $givenParameters) use ($expectedView, $expectedParameters) {
                 $this->assertEquals($expectedView, $givenView);
                 $this->assertEquals($expectedParameters, $givenParameters);
+
                 return 'renderedcontent';
             }))
         ;
@@ -548,7 +545,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param Sample $model
-     * @param int $id
+     * @param int    $id
      */
     protected function setModelId(Sample $model, $id)
     {

@@ -30,7 +30,7 @@ class SampleType extends AbstractType
         parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults(array(
-            'data_class' => Sample::classname
+            'data_class' => Sample::classname,
         ));
     }
 

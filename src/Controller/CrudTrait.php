@@ -733,8 +733,8 @@ trait CrudTrait
 
     /**
      * @internal
-     * @param  object             $qb
-     * @param  Request            $request
+     * @param  object              $qb
+     * @param  Request             $request
      * @return PaginationInterface
      */
     protected function crudPaginate($qb, Request $request)

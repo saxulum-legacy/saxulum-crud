@@ -33,12 +33,13 @@ class Sample
     }
 
     /**
-     * @param string $title
+     * @param  string $title
      * @return Sample
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 }

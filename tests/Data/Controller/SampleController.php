@@ -48,11 +48,11 @@ class SampleController
 
     /**
      * @param SecurityContextInterface $security
-     * @param ManagerRegistry $doctrine
-     * @param FormFactoryInterface $formFactory
-     * @param PaginatorInterface $paginator
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param \Twig_Environment $twig
+     * @param ManagerRegistry          $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param PaginatorInterface       $paginator
+     * @param UrlGeneratorInterface    $urlGenerator
+     * @param \Twig_Environment        $twig
      */
     public function __construct(
         SecurityContextInterface $security,
@@ -61,8 +61,7 @@ class SampleController
         PaginatorInterface $paginator = null,
         UrlGeneratorInterface $urlGenerator = null,
         \Twig_Environment $twig = null
-    )
-    {
+    ) {
         $this->doctrine = $doctrine;
         $this->paginator = $paginator;
         $this->formFactory = $formFactory;
@@ -142,7 +141,7 @@ class SampleController
     {
         return new SampleType();
     }
-    
+
     /**
      * @return string
      * @throws \Exception
