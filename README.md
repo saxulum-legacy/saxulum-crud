@@ -47,12 +47,12 @@ Use the trait `Saxulum\Crud\Controller\CrudTrait`
 
 #### Services
 
- * `getDoctrine`: contains an instance of the doctrine manager registry
- * `getPaginator`: contains an instance of a knp paginator
- * `getFormFactory`: contais an instance of a symfony form factory
- * `getUrlGenerator`: contains an instance of symfony routing url generator
- * `getSecurity`: contains an instance of a symfony security context
- * `getTwig`: contains an instance of the twig environment
+ * `crudDoctrine`: contains an instance of the doctrine manager registry
+ * `crudPaginator`: contains an instance of a knp paginator
+ * `crudFormFactory`: contais an instance of a symfony form factory
+ * `crudUrlGenerator`: contains an instance of symfony routing url generator
+ * `crudSecurity`: contains an instance of a symfony security context
+ * `crudTwig`: contains an instance of the twig environment
 
 
 [1]: https://packagist.org/packages/saxulum/saxulum-crud
