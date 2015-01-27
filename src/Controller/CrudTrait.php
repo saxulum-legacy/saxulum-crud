@@ -598,19 +598,16 @@ trait CrudTrait
     abstract protected function crudObjectClass();
 
     /**
-     * @internal
      * @return SecurityContextInterface
      */
     abstract protected function crudSecurity();
 
     /**
-     * @internal
      * @return ManagerRegistry
      */
     abstract protected function crudDoctrine();
 
     /**
-     * @internal
      * @return FormFactoryInterface
      * @throws \Exception
      */
@@ -623,7 +620,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @return PaginatorInterface
      * @throws \Exception
      */
@@ -636,7 +632,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @return UrlGeneratorInterface
      * @throws \Exception
      */
@@ -649,7 +644,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @return \Twig_Environment
      * @throws \Exception
      */
