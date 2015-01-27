@@ -656,7 +656,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @param  string        $class
      * @return ObjectManager
      * @throws \Exception
@@ -673,7 +672,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @param  string           $class
      * @return ObjectRepository
      */
@@ -683,7 +681,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @return string
      * @throws \Exception
      */
@@ -702,7 +699,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @return string
      * @throws \Exception
      */
@@ -714,7 +710,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @param  FormTypeInterface $type
      * @param  mixed             $data
      * @param  array             $options
@@ -726,7 +721,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @param  object              $qb
      * @param  Request             $request
      * @return PaginationInterface
@@ -741,7 +735,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @param  string $name
      * @param  array  $parameters
      * @return string
@@ -752,7 +745,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @param  string   $view
      * @param  array    $parameters
      * @return Response
@@ -763,7 +755,6 @@ trait CrudTrait
     }
 
     /**
-     * @internal
      * @param Request $request
      * @param string  $type
      * @param string  $message
