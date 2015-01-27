@@ -35,7 +35,7 @@ trait CrudTrait
         }
 
         if (null !== $formType = $this->crudListFormType()) {
-            $form = $this->crudForm($formType, array());
+            $form = $this->crudCreateForm($formType, array());
             $form->handleRequest($request);
             $formData = $form->getData();
         } else {
@@ -89,7 +89,7 @@ trait CrudTrait
         }
 
         $object = $this->crudCreateFactory();
-        $form = $this->crudForm($this->crudCreateFormType(), $object);
+        $form = $this->crudCreateForm($this->crudCreateFormType(), $object);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -154,7 +154,7 @@ trait CrudTrait
             throw new AccessDeniedException("You need the permission to edit this object!");
         }
 
-        $form = $this->crudForm($this->crudEditFormType(), $object);
+        $form = $this->crudCreateForm($this->crudEditFormType(), $object);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -295,7 +295,7 @@ trait CrudTrait
      */
     protected function crudListIsGranted()
     {
-        return $this->getSecurity()->isGranted($this->crudListRole());
+        return $this->crudSecurity()->isGranted($this->crudListRole());
     }
 
     /**
@@ -343,7 +343,7 @@ trait CrudTrait
      */
     protected function crudCreateIsGranted()
     {
-        return $this->getSecurity()->isGranted($this->crudCreateRole());
+        return $this->crudSecurity()->isGranted($this->crudCreateRole());
     }
 
     /**
@@ -422,7 +422,7 @@ trait CrudTrait
      */
     protected function crudEditIsGranted($object)
     {
-        return $this->getSecurity()->isGranted($this->crudEditRole(), $object);
+        return $this->crudSecurity()->isGranted($this->crudEditRole(), $object);
     }
 
     /**
@@ -491,7 +491,7 @@ trait CrudTrait
      */
     protected function crudViewIsGranted($object)
     {
-        return $this->getSecurity()->isGranted($this->crudViewRole(), $object);
+        return $this->crudSecurity()->isGranted($this->crudViewRole(), $object);
     }
 
     /**
@@ -524,7 +524,7 @@ trait CrudTrait
      */
     protected function crudDeleteIsGranted($object)
     {
-        return $this->getSecurity()->isGranted($this->crudDeleteRole(), $object);
+        return $this->crudSecurity()->isGranted($this->crudDeleteRole(), $object);
     }
 
     /**
@@ -598,20 +598,23 @@ trait CrudTrait
     abstract protected function crudObjectClass();
 
     /**
+     * @internal
      * @return SecurityContextInterface
      */
-    abstract protected function getSecurity();
+    abstract protected function crudSecurity();
 
     /**
+     * @internal
      * @return ManagerRegistry
      */
-    abstract protected function getDoctrine();
+    abstract protected function crudDoctrine();
 
     /**
+     * @internal
      * @return FormFactoryInterface
      * @throws \Exception
      */
-    protected function getFormFactory()
+    protected function crudFormFactory()
     {
         throw new \Exception(sprintf(
             'For actions using a form you need: %s',
@@ -620,10 +623,11 @@ trait CrudTrait
     }
 
     /**
+     * @internal
      * @return PaginatorInterface
      * @throws \Exception
      */
-    protected function getPaginator()
+    protected function crudPaginator()
     {
         throw new \Exception(sprintf(
             'For actions using a pagination you need: %s',
@@ -632,10 +636,11 @@ trait CrudTrait
     }
 
     /**
+     * @internal
      * @return UrlGeneratorInterface
      * @throws \Exception
      */
-    protected function getUrlGenerator()
+    protected function crudUrlGenerator()
     {
         throw new \Exception(sprintf(
             'For actions using a redirect you need: %s',
@@ -644,10 +649,11 @@ trait CrudTrait
     }
 
     /**
+     * @internal
      * @return \Twig_Environment
      * @throws \Exception
      */
-    protected function getTwig()
+    protected function crudTwig()
     {
         throw new \Exception(sprintf(
             'For actions using a template you need: %s',
@@ -663,7 +669,7 @@ trait CrudTrait
      */
     protected function crudManagerForClass($class)
     {
-        $om = $this->getDoctrine()->getManagerForClass($class);
+        $om = $this->crudDoctrine()->getManagerForClass($class);
 
         if (null === $om) {
             throw new \Exception(sprintf('There is no object manager for class: %s', $class));
@@ -720,9 +726,9 @@ trait CrudTrait
      * @param  array             $options
      * @return FormInterface
      */
-    protected function crudForm(FormTypeInterface $type, $data = null, array $options = array())
+    protected function crudCreateForm(FormTypeInterface $type, $data = null, array $options = array())
     {
-        return $this->getFormFactory()->create($type, $data, $options);
+        return $this->crudFormFactory()->create($type, $data, $options);
     }
 
     /**
@@ -733,7 +739,7 @@ trait CrudTrait
      */
     protected function crudPaginate($qb, Request $request)
     {
-        return $this->getPaginator()->paginate(
+        return $this->crudPaginator()->paginate(
             $qb,
             $request->query->get('page', 1),
             $request->query->get('perPage', $this->crudListPerPage())
@@ -748,7 +754,7 @@ trait CrudTrait
      */
     protected function crudGenerateRoute($name, array $parameters = array())
     {
-        return $this->getUrlGenerator()->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->crudUrlGenerator()->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
@@ -759,7 +765,7 @@ trait CrudTrait
      */
     protected function crudRender($view, array $parameters = array())
     {
-        return new Response($this->getTwig()->render($view, $parameters));
+        return new Response($this->crudTwig()->render($view, $parameters));
     }
 
     /**
