@@ -9,4 +9,4 @@ php:
 before_script:
   - composer --prefer-source --dev install
 
-script: phpunit --coverage-text --verbose
+script: vendor/bin/phpunit --coverage-text --verbose
