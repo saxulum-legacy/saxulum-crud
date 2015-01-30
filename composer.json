@@ -24,5 +24,10 @@
   },
   "autoload": {
     "psr-4": { "Saxulum\\Crud\\": "src/" }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
   }
 }
