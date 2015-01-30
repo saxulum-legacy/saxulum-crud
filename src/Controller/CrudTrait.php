@@ -35,7 +35,7 @@ trait CrudTrait
         }
 
         if (null !== $formType = $this->crudListFormType()) {
-            $form = $this->crudCreateForm($formType, array());
+            $form = $this->crudForm($formType, array());
             $form->handleRequest($request);
             $formData = $form->getData();
         } else {
@@ -89,7 +89,7 @@ trait CrudTrait
         }
 
         $object = $this->crudCreateFactory();
-        $form = $this->crudCreateForm($this->crudCreateFormType(), $object);
+        $form = $this->crudForm($this->crudCreateFormType(), $object);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -154,7 +154,7 @@ trait CrudTrait
             throw new AccessDeniedException("You need the permission to edit this object!");
         }
 
-        $form = $this->crudCreateForm($this->crudEditFormType(), $object);
+        $form = $this->crudForm($this->crudEditFormType(), $object);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -729,7 +729,7 @@ trait CrudTrait
      * @param  array             $options
      * @return FormInterface
      */
-    protected function crudCreateForm(FormTypeInterface $type, $data = null, array $options = array())
+    protected function crudForm(FormTypeInterface $type, $data = null, array $options = array())
     {
         return $this->crudFormFactory()->create($type, $data, $options);
     }
