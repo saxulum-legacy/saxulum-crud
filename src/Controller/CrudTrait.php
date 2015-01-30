@@ -599,13 +599,27 @@ trait CrudTrait
 
     /**
      * @return SecurityContextInterface
+     * @throws \Exception
      */
-    abstract protected function crudSecurity();
+    protected function crudSecurity()
+    {
+        throw new \Exception(sprintf(
+            'For actions using security you need: %s',
+            'Symfony\Component\Security\Core\SecurityContextInterface'
+        ));
+    }
 
     /**
      * @return ManagerRegistry
+     * @throws \Exception
      */
-    abstract protected function crudDoctrine();
+    protected function crudDoctrine()
+    {
+        throw new \Exception(sprintf(
+            'For actions using doctrine you need: %s',
+            'Doctrine\Common\Persistence\ManagerRegistry'
+        ));
+    }
 
     /**
      * @return FormFactoryInterface
@@ -614,7 +628,7 @@ trait CrudTrait
     protected function crudFormFactory()
     {
         throw new \Exception(sprintf(
-            'For actions using a form you need: %s',
+            'For actions using form you need: %s',
             'Symfony\Component\Form\FormFactoryInterface'
         ));
     }
@@ -626,7 +640,7 @@ trait CrudTrait
     protected function crudPaginator()
     {
         throw new \Exception(sprintf(
-            'For actions using a pagination you need: %s',
+            'For actions using pagination you need: %s',
             'Knp\Component\Pager\PaginatorInterface'
         ));
     }
@@ -638,7 +652,7 @@ trait CrudTrait
     protected function crudUrlGenerator()
     {
         throw new \Exception(sprintf(
-            'For actions using a redirect you need: %s',
+            'For actions using url generation you need: %s',
             'Symfony\Component\Routing\Generator\UrlGeneratorInterface'
         ));
     }
@@ -650,7 +664,7 @@ trait CrudTrait
     protected function crudTwig()
     {
         throw new \Exception(sprintf(
-            'For actions using a template you need: %s',
+            'For actions using twig you need: %s',
             '\Twig_Environment'
         ));
     }
