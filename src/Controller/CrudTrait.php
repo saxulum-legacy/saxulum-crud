@@ -136,15 +136,17 @@ trait CrudTrait
 
     /**
      * @param  Request                   $request
-     * @param  int                       $id
+     * @param  object|string|int         $object
      * @param  array                     $templateVars
      * @return Response|RedirectResponse
      */
-    public function crudEditObject(Request $request, $id, array $templateVars = array())
+    public function crudEditObject(Request $request, $object, array $templateVars = array())
     {
-        /** @var ObjectRepository $repo */
-        $repo = $this->crudRepositoryForClass($this->crudObjectClass());
-        $object = $repo->find($id);
+        if (!is_object($object)) {
+            /** @var ObjectRepository $repo */
+            $repo = $this->crudRepositoryForClass($this->crudObjectClass());
+            $object = $repo->find($object);
+        }
 
         if (null === $object) {
             throw new NotFoundHttpException("There is no object with this id");
@@ -201,15 +203,17 @@ trait CrudTrait
 
     /**
      * @param  Request                   $request
-     * @param  int                       $id
+     * @param  object|string|int         $object
      * @param  array                     $templateVars
      * @return Response|RedirectResponse
      */
-    public function crudViewObject(Request $request, $id, array $templateVars = array())
+    public function crudViewObject(Request $request, $object, array $templateVars = array())
     {
-        /** @var ObjectRepository $repo */
-        $repo = $this->crudRepositoryForClass($this->crudObjectClass());
-        $object = $repo->find($id);
+        if (!is_object($object)) {
+            /** @var ObjectRepository $repo */
+            $repo = $this->crudRepositoryForClass($this->crudObjectClass());
+            $object = $repo->find($object);
+        }
 
         if (null === $object) {
             throw new NotFoundHttpException("There is no object with this id");
@@ -244,14 +248,16 @@ trait CrudTrait
 
     /**
      * @param  Request                   $request
-     * @param  int                       $id
+     * @param  object|string|int         $object
      * @return Response|RedirectResponse
      */
-    public function crudDeleteObject(Request $request, $id)
+    public function crudDeleteObject(Request $request, $object)
     {
-        /** @var ObjectRepository $repo */
-        $repo = $this->crudRepositoryForClass($this->crudObjectClass());
-        $object = $repo->find($id);
+        if (!is_object($object)) {
+            /** @var ObjectRepository $repo */
+            $repo = $this->crudRepositoryForClass($this->crudObjectClass());
+            $object = $repo->find($object);
+        }
 
         if (null === $object) {
             throw new NotFoundHttpException("There is no object with this id");
