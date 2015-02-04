@@ -57,6 +57,11 @@ trait CrudTrait
             'request' => $request,
             'pagination' => $pagination,
             'form' => isset($form) ? $form->createView() : null,
+            'listUrl' => $this->crudListUrl(),
+            'createUrl' => $this->crudCreateUrl(),
+            'editUrl' => $this->crudEditUrl(),
+            'viewUrl' => $this->crudViewUrl(),
+            'deleteUrl' => $this->crudDeleteUrl(),
             'listRoute' => $this->crudListRoute(),
             'createRoute' => $this->crudCreateRoute(),
             'editRoute' => $this->crudEditRoute(),
@@ -270,6 +275,16 @@ trait CrudTrait
     }
 
     /**
+     * @return \Closure
+     */
+    protected function crudListUrl()
+    {
+        return function() {
+            return $this->crudGenerateRoute($this->crudListRoute());
+        };
+    }
+
+    /**
      * @return string
      */
     protected function crudListRoute()
@@ -344,6 +359,16 @@ trait CrudTrait
     protected function crudListTemplate()
     {
         return sprintf($this->crudTemplatePattern(), ucfirst($this->crudName()), 'list');
+    }
+
+    /**
+     * @return \Closure
+     */
+    protected function crudCreateUrl()
+    {
+        return function() {
+            return $this->crudGenerateRoute($this->crudCreateRoute());
+        };
     }
 
     /**
@@ -490,6 +515,17 @@ trait CrudTrait
     }
 
     /**
+     * @return \Closure
+     */
+    protected function crudEditUrl()
+    {
+        return function($object) {
+            $identifierMethod = $this->crudIdentifierMethod();
+            return $this->crudGenerateRoute($this->crudEditRoute(), array('id' => $object->$identifierMethod()));
+        };
+    }
+
+    /**
      * @return string
      */
     protected function crudEditRoute()
@@ -633,6 +669,17 @@ trait CrudTrait
     }
 
     /**
+     * @return \Closure
+     */
+    protected function crudViewUrl()
+    {
+        return function($object) {
+            $identifierMethod = $this->crudIdentifierMethod();
+            return $this->crudGenerateRoute($this->crudViewRoute(), array('id' => $object->$identifierMethod()));
+        };
+    }
+
+    /**
      * @return string
      */
     protected function crudViewRoute()
@@ -687,6 +734,17 @@ trait CrudTrait
     protected function crudViewTemplate()
     {
         return sprintf($this->crudTemplatePattern(), ucfirst($this->crudName()), 'view');
+    }
+
+    /**
+     * @return \Closure
+     */
+    protected function crudDeleteUrl()
+    {
+        return function($object) {
+            $identifierMethod = $this->crudIdentifierMethod();
+            return $this->crudGenerateRoute($this->crudDeleteRoute(), array('id' => $object->$identifierMethod()));
+        };
     }
 
     /**
