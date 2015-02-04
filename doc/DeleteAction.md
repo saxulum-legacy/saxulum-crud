@@ -34,9 +34,10 @@ This methods return if its allowed to call this object delete action.
 
 ```{.php}
 /**
+ * @param object
  * @return bool
  */
-protected function crudDeleteIsGranted()
+protected function crudDeleteIsGranted($object)
 ```
 
 #### Delete role

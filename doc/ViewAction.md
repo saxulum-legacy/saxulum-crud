@@ -53,9 +53,10 @@ This methods return if its allowed to call this object view action.
 
 ```{.php}
 /**
+ * @param object
  * @return bool
  */
-protected function crudViewIsGranted()
+protected function crudViewIsGranted($object)
 ```
 
 #### View role

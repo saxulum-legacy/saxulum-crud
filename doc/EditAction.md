@@ -66,9 +66,10 @@ This methods return if its allowed to call this object edit action.
 
 ```{.php}
 /**
+ * @param object
  * @return bool
  */
-protected function crudEditIsGranted()
+protected function crudEditIsGranted($object)
 ```
 
 #### Edit role
