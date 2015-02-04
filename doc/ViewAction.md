@@ -47,15 +47,30 @@ This method defines the view route name
 protected function crudViewRoute()
 ```
 
+#### View load object
+
+This method loads the object if not allready given.
+
+```{.php}
+/**
+ * @param  object  $object
+ * @param  Request $request
+ * @return object
+ */
+protected function crudViewLoadObject($object, Request $request)
+```
+
 #### View is granted
 
 This methods return if its allowed to call this object view action.
 
 ```{.php}
 /**
+ * @param  object  $object
+ * @param  Request $request
  * @return bool
  */
-protected function crudViewIsGranted()
+protected function crudViewIsGranted($object, Request $request)
 ```
 
 #### View role
@@ -67,6 +82,19 @@ This method defines the view role (for security check).
  * @return string
  */
 protected function crudViewRole()
+```
+
+#### View render response
+
+This method return a rendered template as response.
+
+```{.php}
+/**
+ * @param  array    $baseTemplateVars
+ * @param  array    $templateVars
+ * @return Response
+ */
+protected function crudViewRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
 ```
 
 #### View Template

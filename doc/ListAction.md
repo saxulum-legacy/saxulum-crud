@@ -69,9 +69,10 @@ This methods return if its allowed to call this object list action.
 
 ```{.php}
 /**
+ * @param  Request $request
  * @return bool
  */
-protected function crudListIsGranted()
+protected function crudListIsGranted(Request $request)
 ```
 
 #### List role
@@ -83,6 +84,20 @@ This method defines the list role (for security check).
  * @return string
  */
 protected function crudListRole()
+```
+
+#### List form
+
+This method defines a form used for filtering objects (default: no filter).
+
+*IMPORTANT* Works only if you use those filter values within your repository.
+
+```{.php}
+/**
+ * @param  Request            $request
+ * @return FormInterface|null
+ */
+protected function crudListForm(Request $request)
 ```
 
 #### List form type
@@ -104,12 +119,27 @@ This method enrich and overrides (by key) the submitted form data.
 
 ```{.php}
 /**
+ * @param  Request $request
+ * @param  array   $formData
  * @return array
  */
-protected function crudListFormDataEnrich()
+protected function crudListFormDataEnrich(Request $request, array $formData)
 ```
 
-#### List Template
+#### List render
+
+This method returns the rendered template
+
+```{.php}
+/**
+ * @param  array    $baseTemplateVars
+ * @param  array    $templateVars
+ * @return Response
+ */
+protected function crudListRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+```
+
+#### List template
 
 This method defines the template path.
 

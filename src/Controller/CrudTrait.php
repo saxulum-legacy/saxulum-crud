@@ -30,19 +30,19 @@ trait CrudTrait
      */
     public function crudListObjects(Request $request, array $templateVars = array())
     {
-        if (!$this->crudListIsGranted()) {
+        if (!$this->crudListIsGranted($request)) {
             throw new AccessDeniedException("You need the permission to list entities!");
         }
 
-        if (null !== $formType = $this->crudListFormType()) {
-            $form = $this->crudForm($formType, array());
+        $form = $this->crudListForm($request);
+        if (null !== $form) {
             $form->handleRequest($request);
             $formData = $form->getData();
         } else {
             $formData = array();
         }
 
-        $formData = array_replace_recursive($formData, $this->crudListFormDataEnrich());
+        $formData = $this->crudListFormDataEnrich($request, $formData);
 
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         if (!$repo instanceof QueryBuilderForFilterFormInterface) {
@@ -71,9 +71,9 @@ trait CrudTrait
             'transPrefix' => $this->crudName(),
         );
 
-        return $this->crudRender(
-            $this->crudListTemplate(),
-            array_replace_recursive($baseTemplateVars, $templateVars)
+        return $this->crudListRenderTemplateResponse(
+            $baseTemplateVars,
+            $templateVars
         );
     }
 
@@ -84,29 +84,32 @@ trait CrudTrait
      */
     public function crudCreateObject(Request $request, array $templateVars = array())
     {
-        if (!$this->crudCreateIsGranted()) {
+        if (!$this->crudCreateIsGranted($request)) {
             throw new AccessDeniedException("You need the permission to create an object!");
         }
 
-        $object = $this->crudCreateFactory();
-        $form = $this->crudForm($this->crudCreateFormType(), $object);
+        $object = $this->crudCreateFactory($request);
+        $form = $this->crudCreateForm($object, $request);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->crudCreatePrePersist($object);
+                $this->crudCreatePrePersist($object, $form, $request);
 
                 $em = $this->crudManagerForClass($this->crudObjectClass());
                 $em->persist($object);
                 $em->flush();
 
-                $this->crudCreatePostFlush($object);
-
-                $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.success', $this->crudName()));
-
-                return new RedirectResponse($this->crudCreateRedirectUrl($object), 302);
+                $this->crudCreatePostFlush($object, $form, $request);
+                $this->crudCreateSuccessFlashMesssage($object, $form, $request);
+                $response = $this->crudCreateSuccessResponse($object, $form, $request);
             } else {
-                $this->crudFlashMessage($request, 'error', sprintf('%s.create.flash.error', $this->crudName()));
+                $this->crudCreateErrorFlashMesssage($object, $form, $request);
+                $response = $this->crudCreateErrorResponse($object, $form, $request);
+            }
+
+            if (null !== $response) {
+                return $response;
             }
         }
 
@@ -128,9 +131,9 @@ trait CrudTrait
             'transPrefix' => $this->crudName(),
         );
 
-        return $this->crudRender(
-            $this->crudCreateTemplate(),
-            array_replace_recursive($baseTemplateVars, $templateVars)
+        return $this->crudCreateRenderTemplateResponse(
+            $baseTemplateVars,
+            $templateVars
         );
     }
 
@@ -142,38 +145,33 @@ trait CrudTrait
      */
     public function crudEditObject(Request $request, $object, array $templateVars = array())
     {
-        if (!is_object($object)) {
-            /** @var ObjectRepository $repo */
-            $repo = $this->crudRepositoryForClass($this->crudObjectClass());
-            $object = $repo->find($object);
-        }
+        $object = $this->crudEditLoadObject($object, $request);
 
-        if (null === $object) {
-            throw new NotFoundHttpException("There is no object with this id");
-        }
-
-        if (!$this->crudEditIsGranted($object)) {
+        if (!$this->crudEditIsGranted($object, $request)) {
             throw new AccessDeniedException("You need the permission to edit this object!");
         }
 
-        $form = $this->crudForm($this->crudEditFormType(), $object);
+        $form = $this->crudEditForm($object, $request);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->crudEditPrePersist($object);
+                $this->crudEditPrePersist($object, $form, $request);
 
                 $em = $this->crudManagerForClass($this->crudObjectClass());
                 $em->persist($object);
                 $em->flush();
 
-                $this->crudEditPostFlush($object);
-
-                $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.success', $this->crudName()));
-
-                return new RedirectResponse($this->crudEditRedirectUrl($object), 302);
+                $this->crudEditPostFlush($object, $form, $request);
+                $this->crudEditSuccessFlashMesssage($object, $form, $request);
+                $response = $this->crudEditSuccessResponse($object, $form, $request);
             } else {
-                $this->crudFlashMessage($request, 'error', sprintf('%s.edit.flash.error', $this->crudName()));
+                $this->crudEditErrorFlashMesssage($object, $form, $request);
+                $response = $this->crudEditErrorResponse($object, $form, $request);
+            }
+
+            if (null !== $response) {
+                return $response;
             }
         }
 
@@ -195,9 +193,9 @@ trait CrudTrait
             'transPrefix' => $this->crudName(),
         );
 
-        return $this->crudRender(
-            $this->crudEditTemplate(),
-            array_replace_recursive($baseTemplateVars, $templateVars)
+        return $this->crudEditRenderTemplateResponse(
+            $baseTemplateVars,
+            $templateVars
         );
     }
 
@@ -209,17 +207,9 @@ trait CrudTrait
      */
     public function crudViewObject(Request $request, $object, array $templateVars = array())
     {
-        if (!is_object($object)) {
-            /** @var ObjectRepository $repo */
-            $repo = $this->crudRepositoryForClass($this->crudObjectClass());
-            $object = $repo->find($object);
-        }
+        $object = $this->crudViewLoadObject($object, $request);
 
-        if (null === $object) {
-            throw new NotFoundHttpException("There is no object with this id");
-        }
-
-        if (!$this->crudViewIsGranted($object)) {
+        if (!$this->crudViewIsGranted($object, $request)) {
             throw new AccessDeniedException("You need the permission to view this object!");
         }
 
@@ -240,9 +230,9 @@ trait CrudTrait
             'transPrefix' => $this->crudName(),
         );
 
-        return $this->crudRender(
-            $this->crudViewTemplate(),
-            array_replace_recursive($baseTemplateVars, $templateVars)
+        return $this->crudViewRenderTemplateResponse(
+            $baseTemplateVars,
+            $templateVars
         );
     }
 
@@ -253,31 +243,22 @@ trait CrudTrait
      */
     public function crudDeleteObject(Request $request, $object)
     {
-        if (!is_object($object)) {
-            /** @var ObjectRepository $repo */
-            $repo = $this->crudRepositoryForClass($this->crudObjectClass());
-            $object = $repo->find($object);
-        }
+        $object = $this->crudDeleteLoadObject($object, $request);
 
-        if (null === $object) {
-            throw new NotFoundHttpException("There is no object with this id");
-        }
-
-        if (!$this->crudDeleteIsGranted($object)) {
+        if (!$this->crudDeleteIsGranted($object, $request)) {
             throw new AccessDeniedException("You need the permission to delete this object!");
         }
 
-        $this->crudDeletePreRemove($object);
+        $this->crudDeletePreRemove($object, $request);
 
         $em = $this->crudManagerForClass($this->crudObjectClass());
         $em->remove($object);
         $em->flush();
 
-        $this->crudDeletePostFlush($object);
+        $this->crudDeletePostFlush($object, $request);
+        $this->crudDeleteSuccessFlashMesssage($object, $request);
 
-        $this->crudFlashMessage($request, 'success', sprintf('%s.delete.flash.success', $this->crudName()));
-
-        return new RedirectResponse($this->crudDeleteRedirectUrl(), 302);
+        return $this->crudDeleteSuccessResponse($object, $request);
     }
 
     /**
@@ -297,9 +278,10 @@ trait CrudTrait
     }
 
     /**
+     * @param  Request $request
      * @return bool
      */
-    protected function crudListIsGranted()
+    protected function crudListIsGranted(Request $request)
     {
         return $this->crudSecurity()->isGranted($this->crudListRole());
     }
@@ -313,19 +295,47 @@ trait CrudTrait
     }
 
     /**
+     * @param  Request            $request
+     * @return FormInterface|null
+     */
+    protected function crudListForm(Request $request)
+    {
+        if (null === $formType = $this->crudListFormType()) {
+            return null;
+        }
+
+        return $this->crudForm($formType, array());
+    }
+
+    /**
      * @return FormTypeInterface|null
      */
     protected function crudListFormType()
     {
-        return;
+        return null;
     }
 
     /**
+     * @param  Request $request
+     * @param  array   $formData
      * @return array
      */
-    protected function crudListFormDataEnrich()
+    protected function crudListFormDataEnrich(Request $request, array $formData)
     {
-        return array();
+        return array_replace_recursive($formData, array());
+    }
+
+    /**
+     * @param  array    $baseTemplateVars
+     * @param  array    $templateVars
+     * @return Response
+     */
+    protected function crudListRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+    {
+        return $this->crudRender(
+            $this->crudListTemplate(),
+            array_replace_recursive($baseTemplateVars, $templateVars)
+        );
     }
 
     /**
@@ -345,9 +355,10 @@ trait CrudTrait
     }
 
     /**
+     * @param  Request $request
      * @return bool
      */
-    protected function crudCreateIsGranted()
+    protected function crudCreateIsGranted(Request $request)
     {
         return $this->crudSecurity()->isGranted($this->crudCreateRole());
     }
@@ -361,13 +372,24 @@ trait CrudTrait
     }
 
     /**
+     * @param  Request $request
      * @return object
      */
-    protected function crudCreateFactory()
+    protected function crudCreateFactory(Request $request)
     {
         $objectClass = $this->crudObjectClass();
 
         return new $objectClass();
+    }
+
+    /**
+     * @param  object        $object
+     * @param  Request       $request
+     * @return FormInterface
+     */
+    protected function crudCreateForm($object, Request $request)
+    {
+        return $this->crudForm($this->crudCreateFormType(), $object);
     }
 
     /**
@@ -380,14 +402,63 @@ trait CrudTrait
     }
 
     /**
-     * @param object
-     * @return string
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
+     * @return void
      */
-    protected function crudCreateRedirectUrl($object)
+    protected function crudCreateSuccessFlashMesssage($object, FormInterface $form, Request $request)
+    {
+        $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.success', $this->crudName()));
+    }
+
+    /**
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
+     * @return void
+     */
+    protected function crudCreateErrorFlashMesssage($object, FormInterface $form, Request $request)
+    {
+        $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.error', $this->crudName()));
+    }
+
+    /**
+     * @param  object                    $object
+     * @param  FormInterface             $form
+     * @param  Request                   $request
+     * @return RedirectResponse|Response
+     */
+    protected function crudCreateSuccessResponse($object, FormInterface $form, Request $request)
     {
         $identifierMethod = $this->crudIdentifierMethod();
+        $url = $this->crudGenerateRoute($this->crudEditRoute(), array('id' => $object->$identifierMethod()));
 
-        return $this->crudGenerateRoute($this->crudEditRoute(), array('id' => $object->$identifierMethod()));
+        return new RedirectResponse($url, 302);
+    }
+
+    /**
+     * @param  object                         $object
+     * @param  FormInterface                  $form
+     * @param  Request                        $request
+     * @return RedirectResponse|Response|null
+     */
+    protected function crudCreateErrorResponse($object, FormInterface $form, Request $request)
+    {
+        return null;
+    }
+
+    /**
+     * @param  array    $baseTemplateVars
+     * @param  array    $templateVars
+     * @return Response
+     */
+    protected function crudCreateRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+    {
+        return $this->crudRender(
+            $this->crudCreateTemplate(),
+            array_replace_recursive($baseTemplateVars, $templateVars)
+        );
     }
 
     /**
@@ -399,18 +470,22 @@ trait CrudTrait
     }
 
     /**
-     * @param  object $object
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
      * @return void
      */
-    protected function crudCreatePrePersist($object)
+    protected function crudCreatePrePersist($object, FormInterface $form, Request $request)
     {
     }
 
     /**
-     * @param  object $object
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
      * @return void
      */
-    protected function crudCreatePostFlush($object)
+    protected function crudCreatePostFlush($object, FormInterface $form, Request $request)
     {
     }
 
@@ -423,10 +498,21 @@ trait CrudTrait
     }
 
     /**
-     * @param object
+     * @param  object  $object
+     * @param  Request $request
+     * @return object
+     */
+    protected function crudEditLoadObject($object, Request $request)
+    {
+        return $this->crudLoadObject($object, $request);
+    }
+
+    /**
+     * @param  object  $object
+     * @param  Request $request
      * @return bool
      */
-    protected function crudEditIsGranted($object)
+    protected function crudEditIsGranted($object, Request $request)
     {
         return $this->crudSecurity()->isGranted($this->crudEditRole(), $object);
     }
@@ -440,6 +526,16 @@ trait CrudTrait
     }
 
     /**
+     * @param  object        $object
+     * @param  Request       $request
+     * @return FormInterface
+     */
+    protected function crudEditForm($object, Request $request)
+    {
+        return $this->crudForm($this->crudEditFormType(), $object);
+    }
+
+    /**
      * @return FormTypeInterface
      * @throws \Exception
      */
@@ -449,14 +545,63 @@ trait CrudTrait
     }
 
     /**
-     * @param object
-     * @return string
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
+     * @return void
      */
-    protected function crudEditRedirectUrl($object)
+    protected function crudEditSuccessFlashMesssage($object, FormInterface $form, Request $request)
+    {
+        $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.success', $this->crudName()));
+    }
+
+    /**
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
+     * @return void
+     */
+    protected function crudEditErrorFlashMesssage($object, FormInterface $form, Request $request)
+    {
+        $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.error', $this->crudName()));
+    }
+
+    /**
+     * @param  object                    $object
+     * @param  FormInterface             $form
+     * @param  Request                   $request
+     * @return RedirectResponse|Response
+     */
+    protected function crudEditSuccessResponse($object, FormInterface $form, Request $request)
     {
         $identifierMethod = $this->crudIdentifierMethod();
+        $url = $this->crudGenerateRoute($this->crudEditRoute(), array('id' => $object->$identifierMethod()));
 
-        return $this->crudGenerateRoute($this->crudEditRoute(), array('id' => $object->$identifierMethod()));
+        return new RedirectResponse($url, 302);
+    }
+
+    /**
+     * @param  object                         $object
+     * @param  FormInterface                  $form
+     * @param  Request                        $request
+     * @return RedirectResponse|Response|null
+     */
+    protected function crudEditErrorResponse($object, FormInterface $form, Request $request)
+    {
+        return null;
+    }
+
+    /**
+     * @param  array    $baseTemplateVars
+     * @param  array    $templateVars
+     * @return Response
+     */
+    protected function crudEditRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+    {
+        return $this->crudRender(
+            $this->crudEditTemplate(),
+            array_replace_recursive($baseTemplateVars, $templateVars)
+        );
     }
 
     /**
@@ -468,18 +613,22 @@ trait CrudTrait
     }
 
     /**
-     * @param  object $object
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
      * @return void
      */
-    protected function crudEditPrePersist($object)
+    protected function crudEditPrePersist($object, FormInterface $form, Request $request)
     {
     }
 
     /**
-     * @param  object $object
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
      * @return void
      */
-    protected function crudEditPostFlush($object)
+    protected function crudEditPostFlush($object, FormInterface $form, Request $request)
     {
     }
 
@@ -492,10 +641,21 @@ trait CrudTrait
     }
 
     /**
-     * @param object
+     * @param  object  $object
+     * @param  Request $request
+     * @return object
+     */
+    protected function crudViewLoadObject($object, Request $request)
+    {
+        return $this->crudLoadObject($object, $request);
+    }
+
+    /**
+     * @param  object  $object
+     * @param  Request $request
      * @return bool
      */
-    protected function crudViewIsGranted($object)
+    protected function crudViewIsGranted($object, Request $request)
     {
         return $this->crudSecurity()->isGranted($this->crudViewRole(), $object);
     }
@@ -506,6 +666,19 @@ trait CrudTrait
     protected function crudViewRole()
     {
         return strtoupper(sprintf($this->crudRolePattern(), $this->crudName(), 'view'));
+    }
+
+    /**
+     * @param  array    $baseTemplateVars
+     * @param  array    $templateVars
+     * @return Response
+     */
+    protected function crudViewRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+    {
+        return $this->crudRender(
+            $this->crudViewTemplate(),
+            array_replace_recursive($baseTemplateVars, $templateVars)
+        );
     }
 
     /**
@@ -525,10 +698,21 @@ trait CrudTrait
     }
 
     /**
-     * @param $object
+     * @param  object  $object
+     * @param  Request $request
+     * @return object
+     */
+    protected function crudDeleteLoadObject($object, Request $request)
+    {
+        return $this->crudLoadObject($object, $request);
+    }
+
+    /**
+     * @param  object  $object
+     * @param  Request $request
      * @return bool
      */
-    protected function crudDeleteIsGranted($object)
+    protected function crudDeleteIsGranted($object, Request $request)
     {
         return $this->crudSecurity()->isGranted($this->crudDeleteRole(), $object);
     }
@@ -542,26 +726,40 @@ trait CrudTrait
     }
 
     /**
-     * @return string
+     * @param  object  $object
+     * @param  Request $request
+     * @return void
      */
-    protected function crudDeleteRedirectUrl()
+    protected function crudDeleteSuccessFlashMesssage($object, Request $request)
     {
-        return $this->crudGenerateRoute($this->crudListRoute());
+        $this->crudFlashMessage($request, 'success', sprintf('%s.delete.flash.success', $this->crudName()));
     }
 
     /**
-     * @param  object $object
+     * @param  object                    $object
+     * @param  Request                   $request
+     * @return RedirectResponse|Response
+     */
+    protected function crudDeleteSuccessResponse($object, Request $request)
+    {
+        return new RedirectResponse($this->crudGenerateRoute($this->crudListRoute()), 302);
+    }
+
+    /**
+     * @param  object  $object
+     * @param  Request $request
      * @return void
      */
-    protected function crudDeletePreRemove($object)
+    protected function crudDeletePreRemove($object, Request $request)
     {
     }
 
     /**
-     * @param  object $object
+     * @param  object  $object
+     * @param  Request $request
      * @return void
      */
-    protected function crudDeletePostFlush($object)
+    protected function crudDeletePostFlush($object, Request $request)
     {
     }
 
@@ -673,6 +871,28 @@ trait CrudTrait
             'For actions using twig you need: %s',
             '\Twig_Environment'
         ));
+    }
+
+    /**
+     * @param  object  $object
+     * @param  Request $request
+     * @return object  object
+     */
+    protected function crudLoadObject($object, Request $request)
+    {
+        if (is_object($object)) {
+            return $object;
+        }
+
+        /** @var ObjectRepository $repo */
+        $repo = $this->crudRepositoryForClass($this->crudObjectClass());
+        $object = $repo->find($object);
+
+        if (null === $object) {
+            throw new NotFoundHttpException("There is no object with this id");
+        }
+
+        return $object;
     }
 
     /**

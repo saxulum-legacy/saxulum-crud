@@ -60,15 +60,30 @@ This method defines the edit route name
 protected function crudEditRoute()
 ```
 
+#### Edit load object
+
+This method loads the object if not allready given.
+
+```{.php}
+/**
+ * @param  object  $object
+ * @param  Request $request
+ * @return object
+ */
+protected function crudEditLoadObject($object, Request $request)
+```
+
 #### Edit is granted
 
 This methods return if its allowed to call this object edit action.
 
 ```{.php}
 /**
+ * @param  object  $object
+ * @param  Request $request
  * @return bool
  */
-protected function crudEditIsGranted()
+protected function crudEditIsGranted($object, Request $request)
 ```
 
 #### Edit role
@@ -82,16 +97,86 @@ This method defines the edit role (for security check).
 protected function crudEditRole()
 ```
 
-#### Edit Redirect url
+#### Edit form
 
-This method defines the redirect url after edit object
+This method creates a form.
 
 ```{.php}
 /**
- * @param object
- * @return string
+ * @param  object        $object
+ * @param  Request       $request
+ * @return FormInterface
  */
-protected function crudEditRedirectUrl($object)
+protected function crudEditForm($object, Request $request)
+```
+
+#### Edit success flash message
+
+This method add a success flash message to the response
+
+```{.php}
+/**
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
+ * @return void
+ */
+protected function crudEditSuccessFlashMesssage($object, FormInterface $form, Request $request)
+```
+
+#### Edit error flash message
+
+This method add a error flash message to the response
+
+```{.php}
+/**
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
+ * @return void
+ */
+protected function crudEditErrorFlashMesssage($object, FormInterface $form, Request $request)
+```
+
+#### Edit success response
+
+This method generates a success response.
+
+```{.php}
+/**
+ * @param  object                         $object
+ * @param  FormInterface                  $form
+ * @param  Request                        $request
+ * @return RedirectResponse|Response
+ */
+protected function crudEditSuccessResponse($object, FormInterface $form, Request $request)
+```
+
+#### Edit error response
+
+This method generates a error response.
+
+```{.php}
+/**
+ * @param  object                         $object
+ * @param  FormInterface                  $form
+ * @param  Request                        $request
+ * @return RedirectResponse|Response|null
+ */
+protected function crudEditErrorResponse($object, FormInterface $form, Request $request)
+```
+
+#### Edit render response
+
+This method return a rendered template as response.
+
+```{.php}
+/**
+ * @param  array    $baseTemplateVars
+ * @param  array    $templateVars
+ * @return Response
+ */
+protected function crudEditRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
 ```
 
 #### Edit Template
@@ -113,10 +198,12 @@ This method allows to manipulate the object before persist
 
 ```{.php}
 /**
- * @param  object $object
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
  * @return void
  */
-protected function crudEditPrePersist($object)
+protected function crudEditPrePersist($object, FormInterface $form, Request $request)
 ```
 
 #### Edit post flush
@@ -125,8 +212,10 @@ This method allows to manipulate the object after flush
 
 ```{.php}
 /**
- * @param  object $object
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
  * @return void
  */
-protected function crudEditPostFlush($object)
+protected function crudEditPostFlush($object, FormInterface $form, Request $request)
 ```

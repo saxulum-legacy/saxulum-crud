@@ -28,15 +28,30 @@ This method defines the delete route name
 protected function crudDeleteRoute()
 ```
 
+#### Delete load object
+
+This method loads the object if not allready given.
+
+```{.php}
+/**
+ * @param  object  $object
+ * @param  Request $request
+ * @return object
+ */
+protected function crudDeleteLoadObject($object, Request $request)
+```
+
 #### Delete is granted
 
 This methods return if its allowed to call this object delete action.
 
 ```{.php}
 /**
+ * @param  object  $object
+ * @param  Request $request
  * @return bool
  */
-protected function crudDeleteIsGranted()
+protected function crudDeleteIsGranted($object, Request $request)
 ```
 
 #### Delete role
@@ -50,16 +65,32 @@ This method defines the delete role (for security check).
 protected function crudDeleteRole()
 ```
 
-#### Delete Redirect url
+#### Delete success flash message
 
-This method defines the redirect url after delete object
+This method add a success flash message to the response
 
 ```{.php}
 /**
- * @param object
- * @return string
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
+ * @return void
  */
-protected function crudDeleteRedirectUrl($object)
+protected function crudDeleteSuccessFlashMesssage($object, FormInterface $form, Request $request)
+```
+
+#### Delete success response
+
+This method generates a success response.
+
+```{.php}
+/**
+ * @param  object                         $object
+ * @param  FormInterface                  $form
+ * @param  Request                        $request
+ * @return RedirectResponse|Response
+ */
+protected function crudDeleteSuccessResponse($object, FormInterface $form, Request $request)
 ```
 
 ## Hooks
@@ -70,10 +101,11 @@ This method allows to manipulate the object before remove
 
 ```{.php}
 /**
- * @param  object $object
+ * @param  object  $object
+ * @param  Request $request
  * @return void
  */
-protected function crudDeletePreRemove($object)
+protected function crudDeletePreRemove($object, Request $request)
 ```
 
 #### Delete post flush
@@ -82,8 +114,9 @@ This method allows to manipulate the object after flush
 
 ```{.php}
 /**
- * @param  object $object
+ * @param  object  $object
+ * @param  Request $request
  * @return void
  */
-protected function crudDeletePostFlush($object)
+protected function crudDeletePostFlush($object, Request $request)
 ```

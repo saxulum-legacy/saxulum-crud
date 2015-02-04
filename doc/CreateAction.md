@@ -65,9 +65,10 @@ This methods return if its allowed to call this object create action.
 
 ```{.php}
 /**
+ * @param  Request $request
  * @return bool
  */
-protected function crudCreateIsGranted()
+protected function crudCreateIsGranted(Request $request)
 ```
 
 #### Create role
@@ -87,21 +88,92 @@ This method creates a new object.
 
 ```{.php}
 /**
+ * @param  Request $request
  * @return object
  */
-protected function crudCreateFactory()
+protected function crudCreateFactory(Request $request)
 ```
 
-#### Create Redirect url
+#### Create form
 
-This method defines the redirect url after create object
+This method creates a form.
 
 ```{.php}
 /**
- * @param object
- * @return string
+ * @param  object        $object
+ * @param  Request       $request
+ * @return FormInterface
  */
-protected function crudCreateRedirectUrl($object)
+protected function crudCreateForm($object, Request $request)
+```
+
+#### Create success flash message
+
+This method add a success flash message to the response
+
+```{.php}
+/**
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
+ * @return void
+ */
+protected function crudCreateSuccessFlashMesssage($object, FormInterface $form, Request $request)
+```
+
+#### Create error flash message
+
+This method add a error flash message to the response
+
+```{.php}
+/**
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
+ * @return void
+ */
+protected function crudCreateErrorFlashMesssage($object, FormInterface $form, Request $request)
+```
+
+#### Create success response
+
+This method generates a success response.
+
+```{.php}
+/**
+ * @param  object                         $object
+ * @param  FormInterface                  $form
+ * @param  Request                        $request
+ * @return RedirectResponse|Response
+ */
+protected function crudCreateSuccessResponse($object, FormInterface $form, Request $request)
+```
+
+#### Create error response
+
+This method generates a error response.
+
+```{.php}
+/**
+ * @param  object                         $object
+ * @param  FormInterface                  $form
+ * @param  Request                        $request
+ * @return RedirectResponse|Response|null
+ */
+protected function crudCreateErrorResponse($object, FormInterface $form, Request $request)
+```
+
+#### Create render response
+
+This method return a rendered template as response.
+
+```{.php}
+/**
+ * @param  array    $baseTemplateVars
+ * @param  array    $templateVars
+ * @return Response
+ */
+protected function crudCreateRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
 ```
 
 #### Create Template
@@ -123,10 +195,12 @@ This method allows to manipulate the object before persist
 
 ```{.php}
 /**
- * @param  object $object
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
  * @return void
  */
-protected function crudCreatePrePersist($object)
+protected function crudCreatePrePersist($object, FormInterface $form, Request $request)
 ```
 
 #### Create post flush
@@ -135,8 +209,10 @@ This method allows to manipulate the object after flush
 
 ```{.php}
 /**
- * @param  object $object
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
  * @return void
  */
-protected function crudCreatePostFlush($object)
+protected function crudCreatePostFlush($object, FormInterface $form, Request $request)
 ```
