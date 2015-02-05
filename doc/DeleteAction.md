@@ -41,19 +41,6 @@ This method loads the object if not allready given.
 protected function crudDeleteLoadObject($object, Request $request)
 ```
 
-#### Delete is granted
-
-This methods return if its allowed to call this object delete action.
-
-```{.php}
-/**
- * @param  object  $object
- * @param  Request $request
- * @return bool
- */
-protected function crudDeleteIsGranted($object, Request $request)
-```
-
 #### Delete role
 
 This method defines the delete role (for security check).

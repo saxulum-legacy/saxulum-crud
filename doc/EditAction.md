@@ -73,19 +73,6 @@ This method loads the object if not allready given.
 protected function crudEditLoadObject($object, Request $request)
 ```
 
-#### Edit is granted
-
-This methods return if its allowed to call this object edit action.
-
-```{.php}
-/**
- * @param  object  $object
- * @param  Request $request
- * @return bool
- */
-protected function crudEditIsGranted($object, Request $request)
-```
-
 #### Edit role
 
 This method defines the edit role (for security check).

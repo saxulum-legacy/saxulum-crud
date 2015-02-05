@@ -30,7 +30,7 @@ trait CrudTrait
      */
     public function crudListObjects(Request $request, array $templateVars = array())
     {
-        if (!$this->crudListIsGranted($request)) {
+        if (!$this->crudSecurity()->isGranted($this->crudListRole())) {
             throw new AccessDeniedException("You need the permission to list entities!");
         }
 
@@ -84,7 +84,7 @@ trait CrudTrait
      */
     public function crudCreateObject(Request $request, array $templateVars = array())
     {
-        if (!$this->crudCreateIsGranted($request)) {
+        if (!$this->crudSecurity()->isGranted($this->crudCreateRole())) {
             throw new AccessDeniedException("You need the permission to create an object!");
         }
 
@@ -147,7 +147,7 @@ trait CrudTrait
     {
         $object = $this->crudEditLoadObject($object, $request);
 
-        if (!$this->crudEditIsGranted($object, $request)) {
+        if (!$this->crudSecurity()->isGranted($this->crudEditRole())) {
             throw new AccessDeniedException("You need the permission to edit this object!");
         }
 
@@ -209,7 +209,7 @@ trait CrudTrait
     {
         $object = $this->crudViewLoadObject($object, $request);
 
-        if (!$this->crudViewIsGranted($object, $request)) {
+        if (!$this->crudSecurity()->isGranted($this->crudViewRole())) {
             throw new AccessDeniedException("You need the permission to view this object!");
         }
 
@@ -245,7 +245,7 @@ trait CrudTrait
     {
         $object = $this->crudDeleteLoadObject($object, $request);
 
-        if (!$this->crudDeleteIsGranted($object, $request)) {
+        if (!$this->crudSecurity()->isGranted($this->crudDeleteRole())) {
             throw new AccessDeniedException("You need the permission to delete this object!");
         }
 
@@ -275,15 +275,6 @@ trait CrudTrait
     protected function crudListRoute()
     {
         return strtolower(sprintf($this->crudRoutePattern(), $this->crudName(), 'list'));
-    }
-
-    /**
-     * @param  Request $request
-     * @return bool
-     */
-    protected function crudListIsGranted(Request $request)
-    {
-        return $this->crudSecurity()->isGranted($this->crudListRole());
     }
 
     /**
@@ -352,15 +343,6 @@ trait CrudTrait
     protected function crudCreateRoute()
     {
         return strtolower(sprintf($this->crudRoutePattern(), $this->crudName(), 'create'));
-    }
-
-    /**
-     * @param  Request $request
-     * @return bool
-     */
-    protected function crudCreateIsGranted(Request $request)
-    {
-        return $this->crudSecurity()->isGranted($this->crudCreateRole());
     }
 
     /**
@@ -508,16 +490,6 @@ trait CrudTrait
     }
 
     /**
-     * @param  object  $object
-     * @param  Request $request
-     * @return bool
-     */
-    protected function crudEditIsGranted($object, Request $request)
-    {
-        return $this->crudSecurity()->isGranted($this->crudEditRole(), $object);
-    }
-
-    /**
      * @return string
      */
     protected function crudEditRole()
@@ -651,16 +623,6 @@ trait CrudTrait
     }
 
     /**
-     * @param  object  $object
-     * @param  Request $request
-     * @return bool
-     */
-    protected function crudViewIsGranted($object, Request $request)
-    {
-        return $this->crudSecurity()->isGranted($this->crudViewRole(), $object);
-    }
-
-    /**
      * @return string
      */
     protected function crudViewRole()
@@ -705,16 +667,6 @@ trait CrudTrait
     protected function crudDeleteLoadObject($object, Request $request)
     {
         return $this->crudLoadObject($object, $request);
-    }
-
-    /**
-     * @param  object  $object
-     * @param  Request $request
-     * @return bool
-     */
-    protected function crudDeleteIsGranted($object, Request $request)
-    {
-        return $this->crudSecurity()->isGranted($this->crudDeleteRole(), $object);
     }
 
     /**

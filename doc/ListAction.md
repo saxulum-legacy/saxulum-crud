@@ -63,18 +63,6 @@ This method defines the list route name
 protected function crudListRoute()
 ```
 
-#### List is granted
-
-This methods return if its allowed to call this object list action.
-
-```{.php}
-/**
- * @param  Request $request
- * @return bool
- */
-protected function crudListIsGranted(Request $request)
-```
-
 #### List role
 
 This method defines the list role (for security check).

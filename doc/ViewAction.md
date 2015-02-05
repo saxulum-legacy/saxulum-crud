@@ -60,19 +60,6 @@ This method loads the object if not allready given.
 protected function crudViewLoadObject($object, Request $request)
 ```
 
-#### View is granted
-
-This methods return if its allowed to call this object view action.
-
-```{.php}
-/**
- * @param  object  $object
- * @param  Request $request
- * @return bool
- */
-protected function crudViewIsGranted($object, Request $request)
-```
-
 #### View role
 
 This method defines the view role (for security check).

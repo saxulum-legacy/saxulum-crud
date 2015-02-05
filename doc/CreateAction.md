@@ -59,18 +59,6 @@ This method defines the create route name
 protected function crudCreateRoute()
 ```
 
-#### Create is granted
-
-This methods return if its allowed to call this object create action.
-
-```{.php}
-/**
- * @param  Request $request
- * @return bool
- */
-protected function crudCreateIsGranted(Request $request)
-```
-
 #### Create role
 
 This method defines the create role (for security check).
