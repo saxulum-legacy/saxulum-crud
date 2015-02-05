@@ -24,7 +24,7 @@ class KnpPaginationAdapter implements PaginatorInterface
      * @param  int    $page
      * @param  int    $limit
      * @param  array  $options
-     * @return mixed
+     * @return \Traversable
      */
     public function paginate($target, $page = 1, $limit = 10, array $options = array())
     {

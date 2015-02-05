@@ -914,7 +914,7 @@ trait CrudTrait
     /**
      * @param  object  $target
      * @param  Request $request
-     * @return object
+     * @return \Traversable
      */
     protected function crudPaginate($target, Request $request)
     {
