@@ -5,8 +5,7 @@ namespace Saxulum\Crud\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Knp\Component\Pager\PaginatorInterface;
-use Knp\Component\Pager\Pagination\PaginationInterface;
+use Saxulum\Crud\Pagination\PaginatorInterface;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -797,7 +796,7 @@ trait CrudTrait
     {
         throw new \Exception(sprintf(
             'For actions using pagination you need: %s',
-            'Knp\Component\Pager\PaginatorInterface'
+            'Saxulum\Crud\Pagination\PaginatorInterface'
         ));
     }
 
@@ -913,14 +912,14 @@ trait CrudTrait
     }
 
     /**
-     * @param  object              $qb
-     * @param  Request             $request
-     * @return PaginationInterface
+     * @param  object  $target
+     * @param  Request $request
+     * @return object
      */
-    protected function crudPaginate($qb, Request $request)
+    protected function crudPaginate($target, Request $request)
     {
         return $this->crudPaginator()->paginate(
-            $qb,
+            $target,
             $request->query->get('page', 1),
             $request->query->get('perPage', $this->crudListPerPage())
         );

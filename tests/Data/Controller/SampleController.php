@@ -3,7 +3,7 @@
 namespace Saxulum\Tests\Crud\Data\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Knp\Component\Pager\PaginatorInterface;
+use Saxulum\Crud\Pagination\PaginatorInterface;
 use Saxulum\Crud\Controller\CrudTrait;
 use Saxulum\Tests\Crud\Data\Form\SampleListType;
 use Saxulum\Tests\Crud\Data\Form\SampleType;

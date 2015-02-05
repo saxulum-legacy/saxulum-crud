@@ -40,7 +40,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             null,
             $this->getTwig('@SaxulumCrud/Sample/list.html.twig', array(
                 'request' => $request,
-                'pagination' => $this->getPaginationMock(),
+                'pagination' => $this->getPagination(),
                 'form' => $this->getFormView(),
                 'listRoute' => 'sample_list',
                 'createRoute' => 'sample_create',
@@ -375,7 +375,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
      */
     protected function getPaginator($expectedTarget, $expectedPage, $expectedLimit, $expectedOptions)
     {
-        $mock = $this->getMock('Knp\Component\Pager\PaginatorInterface');
+        $mock = $this->getMock('Saxulum\Crud\Pagination\PaginatorInterface');
 
         $mock
             ->expects($this->any())
@@ -386,20 +386,18 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($expectedLimit, $givenLimit);
                 $this->assertEquals($expectedOptions, $givenOptions);
 
-                return $this->getPaginationMock();
+                return $this->getPagination();
             }));
 
         return $mock;
     }
 
     /**
-     * @return PaginationInterface
+     * @return \stdClass
      */
-    protected function getPaginationMock()
+    protected function getPagination()
     {
-        $paginationMock = $this->getMock('Knp\Component\Pager\Pagination\PaginationInterface');
-
-        return $paginationMock;
+        return new \stdClass();
     }
 
     /**
