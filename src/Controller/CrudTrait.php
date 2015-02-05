@@ -146,7 +146,7 @@ trait CrudTrait
     {
         $object = $this->crudEditLoadObject($object, $request);
 
-        if (!$this->crudSecurity()->isGranted($this->crudEditRole())) {
+        if (!$this->crudSecurity()->isGranted($this->crudEditRole(), $object)) {
             throw new AccessDeniedException("You need the permission to edit this object!");
         }
 
@@ -208,7 +208,7 @@ trait CrudTrait
     {
         $object = $this->crudViewLoadObject($object, $request);
 
-        if (!$this->crudSecurity()->isGranted($this->crudViewRole())) {
+        if (!$this->crudSecurity()->isGranted($this->crudViewRole(), $object)) {
             throw new AccessDeniedException("You need the permission to view this object!");
         }
 
@@ -244,7 +244,7 @@ trait CrudTrait
     {
         $object = $this->crudDeleteLoadObject($object, $request);
 
-        if (!$this->crudSecurity()->isGranted($this->crudDeleteRole())) {
+        if (!$this->crudSecurity()->isGranted($this->crudDeleteRole(), $object)) {
             throw new AccessDeniedException("You need the permission to delete this object!");
         }
 
