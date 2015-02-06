@@ -29,8 +29,9 @@ trait CrudTrait
      */
     public function crudListObjects(Request $request, array $templateVars = array())
     {
-        if (!$this->crudSecurity()->isGranted($this->crudListRole())) {
-            throw new AccessDeniedException("You need the permission to list entities!");
+        $crudListRole = $this->crudListRole();
+        if (!$this->crudSecurity()->isGranted($crudListRole)) {
+            throw new AccessDeniedException(sprintf('You need the permission to list entities, role: %s!', $crudListRole));
         }
 
         $form = $this->crudListForm($request);
@@ -83,8 +84,9 @@ trait CrudTrait
      */
     public function crudCreateObject(Request $request, array $templateVars = array())
     {
-        if (!$this->crudSecurity()->isGranted($this->crudCreateRole())) {
-            throw new AccessDeniedException("You need the permission to create an object!");
+        $crudCreateRole = $this->crudCreateRole();
+        if (!$this->crudSecurity()->isGranted($crudCreateRole)) {
+            throw new AccessDeniedException(sprintf('You need the permission to create an object, role: %s!', $crudCreateRole));
         }
 
         $object = $this->crudCreateFactory($request);
@@ -146,8 +148,9 @@ trait CrudTrait
     {
         $object = $this->crudEditLoadObject($object, $request);
 
-        if (!$this->crudSecurity()->isGranted($this->crudEditRole(), $object)) {
-            throw new AccessDeniedException("You need the permission to edit this object!");
+        $crudEditRole = $this->crudEditRole();
+        if (!$this->crudSecurity()->isGranted($crudEditRole, $object)) {
+            throw new AccessDeniedException(sprintf('You need the permission to edit this object, role: %s!', $crudEditRole));
         }
 
         $form = $this->crudEditForm($object, $request);
@@ -208,8 +211,9 @@ trait CrudTrait
     {
         $object = $this->crudViewLoadObject($object, $request);
 
-        if (!$this->crudSecurity()->isGranted($this->crudViewRole(), $object)) {
-            throw new AccessDeniedException("You need the permission to view this object!");
+        $crudViewRole = $this->crudViewRole();
+        if (!$this->crudSecurity()->isGranted($crudViewRole, $object)) {
+            throw new AccessDeniedException(sprintf('You need the permission to view this object, role: %s!', $crudViewRole));
         }
 
         $baseTemplateVars = array(
@@ -244,8 +248,9 @@ trait CrudTrait
     {
         $object = $this->crudDeleteLoadObject($object, $request);
 
-        if (!$this->crudSecurity()->isGranted($this->crudDeleteRole(), $object)) {
-            throw new AccessDeniedException("You need the permission to delete this object!");
+        $crudDeleteRole = $this->crudDeleteRole();
+        if (!$this->crudSecurity()->isGranted($crudDeleteRole, $object)) {
+            throw new AccessDeniedException(sprintf('You need the permission to delete this object, role: %s!', $crudDeleteRole));
         }
 
         $this->crudDeletePreRemove($object, $request);
