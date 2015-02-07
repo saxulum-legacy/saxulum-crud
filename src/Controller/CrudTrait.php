@@ -72,6 +72,7 @@ trait CrudTrait
         );
 
         return $this->crudListRenderTemplateResponse(
+            $request,
             $baseTemplateVars,
             $templateVars
         );
@@ -133,6 +134,7 @@ trait CrudTrait
         );
 
         return $this->crudCreateRenderTemplateResponse(
+            $request,
             $baseTemplateVars,
             $templateVars
         );
@@ -196,6 +198,7 @@ trait CrudTrait
         );
 
         return $this->crudEditRenderTemplateResponse(
+            $request,
             $baseTemplateVars,
             $templateVars
         );
@@ -234,6 +237,7 @@ trait CrudTrait
         );
 
         return $this->crudViewRenderTemplateResponse(
+            $request,
             $baseTemplateVars,
             $templateVars
         );
@@ -321,11 +325,12 @@ trait CrudTrait
     }
 
     /**
+     * @param  Request  $request
      * @param  array    $baseTemplateVars
      * @param  array    $templateVars
      * @return Response
      */
-    protected function crudListRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+    protected function crudListRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
     {
         return $this->crudRender(
             $this->crudListTemplate(),
@@ -435,11 +440,12 @@ trait CrudTrait
     }
 
     /**
+     * @param  Request  $request
      * @param  array    $baseTemplateVars
      * @param  array    $templateVars
      * @return Response
      */
-    protected function crudCreateRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+    protected function crudCreateRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
     {
         return $this->crudRender(
             $this->crudCreateTemplate(),
@@ -568,11 +574,12 @@ trait CrudTrait
     }
 
     /**
+     * @param  Request  $request
      * @param  array    $baseTemplateVars
      * @param  array    $templateVars
      * @return Response
      */
-    protected function crudEditRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+    protected function crudEditRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
     {
         return $this->crudRender(
             $this->crudEditTemplate(),
@@ -635,11 +642,12 @@ trait CrudTrait
     }
 
     /**
+     * @param  Request  $request
      * @param  array    $baseTemplateVars
      * @param  array    $templateVars
      * @return Response
      */
-    protected function crudViewRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+    protected function crudViewRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
     {
         return $this->crudRender(
             $this->crudViewTemplate(),
@@ -917,8 +925,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  object  $target
-     * @param  Request $request
+     * @param  object       $target
+     * @param  Request      $request
      * @return \Traversable
      */
     protected function crudPaginate($target, Request $request)
