@@ -490,8 +490,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  object  $object
-     * @param  Request $request
+     * @param  object|string|int $object
+     * @param  Request           $request
      * @return object
      */
     protected function crudEditLoadObject($object, Request $request)
@@ -624,8 +624,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  object  $object
-     * @param  Request $request
+     * @param  object|string|int $object
+     * @param  Request           $request
      * @return object
      */
     protected function crudViewLoadObject($object, Request $request)
@@ -672,8 +672,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  object  $object
-     * @param  Request $request
+     * @param  object|string|int $object
+     * @param  Request           $request
      * @return object
      */
     protected function crudDeleteLoadObject($object, Request $request)
@@ -838,9 +838,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object  $object
-     * @param  Request $request
-     * @return object  object
+     * @param  object|string|int $object
+     * @param  Request           $request
+     * @return object            object
      */
     protected function crudLoadObject($object, Request $request)
     {
