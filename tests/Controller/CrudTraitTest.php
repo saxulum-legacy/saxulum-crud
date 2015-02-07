@@ -4,7 +4,6 @@ namespace Saxulum\Tests\Crud\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
 use Saxulum\Tests\Crud\Data\Controller\SampleController;
@@ -307,8 +306,6 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                     ->method('persist')
                     ->will($this->returnCallback(function (Sample $model) {
                         $this->setModelId($model, 1);
-
-                        return;
                     }));
                 $objectManagerMock
                     ->expects($this->any())
