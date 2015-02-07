@@ -157,11 +157,12 @@ This method return a rendered template as response.
 
 ```{.php}
 /**
+ * @param  Request  $request
  * @param  array    $baseTemplateVars
  * @param  array    $templateVars
  * @return Response
  */
-protected function crudCreateRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+protected function crudCreateRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
 ```
 
 #### Create Template

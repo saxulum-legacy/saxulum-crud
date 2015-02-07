@@ -120,11 +120,12 @@ This method returns the rendered template
 
 ```{.php}
 /**
+ * @param  Request  $request
  * @param  array    $baseTemplateVars
  * @param  array    $templateVars
  * @return Response
  */
-protected function crudListRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+protected function crudListRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
 ```
 
 #### List template

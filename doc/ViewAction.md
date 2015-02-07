@@ -77,11 +77,12 @@ This method return a rendered template as response.
 
 ```{.php}
 /**
+ * @param  Request  $request
  * @param  array    $baseTemplateVars
  * @param  array    $templateVars
  * @return Response
  */
-protected function crudViewRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+protected function crudViewRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
 ```
 
 #### View Template

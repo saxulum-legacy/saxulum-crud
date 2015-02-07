@@ -159,11 +159,12 @@ This method return a rendered template as response.
 
 ```{.php}
 /**
+ * @param  Request  $request
  * @param  array    $baseTemplateVars
  * @param  array    $templateVars
  * @return Response
  */
-protected function crudEditRenderTemplateResponse(array $baseTemplateVars, array $templateVars)
+protected function crudEditRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
 ```
 
 #### Edit Template
