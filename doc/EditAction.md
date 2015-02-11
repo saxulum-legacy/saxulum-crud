@@ -83,6 +83,29 @@ This method defines the edit role (for security check).
 protected function crudEditRole()
 ```
 
+#### Edit is submitted
+
+This method checks if the form is submitted, this allows form reloads with js for example.
+
+```{.php}
+/**
+ * @param FormInterface $form
+ * @return bool
+ */
+protected function crudEditIsSubmitted(FormInterface $form)
+```
+
+#### Edit button name
+
+This method returns the button name used by: [is submitted][1]
+
+```{.php}
+/**
+ * @return string|null
+ */
+protected function crudCreateButtonName()
+```
+
 #### Edit Redirect url
 
 This method defines the redirect url after edit object
@@ -131,3 +154,5 @@ This method allows to manipulate the object after flush
  */
 protected function crudEditPostFlush($object)
 ```
+
+[1]: #edit-is-submitted

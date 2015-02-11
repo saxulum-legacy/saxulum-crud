@@ -92,6 +92,29 @@ This method creates a new object.
 protected function crudCreateFactory()
 ```
 
+#### Create is submitted
+
+This method checks if the form is submitted, this allows form reloads with js for example.
+
+```{.php}
+/**
+ * @param FormInterface $form
+ * @return bool
+ */
+protected function crudCreateIsSubmitted(FormInterface $form)
+```
+
+#### Create button name
+
+This method returns the button name used by: [is submitted][1]
+
+```{.php}
+/**
+ * @return string|null
+ */
+protected function crudCreateButtonName()
+```
+
 #### Create Redirect url
 
 This method defines the redirect url after create object
@@ -140,3 +163,5 @@ This method allows to manipulate the object after flush
  */
 protected function crudCreatePostFlush($object)
 ```
+
+[1]: #edit-is-submitted
