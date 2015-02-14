@@ -95,6 +95,31 @@ This method creates a form.
 protected function crudCreateForm($object, Request $request)
 ```
 
+#### Create is submitted
+
+This method checks if the form is submitted, this allows form reloads with js for example.
+
+```{.php}
+/**
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
+ * @return bool
+ */
+protected function crudCreateIsSubmitted($object, FormInterface $form, Request $request)
+```
+
+#### Create button name
+
+This method returns the button name used by: [is submitted][1]
+
+```{.php}
+/**
+ * @return string|null
+ */
+protected function crudCreateButtonName()
+```
+
 #### Create success flash message
 
 This method add a success flash message to the response

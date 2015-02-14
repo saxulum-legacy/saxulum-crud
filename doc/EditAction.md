@@ -97,6 +97,31 @@ This method creates a form.
 protected function crudEditForm($object, Request $request)
 ```
 
+#### Edit is submitted
+
+This method checks if the form is submitted, this allows form reloads with js for example.
+
+```{.php}
+/**
+ * @param  object        $object
+ * @param  FormInterface $form
+ * @param  Request       $request
+ * @return bool
+ */
+protected function crudEditIsSubmitted($object, FormInterface $form, Request $request)
+```
+
+#### Edit button name
+
+This method returns the button name used by: [is submitted][1]
+
+```{.php}
+/**
+ * @return string|null
+ */
+protected function crudEditButtonName()
+```
+
 #### Edit success flash message
 
 This method add a success flash message to the response

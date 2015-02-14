@@ -95,23 +95,25 @@ trait CrudTrait
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
-                $this->crudCreatePrePersist($object, $form, $request);
+            if ($this->crudCreateIsSubmitted($object, $form, $request)) {
+                if ($form->isValid()) {
+                    $this->crudCreatePrePersist($object, $form, $request);
 
-                $em = $this->crudManagerForClass($this->crudObjectClass());
-                $em->persist($object);
-                $em->flush();
+                    $em = $this->crudManagerForClass($this->crudObjectClass());
+                    $em->persist($object);
+                    $em->flush();
 
-                $this->crudCreatePostFlush($object, $form, $request);
-                $this->crudCreateSuccessFlashMesssage($object, $form, $request);
-                $response = $this->crudCreateSuccessResponse($object, $form, $request);
-            } else {
-                $this->crudCreateErrorFlashMesssage($object, $form, $request);
-                $response = $this->crudCreateErrorResponse($object, $form, $request);
-            }
+                    $this->crudCreatePostFlush($object, $form, $request);
+                    $this->crudCreateSuccessFlashMesssage($object, $form, $request);
+                    $response = $this->crudCreateSuccessResponse($object, $form, $request);
+                } else {
+                    $this->crudCreateErrorFlashMesssage($object, $form, $request);
+                    $response = $this->crudCreateErrorResponse($object, $form, $request);
+                }
 
-            if (null !== $response) {
-                return $response;
+                if (null !== $response) {
+                    return $response;
+                }
             }
         }
 
@@ -159,23 +161,25 @@ trait CrudTrait
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
-                $this->crudEditPrePersist($object, $form, $request);
+            if ($this->crudEditIsSubmitted($object, $form, $request)) {
+                if ($form->isValid()) {
+                    $this->crudEditPrePersist($object, $form, $request);
 
-                $em = $this->crudManagerForClass($this->crudObjectClass());
-                $em->persist($object);
-                $em->flush();
+                    $em = $this->crudManagerForClass($this->crudObjectClass());
+                    $em->persist($object);
+                    $em->flush();
 
-                $this->crudEditPostFlush($object, $form, $request);
-                $this->crudEditSuccessFlashMesssage($object, $form, $request);
-                $response = $this->crudEditSuccessResponse($object, $form, $request);
-            } else {
-                $this->crudEditErrorFlashMesssage($object, $form, $request);
-                $response = $this->crudEditErrorResponse($object, $form, $request);
-            }
+                    $this->crudEditPostFlush($object, $form, $request);
+                    $this->crudEditSuccessFlashMesssage($object, $form, $request);
+                    $response = $this->crudEditSuccessResponse($object, $form, $request);
+                } else {
+                    $this->crudEditErrorFlashMesssage($object, $form, $request);
+                    $response = $this->crudEditErrorResponse($object, $form, $request);
+                }
 
-            if (null !== $response) {
-                return $response;
+                if (null !== $response) {
+                    return $response;
+                }
             }
         }
 
@@ -396,6 +400,30 @@ trait CrudTrait
      * @param  object        $object
      * @param  FormInterface $form
      * @param  Request       $request
+     * @return bool
+     */
+    protected function crudCreateIsSubmitted($object, FormInterface $form, Request $request)
+    {
+        $buttonName = $this->crudCreateButtonName();
+        if (null !== $buttonName && !$form->get($buttonName)->isClicked()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function crudCreateButtonName()
+    {
+        return null;
+    }
+
+    /**
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
      * @return void
      */
     protected function crudCreateSuccessFlashMesssage($object, FormInterface $form, Request $request)
@@ -524,6 +552,30 @@ trait CrudTrait
     protected function crudEditFormType()
     {
         throw new \Exception('You need to implement this method, if you use the editObject method!');
+    }
+
+    /**
+     * @param  object        $object
+     * @param  FormInterface $form
+     * @param  Request       $request
+     * @return bool
+     */
+    protected function crudEditIsSubmitted($object, FormInterface $form, Request $request)
+    {
+        $buttonName = $this->crudEditButtonName();
+        if (null !== $buttonName && !$form->get($buttonName)->isClicked()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function crudEditButtonName()
+    {
+        return null;
     }
 
     /**
