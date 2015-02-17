@@ -68,7 +68,7 @@ trait CrudTrait
             'viewRole' => $this->crudViewRole(),
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
-            'transPrefix' => $this->crudName(),
+            'transPrefix' => $this->crudTransPrefix(),
         );
 
         return $this->crudRender(
@@ -103,11 +103,11 @@ trait CrudTrait
 
                     $this->crudCreatePostFlush($object);
 
-                    $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.success', $this->crudName()));
+                    $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.success', $this->crudTransPrefix()));
 
                     return new RedirectResponse($this->crudCreateRedirectUrl($object), 302);
                 } else {
-                    $this->crudFlashMessage($request, 'error', sprintf('%s.create.flash.error', $this->crudName()));
+                    $this->crudFlashMessage($request, 'error', sprintf('%s.create.flash.error', $this->crudTransPrefix()));
                 }
             }
         }
@@ -127,7 +127,7 @@ trait CrudTrait
             'viewRole' => $this->crudViewRole(),
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
-            'transPrefix' => $this->crudName(),
+            'transPrefix' => $this->crudTransPrefix(),
         );
 
         return $this->crudRender(
@@ -172,11 +172,11 @@ trait CrudTrait
 
                     $this->crudEditPostFlush($object);
 
-                    $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.success', $this->crudName()));
+                    $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.success', $this->crudTransPrefix()));
 
                     return new RedirectResponse($this->crudEditRedirectUrl($object), 302);
                 } else {
-                    $this->crudFlashMessage($request, 'error', sprintf('%s.edit.flash.error', $this->crudName()));
+                    $this->crudFlashMessage($request, 'error', sprintf('%s.edit.flash.error', $this->crudTransPrefix()));
                 }
             }
         }
@@ -196,7 +196,7 @@ trait CrudTrait
             'viewRole' => $this->crudViewRole(),
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
-            'transPrefix' => $this->crudName(),
+            'transPrefix' => $this->crudTransPrefix(),
         );
 
         return $this->crudRender(
@@ -241,7 +241,7 @@ trait CrudTrait
             'viewRole' => $this->crudViewRole(),
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
-            'transPrefix' => $this->crudName(),
+            'transPrefix' => $this->crudTransPrefix(),
         );
 
         return $this->crudRender(
@@ -279,7 +279,7 @@ trait CrudTrait
 
         $this->crudDeletePostFlush($object);
 
-        $this->crudFlashMessage($request, 'success', sprintf('%s.delete.flash.success', $this->crudName()));
+        $this->crudFlashMessage($request, 'success', sprintf('%s.delete.flash.success', $this->crudTransPrefix()));
 
         return new RedirectResponse($this->crudDeleteRedirectUrl(), 302);
     }
@@ -627,6 +627,24 @@ trait CrudTrait
     protected function crudRolePattern()
     {
         return 'role_%s_%s';
+    }
+
+    /**
+     * @return string
+     */
+    protected function crudTransPrefix()
+    {
+        $transPrefix = '';
+        $transPrefixParts = preg_split('/(?=[\p{Lu}])/', $this->crudName());
+        foreach ($transPrefixParts as $transPrefixPart) {
+            if ($transPrefixPart) {
+                $transPrefix .= $transPrefixPart.'_';
+            }
+        }
+
+        $transPrefix = mb_strtolower(rtrim($transPrefix, '_'));
+
+        return $transPrefix;
     }
 
     /**
