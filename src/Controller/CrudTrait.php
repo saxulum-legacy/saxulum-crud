@@ -638,7 +638,7 @@ trait CrudTrait
         $transPrefixParts = preg_split('/(?=[\p{Lu}])/', $this->crudName());
         foreach ($transPrefixParts as $transPrefixPart) {
             if ($transPrefixPart) {
-                $transPrefix .= $transPrefixPart.'_';
+                $transPrefix .= rtrim($transPrefixPart, '_') . '_';
             }
         }
 
