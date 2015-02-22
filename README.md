@@ -71,6 +71,24 @@ Within the form template you can use something like this:
 {% endblock form_label %}
 ```
 
+#### Example
+
+The form name is `day_edit`, there is a collection field `comestiblesWithinDay`
+with a subfield called `comestible`. As you can see the `_` within the name will
+be replaced by a `.`.
+
+```{.yaml}
+day:
+    edit:
+        label:
+            comestibles_within_day: Consumption
+            comestibles_within_day_collection.comestible: Comestible
+```
+
+*Advanced names:* If you want the underscore within the form name,
+work with camel case. Which means `someFormName_edit` will be converted to
+`some_form_name.edit`.
+
 [1]: https://packagist.org/packages/saxulum/saxulum-crud
 [2]: doc/ListAction.md
 [3]: doc/CreateAction.md
