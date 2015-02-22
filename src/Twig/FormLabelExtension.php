@@ -50,6 +50,6 @@ class FormLabelExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'form_helper_extension';
+        return 'form_label_extension';
     }
 }
