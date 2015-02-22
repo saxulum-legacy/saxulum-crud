@@ -32,7 +32,7 @@ Through [Composer](http://getcomposer.org) as [saxulum/saxulum-crud][1].
 
 ### Trait
 
-Use the following trait within your controller: `Saxulum\Crud\Controller\CrudTrait`.
+Use the following trait within your controller: `[Saxulum\Crud\Controller\CrudTrait][7]`.
 
 #### Base configuration
 
@@ -56,7 +56,7 @@ Use the following trait within your controller: `Saxulum\Crud\Controller\CrudTra
 
 ### Twig: form label generation
 
-Use the following extension to use label generation: `Saxulum\Crud\Twig\FormLabelExtension`.
+Use the following extension to use label generation: `[Saxulum\Crud\Twig\FormLabelExtension][8]`.
 
 Within the form template you can use something like this:
 
@@ -77,3 +77,5 @@ Within the form template you can use something like this:
 [4]: doc/EditAction.md
 [5]: doc/ViewAction.md
 [6]: doc/DeleteAction.md
+[7]: src/Controller/CrudTrait.php
+[8]: src/Twig/FormLabelExtension.php
