@@ -3,6 +3,7 @@
 namespace Saxulum\Tests\Crud\Twig;
 
 use Saxulum\Crud\Twig\FormLabelExtension;
+use Saxulum\Tests\Crud\Data\Form\SampleListType;
 use Saxulum\Tests\Crud\Data\Form\SampleType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
@@ -44,9 +45,13 @@ class FormLabelExtensionTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                new SampleListType(),
+                'sample.list.label',
+            ),
+            array(
                 new SampleType(),
                 'sample.edit.label',
-            ),
+            )
         );
     }
 }
