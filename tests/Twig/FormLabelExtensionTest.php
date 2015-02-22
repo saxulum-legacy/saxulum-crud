@@ -4,11 +4,9 @@ namespace Saxulum\Tests\Crud\Twig;
 
 use Saxulum\Crud\Twig\FormLabelExtension;
 use Saxulum\Tests\Crud\Data\Form\SampleType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
 
 class FormLabelExtensionTest extends \PHPUnit_Framework_TestCase
