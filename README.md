@@ -30,9 +30,9 @@ Through [Composer](http://getcomposer.org) as [saxulum/saxulum-crud][1].
 
 ## Usage
 
-Use the trait `Saxulum\Crud\Controller\CrudTrait`
+### Trait
 
-### Implement
+Use the following trait within your controller: `Saxulum\Crud\Controller\CrudTrait`.
 
 #### Base configuration
 
@@ -54,6 +54,22 @@ Use the trait `Saxulum\Crud\Controller\CrudTrait`
  * `crudSecurity`: contains an instance of a symfony security context
  * `crudTwig`: contains an instance of the twig environment
 
+### Twig: form label generation
+
+Use the following extension to use label generation: `Saxulum\Crud\Twig\FormLabelExtension`.
+
+Within the form template you can use something like this:
+
+```{.twig}
+{% block form_label %}
+    {% spaceless %}
+        {% if label is empty %}
+            {% set label = prepareFormLabel(form) %}
+        {% endif %}
+        {{ parent() }}
+    {% endspaceless %}
+{% endblock form_label %}
+```
 
 [1]: https://packagist.org/packages/saxulum/saxulum-crud
 [2]: doc/ListAction.md

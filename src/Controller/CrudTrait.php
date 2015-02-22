@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
+use Saxulum\Crud\Util\Helper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -634,17 +635,7 @@ trait CrudTrait
      */
     protected function crudTransPrefix()
     {
-        $transPrefix = '';
-        $transPrefixParts = preg_split('/(?=[\p{Lu}])/', $this->crudName());
-        foreach ($transPrefixParts as $transPrefixPart) {
-            if ($transPrefixPart) {
-                $transPrefix .= rtrim($transPrefixPart, '_') . '_';
-            }
-        }
-
-        $transPrefix = mb_strtolower(rtrim($transPrefix, '_'));
-
-        return $transPrefix;
+        return Helper::camelCaseToUnderscore($this->crudName());
     }
 
     /**
