@@ -79,15 +79,13 @@ be replaced by a `.`.
 ```{.yaml}
 day:
     edit:
-        label:
-            comestibles_within_day: Consumption
-            comestibles_within_day_collection.comestible: Comestible
+        comestibles_within_day: Consumption
+        comestibles_within_day_collection.comestible: Comestible
 ```
 
 *Advanced names:* If you want the underscore within the form name,
 work with camel case. Which means `someFormName_edit` will be converted to
 `some_form_name.edit`.
-
 
 [1]: https://packagist.org/packages/saxulum/saxulum-crud
 [2]: doc/ListAction.md

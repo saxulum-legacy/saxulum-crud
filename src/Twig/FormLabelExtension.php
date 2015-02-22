@@ -38,9 +38,6 @@ class FormLabelExtension extends \Twig_Extension
                 $collection = false;
             }
         } while ($formView = $formView->parent);
-        $length = count($labelParts);
-        $labelParts[$length] = $labelParts[$length-1];
-        $labelParts[$length-1] = 'label';
 
         return implode('.', array_reverse($labelParts));
     }
