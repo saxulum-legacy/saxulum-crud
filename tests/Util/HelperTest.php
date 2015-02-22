@@ -37,7 +37,7 @@ class HelperTest extends \PHPUnit_Framework_TestCase
             array(
                 'DiesIstEinTest',
                 'dies_ist_ein_test',
-            )
+            ),
         );
     }
 }
