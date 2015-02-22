@@ -33,8 +33,6 @@ Through [Composer](http://getcomposer.org) as [saxulum/saxulum-crud][1].
 
 Use the following trait within your controller: [Saxulum\Crud\Controller\CrudTrait][7].
 
-### Implement
-
 #### Base configuration
 
  * `crudName`: contains the lowercase name of the object, example: `sample`
