@@ -81,7 +81,8 @@ day:
     edit:
         label:
             comestibles_within_day: Consumption
-            comestibles_within_day_collection.comestible: Comestible
+            comestibles_within_day_collection:
+                comestible: Comestible
 ```
 
 *Advanced names:* If you want the underscore within the form name,
