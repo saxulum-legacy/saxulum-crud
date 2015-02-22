@@ -70,6 +70,7 @@ Within the form template you can use something like this:
         {{ parent() }}
     {% endspaceless %}
 {% endblock form_label %}
+```
 
 #### Example
 
