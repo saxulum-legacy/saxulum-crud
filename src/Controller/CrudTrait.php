@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Saxulum\Crud\Pagination\PaginatorInterface;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
+use Saxulum\Crud\Util\Helper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -68,7 +69,7 @@ trait CrudTrait
             'viewRole' => $this->crudViewRole(),
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
-            'transPrefix' => $this->crudName(),
+            'transPrefix' => $this->crudTransPrefix(),
         );
 
         return $this->crudListRenderTemplateResponse(
@@ -132,7 +133,7 @@ trait CrudTrait
             'viewRole' => $this->crudViewRole(),
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
-            'transPrefix' => $this->crudName(),
+            'transPrefix' => $this->crudTransPrefix(),
         );
 
         return $this->crudCreateRenderTemplateResponse(
@@ -198,7 +199,7 @@ trait CrudTrait
             'viewRole' => $this->crudViewRole(),
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
-            'transPrefix' => $this->crudName(),
+            'transPrefix' => $this->crudTransPrefix(),
         );
 
         return $this->crudEditRenderTemplateResponse(
@@ -237,7 +238,7 @@ trait CrudTrait
             'viewRole' => $this->crudViewRole(),
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
-            'transPrefix' => $this->crudName(),
+            'transPrefix' => $this->crudTransPrefix(),
         );
 
         return $this->crudViewRenderTemplateResponse(
@@ -428,7 +429,7 @@ trait CrudTrait
      */
     protected function crudCreateSuccessFlashMesssage($object, FormInterface $form, Request $request)
     {
-        $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.success', $this->crudName()));
+        $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.success', $this->crudTransPrefix()));
     }
 
     /**
@@ -439,7 +440,7 @@ trait CrudTrait
      */
     protected function crudCreateErrorFlashMesssage($object, FormInterface $form, Request $request)
     {
-        $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.error', $this->crudName()));
+        $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.error', $this->crudTransPrefix()));
     }
 
     /**
@@ -586,7 +587,7 @@ trait CrudTrait
      */
     protected function crudEditSuccessFlashMesssage($object, FormInterface $form, Request $request)
     {
-        $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.success', $this->crudName()));
+        $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.success', $this->crudTransPrefix()));
     }
 
     /**
@@ -597,7 +598,7 @@ trait CrudTrait
      */
     protected function crudEditErrorFlashMesssage($object, FormInterface $form, Request $request)
     {
-        $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.error', $this->crudName()));
+        $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.error', $this->crudTransPrefix()));
     }
 
     /**
@@ -748,7 +749,7 @@ trait CrudTrait
      */
     protected function crudDeleteSuccessFlashMesssage($object, Request $request)
     {
-        $this->crudFlashMessage($request, 'success', sprintf('%s.delete.flash.success', $this->crudName()));
+        $this->crudFlashMessage($request, 'success', sprintf('%s.delete.flash.success', $this->crudTransPrefix()));
     }
 
     /**
@@ -793,6 +794,14 @@ trait CrudTrait
     protected function crudRolePattern()
     {
         return 'role_%s_%s';
+    }
+
+    /**
+     * @return string
+     */
+    protected function crudTransPrefix()
+    {
+        return Helper::camelCaseToUnderscore($this->crudName());
     }
 
     /**
