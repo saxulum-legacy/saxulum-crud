@@ -23,6 +23,31 @@ class FormLabelExtension extends \Twig_Extension
      */
     public function prepareFormLabel(FormView $formView)
     {
+        $labelParts = $this->getLabelParts($formView);
+
+        if ($labelParts[0] === '') {
+            $labelParts[0] = 'form';
+        }
+
+        // hack for main form: entity_edit, will be entity.edit
+        $mainFormParts = explode('_', $labelParts[0]);
+        unset($labelParts[0]);
+
+        $labelParts = array_merge($mainFormParts, array('label'), $labelParts);
+
+        foreach ($labelParts as $i => $labelPart) {
+            $labelParts[$i] = Helper::camelCaseToUnderscore($labelPart);
+        }
+
+        return implode('.', $labelParts);
+    }
+
+    /**
+     * @param  FormView $formView
+     * @return array
+     */
+    protected function getLabelParts(FormView $formView)
+    {
         $labelParts = array();
         $collection = false;
         do {
@@ -31,18 +56,14 @@ class FormLabelExtension extends \Twig_Extension
                 $collection = true;
             } else {
                 if ($collection) {
-                    $labelParts[] = Helper::camelCaseToUnderscore($name).'_collection';
-                } else {
-                    $labelParts[] = Helper::camelCaseToUnderscore(str_replace('_', '.', $name));
+                    $name .= '_collection';
                 }
+                $labelParts[] = $name;
                 $collection = false;
             }
         } while ($formView = $formView->parent);
-        $length = count($labelParts);
-        $labelParts[$length] = $labelParts[$length-1];
-        $labelParts[$length-1] = 'label';
 
-        return implode('.', array_reverse($labelParts));
+        return array_reverse($labelParts);
     }
 
     /**
