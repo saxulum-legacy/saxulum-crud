@@ -53,6 +53,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
                 'transPrefix' => 'sample',
+                'objectClass' => 'Saxulum\Tests\Crud\Data\Model\Sample',
             ))
         );
 
@@ -95,6 +96,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
                 'transPrefix' => 'sample',
+                'objectClass' => 'Saxulum\Tests\Crud\Data\Model\Sample',
             ))
         );
 
@@ -173,6 +175,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
                 'transPrefix' => 'sample',
+                'objectClass' => 'Saxulum\Tests\Crud\Data\Model\Sample',
             ))
         );
 
@@ -248,6 +251,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
                 'transPrefix' => 'sample',
+                'objectClass' => 'Saxulum\Tests\Crud\Data\Model\Sample',
             ))
         );
 
