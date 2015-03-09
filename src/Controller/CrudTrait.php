@@ -70,6 +70,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'objectClass' => $this->crudObjectClass(),
         );
 
         return $this->crudListRenderTemplateResponse(
@@ -134,6 +135,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'objectClass' => $this->crudObjectClass(),
         );
 
         return $this->crudCreateRenderTemplateResponse(
@@ -200,6 +202,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'objectClass' => $this->crudObjectClass(),
         );
 
         return $this->crudEditRenderTemplateResponse(
@@ -239,6 +242,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'objectClass' => $this->crudObjectClass(),
         );
 
         return $this->crudViewRenderTemplateResponse(
