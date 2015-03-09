@@ -70,6 +70,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'objectClass' => $this->crudObjectClass(),
         );
 
         return $this->crudRender(
@@ -129,6 +130,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'objectClass' => $this->crudObjectClass(),
         );
 
         return $this->crudRender(
@@ -198,6 +200,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'objectClass' => $this->crudObjectClass(),
         );
 
         return $this->crudRender(
@@ -243,6 +246,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'objectClass' => $this->crudObjectClass(),
         );
 
         return $this->crudRender(
