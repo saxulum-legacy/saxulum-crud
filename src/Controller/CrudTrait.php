@@ -5,6 +5,8 @@ namespace Saxulum\Crud\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Saxulum\Crud\Listing\Listing;
+use Saxulum\Crud\Listing\ListingFactory;
 use Saxulum\Crud\Pagination\PaginatorInterface;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
 use Saxulum\Crud\Util\Helper;
@@ -58,6 +60,7 @@ trait CrudTrait
             'request' => $request,
             'pagination' => $pagination,
             'form' => isset($form) ? $form->createView() : null,
+            'listing' => $this->crudListing(),
             'listRoute' => $this->crudListRoute(),
             'createRoute' => $this->crudCreateRoute(),
             'editRoute' => $this->crudEditRoute(),
@@ -70,6 +73,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'transDomain' => $this->crudTransDomain(),
             'objectClass' => $this->crudObjectClass(),
         );
 
@@ -135,6 +139,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'transDomain' => $this->crudTransDomain(),
             'objectClass' => $this->crudObjectClass(),
         );
 
@@ -202,6 +207,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'transDomain' => $this->crudTransDomain(),
             'objectClass' => $this->crudObjectClass(),
         );
 
@@ -242,6 +248,7 @@ trait CrudTrait
             'deleteRole' => $this->crudDeleteRole(),
             'identifier' => $this->crudIdentifier(),
             'transPrefix' => $this->crudTransPrefix(),
+            'transDomain' => $this->crudTransDomain(),
             'objectClass' => $this->crudObjectClass(),
         );
 
@@ -284,6 +291,14 @@ trait CrudTrait
     protected function crudListPerPage()
     {
         return 10;
+    }
+
+    /**
+     * @return Listing
+     */
+    protected function crudListing()
+    {
+        return $this->crudListingFactory()->createByClass($this->crudObjectClass());
     }
 
     /**
@@ -810,6 +825,14 @@ trait CrudTrait
 
     /**
      * @return string
+     */
+    protected function crudTransDomain()
+    {
+        return 'messages';
+    }
+
+    /**
+     * @return string
      * @throws \Exception
      */
     protected function crudTemplatePattern()
@@ -899,6 +922,18 @@ trait CrudTrait
         throw new \Exception(sprintf(
             'For actions using twig you need: %s',
             '\Twig_Environment'
+        ));
+    }
+
+    /**
+     * @return ListingFactory
+     * @throws \Exception
+     */
+    protected function crudListingFactory()
+    {
+        throw new \Exception(sprintf(
+            'For actions using listing factory you need: %s',
+            'Saxulum\Crud\Listing\ListingFactory'
         ));
     }
 

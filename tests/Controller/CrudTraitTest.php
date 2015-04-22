@@ -5,6 +5,11 @@ namespace Saxulum\Tests\Crud\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Knp\Component\Pager\PaginatorInterface;
+use Saxulum\Crud\Listing\ListingFactory;
+use Saxulum\Crud\Listing\Type\ArrayType;
+use Saxulum\Crud\Listing\Type\FloatType;
+use Saxulum\Crud\Listing\Type\IntegerType;
+use Saxulum\Crud\Listing\Type\StringType;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
 use Saxulum\Tests\Crud\Data\Controller\SampleController;
 use Saxulum\Tests\Crud\Data\Model\Sample;
@@ -41,6 +46,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'request' => $request,
                 'pagination' => $this->getPagination(),
                 'form' => $this->getFormView(),
+                'listing' => $this->getListingFactory()->createByClass('Saxulum\Tests\Crud\Data\Model\Sample'),
                 'listRoute' => 'sample_list',
                 'createRoute' => 'sample_create',
                 'editRoute' => 'sample_edit',
@@ -53,8 +59,10 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
                 'transPrefix' => 'sample',
+                'transDomain' => 'messages',
                 'objectClass' => 'Saxulum\Tests\Crud\Data\Model\Sample',
-            ))
+            )),
+            $this->getListingFactory()
         );
 
         $response = $controller->crudListObjects($request);
@@ -96,8 +104,10 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
                 'transPrefix' => 'sample',
+                'transDomain' => 'messages',
                 'objectClass' => 'Saxulum\Tests\Crud\Data\Model\Sample',
-            ))
+            )),
+            null
         );
 
         $response = $controller->crudCreateObject($request);
@@ -132,6 +142,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                     'id' => 1,
                 )
             ),
+            null,
             null
         );
 
@@ -175,8 +186,10 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
                 'transPrefix' => 'sample',
+                'transDomain' => 'messages',
                 'objectClass' => 'Saxulum\Tests\Crud\Data\Model\Sample',
-            ))
+            )),
+            null
         );
 
         $response = $controller->crudEditObject($request, 1);
@@ -212,6 +225,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                     'id' => 1,
                 )
             ),
+            null,
             null
         );
 
@@ -251,8 +265,10 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'deleteRole' => 'ROLE_SAMPLE_DELETE',
                 'identifier' => 'id',
                 'transPrefix' => 'sample',
+                'transDomain' => 'messages',
                 'objectClass' => 'Saxulum\Tests\Crud\Data\Model\Sample',
-            ))
+            )),
+            null
         );
 
         $response = $controller->crudViewObject($request, 1);
@@ -276,6 +292,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             null,
             null,
             $this->getUrlGenerator('sample_list'),
+            null,
             null
         );
 
@@ -540,6 +557,19 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         ;
 
         return $mock;
+    }
+
+    /**
+     * @return ListingFactory
+     */
+    protected function getListingFactory()
+    {
+        return new ListingFactory(array(
+            new ArrayType(),
+            new FloatType(),
+            new IntegerType(),
+            new StringType()
+        ));
     }
 
     /**

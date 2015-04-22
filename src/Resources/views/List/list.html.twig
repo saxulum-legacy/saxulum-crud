@@ -1,0 +1,64 @@
+{% extends '@SaxulumCrud/layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{% block title %}{{ (transPrefix~".list.title")|trans({}, transDomain) }}{% endblock %}</h1>
+            {% if form|default(false) %}
+                {{ form(form, {'action': url(listRoute, app.request.query.all|merge({'page': 1})), 'style': 'inline'}) }}
+            {% endif %}
+            {% if pagination.template|default(false) %}
+                {{ knp_pagination_render(pagination) }}
+            {% endif %}
+            {% if pagination|length > 0 %}
+                <table class="table table-striped listTable">
+                    <thead>
+                    <tr>
+                        {% block object_labels %}
+                            {% for listField in listFields %}
+                                <th>{{ (transPrefix~".list.label."~listField.name)|trans({}, transDomain) }}</th>
+                            {% endfor %}
+                        {% endblock %}
+                        <th>{{ (transPrefix~".list.actions")|trans({}, transDomain) }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for object in pagination %}
+                        <tr>
+                            {% block object_values %}
+                                {% for field in listFields %}
+                                    <td>
+                                        {% include listField.template with {'object': object 'field': field} %}
+                                    </td>
+                                {% endfor %}
+                            {% endblock %}
+                            {% block object_actions %}
+                                <td>
+                                    {% if editRoute|default(false) and is_granted(editRole, object) %}
+                                        <a class="btn btn-default" href="{{ url(editRoute, {'id': object.id }) }}" title="{{ (transPrefix~".list.edit")|trans({}, transDomain) }}">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if viewRoute|default(false) and is_granted(viewRole, object) %}
+                                        <a class="btn btn-default" href="{{ url(viewRoute, {'id': object.id }) }}" title="{{ (transPrefix~".list.view")|trans({}, transDomain) }}">
+                                            <i class="glyphicon glyphicon-eye-open"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if deleteRoute|default(false) and is_granted(deleteRole, object) %}
+                                        <a class="btn btn-danger" data-delete-link href="{{ url(deleteRoute, {'id': object.id }) }}" title="{{ (transPrefix~".list.delete")|trans({}, transDomain) }}">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            {% endblock %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if pagination.template|default(false) %}
+                    {{ knp_pagination_render(pagination) }}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

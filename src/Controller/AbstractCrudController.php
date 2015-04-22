@@ -3,6 +3,7 @@
 namespace Saxulum\Crud\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Saxulum\Crud\Listing\ListingFactory;
 use Saxulum\Crud\Pagination\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -43,12 +44,18 @@ abstract class AbstractCrudController
     protected $twig;
 
     /**
+     * @var ListingFactory
+     */
+    protected $listingFactory;
+
+    /**
      * @param SecurityContextInterface $security
      * @param ManagerRegistry          $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param PaginatorInterface       $paginator
      * @param UrlGeneratorInterface    $urlGenerator
      * @param \Twig_Environment        $twig
+     * @param ListingFactory $listingFactory
      */
     public function __construct(
         SecurityContextInterface $security,
@@ -56,7 +63,8 @@ abstract class AbstractCrudController
         FormFactoryInterface $formFactory = null,
         PaginatorInterface $paginator = null,
         UrlGeneratorInterface $urlGenerator = null,
-        \Twig_Environment $twig = null
+        \Twig_Environment $twig = null,
+        ListingFactory $listingFactory = null
     ) {
         $this->doctrine = $doctrine;
         $this->paginator = $paginator;
@@ -64,6 +72,7 @@ abstract class AbstractCrudController
         $this->urlGenerator = $urlGenerator;
         $this->security = $security;
         $this->twig = $twig;
+        $this->listingFactory = $listingFactory;
     }
 
     /**
@@ -112,5 +121,13 @@ abstract class AbstractCrudController
     protected function crudTwig()
     {
         return $this->twig;
+    }
+
+    /**
+     * @return ListingFactory
+     */
+    protected function crudListingFactory()
+    {
+        return $this->listingFactory;
     }
 }

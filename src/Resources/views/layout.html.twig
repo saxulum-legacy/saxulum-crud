@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>{% block pagetitle %}{% endblock pagetitle %}</title>
+        {% block stylesheet %}
+            {% stylesheets filter='lessphp,csscopyfile,?csscompress'
+                'vendor/twbs/bootstrap/less/bootstrap.less'
+                'vendor/saxulum/saxulum-bootstrap-provider/src/Saxulum/SaxulumBootstrapProvider/Resources/less/form.less'
+                'vendor/select2/select2/dist/css/select2.css'
+                'vendor/eternicode/bootstrap-datepicker/css/datepicker3.css'
+                'vendor/ironsummitmedia/startbootstrap-sb-admin-2/bower_components/metisMenu/dist/metisMenu.min.css'
+                'vendor/ironsummitmedia/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css'
+                'vendor/ironsummitmedia/startbootstrap-sb-admin-2/bower_components/font-awesome/css/font-awesome.min.css'
+            %}
+                <link rel="stylesheet" href="{{ app.request.basepath }}/{{ app.assetic_asset_path }}/{{ asset_url }}" />
+            {% endstylesheets %}
+            {% block layout_stylesheet %}{% endblock %}
+        {% endblock stylesheet %}
+    </head>
+    <body>
+        {% block body %}
+            <div id="wrapper">
+                <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="{{ url('backend_index') }}">{{ "nav.home"|trans({}, 'backend') }}</a>
+                    </div>
+                    {{ knp_menu_render('backend_top', { 'style': 'navbar-right' }) }}
+                    <div class="navbar-default sidebar" role="navigation">
+                        <div class="sidebar-nav navbar-collapse">
+                            {{ knp_menu_render('backend_left') }}
+                        </div>
+                    </div>
+                </nav>
+                <div id="page-wrapper">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+            <div id="confirm-delete" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <strong>{{ "deleteconfirmation"|trans }}</strong>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{ "cancel"|trans }}</button>
+                            <a href="#" class="btn btn-danger danger" data-delete-confirm-button="true">{{ "delete"|trans }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        {% block scripts %}
+            {% javascripts filter='?jsmin'
+                'vendor/jquery/jquery/jquery-*.js'
+                'vendor/twbs/bootstrap/js/collapse.js'
+                'vendor/twbs/bootstrap/js/dropdown.js'
+                'vendor/twbs/bootstrap/js/modal.js'
+                'vendor/twbs/bootstrap/js/tooltip.js'
+                'vendor/select2/select2/dist/js/select2.full.js'
+                'vendor/select2/select2/dist/js/i18n/de.js'
+                'vendor/eternicode/bootstrap-datepicker/js/bootstrap-datepicker.js'
+                'vendor/eternicode/bootstrap-datepicker/js/locales/bootstrap-datepicker.de.js'
+                'vendor/saxulum/saxulum-collection-js/saxulum-collection.js'
+                'vendor/ironsummitmedia/startbootstrap-sb-admin-2/bower_components/metisMenu/dist/metisMenu.min.js'
+                'vendor/ironsummitmedia/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js'
+            %}
+                <script type="text/javascript" src="{{ app.request.basepath }}/{{ app.assetic_asset_path }}/{{ asset_url }}"></script>
+            {% endjavascripts %}
+            {% block layout_scripts %}{% endblock %}
+            <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+            <![endif]-->
+        {% endblock scripts %}
+    </body>
+</html>
