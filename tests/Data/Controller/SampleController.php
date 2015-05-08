@@ -127,17 +127,19 @@ class SampleController
     }
 
     /**
+     * @param Sample $object
      * @return SampleType
      */
-    protected function crudCreateFormType()
+    protected function crudCreateFormType($object)
     {
         return new SampleType();
     }
 
     /**
+     * @param Sample $object
      * @return SampleType
      */
-    protected function crudEditFormType()
+    protected function crudEditFormType($object)
     {
         return new SampleType();
     }
