@@ -91,7 +91,7 @@ trait CrudTrait
         }
 
         $object = $this->crudCreateFactory();
-        $form = $this->crudForm($this->crudCreateFormType(), $object);
+        $form = $this->crudForm($this->crudCreateFormType($object), $object);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -161,7 +161,7 @@ trait CrudTrait
             throw new AccessDeniedException("You need the permission to edit this object!");
         }
 
-        $form = $this->crudForm($this->crudEditFormType(), $object);
+        $form = $this->crudForm($this->crudEditFormType($object), $object);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -380,10 +380,11 @@ trait CrudTrait
     }
 
     /**
+     * @param  object $object
      * @return FormTypeInterface
      * @throws \Exception
      */
-    protected function crudCreateFormType()
+    protected function crudCreateFormType($object)
     {
         throw new \Exception('You need to implement this method, if you use the createObject method!');
     }
@@ -471,10 +472,11 @@ trait CrudTrait
     }
 
     /**
+     * @param  object $object
      * @return FormTypeInterface
      * @throws \Exception
      */
-    protected function crudEditFormType()
+    protected function crudEditFormType($object)
     {
         throw new \Exception('You need to implement this method, if you use the editObject method!');
     }

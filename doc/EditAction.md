@@ -42,9 +42,10 @@ This method defines a form type.
 
 ```{.php}
 /**
+ * @param  object $object
  * @return FormTypeInterface
  */
-protected function crudEditFormType()
+protected function crudEditFormType($object)
 ```
 
 ### Facultative
@@ -112,7 +113,7 @@ This method defines the redirect url after edit object
 
 ```{.php}
 /**
- * @param object
+ * @param  object $object
  * @return string
  */
 protected function crudEditRedirectUrl($object)

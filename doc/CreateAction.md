@@ -41,9 +41,10 @@ This method defines a form type.
 
 ```{.php}
 /**
+ * @param  object $object
  * @return FormTypeInterface
  */
-protected function crudCreateFormType()
+protected function crudCreateFormType($object)
 ```
 
 ### Facultative
@@ -121,7 +122,7 @@ This method defines the redirect url after create object
 
 ```{.php}
 /**
- * @param object
+ * @param  object $object
  * @return string
  */
 protected function crudCreateRedirectUrl($object)
