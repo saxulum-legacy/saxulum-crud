@@ -3,6 +3,7 @@
 namespace Saxulum\Crud\Listing;
 
 use Saxulum\Crud\Listing\Type\TypeInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class Listing implements \Iterator
 {
@@ -10,6 +11,11 @@ class Listing implements \Iterator
      * @var TypeInterface[]
      */
     protected $types;
+
+    /**
+     * @var \ReflectionClass
+     */
+    protected $reflectionClass;
 
     /**
      * @var Field[]
@@ -23,8 +29,9 @@ class Listing implements \Iterator
 
     /**
      * @param TypeInterface[] $types
+     * @param string $class
      */
-    public function __construct(array $types)
+    public function __construct(array $types, $class)
     {
         foreach($types as $type) {
             if(!$type instanceof TypeInterface) {
@@ -36,6 +43,7 @@ class Listing implements \Iterator
             }
             $this->types[$type->getName()] = $type;
         }
+        $this->reflectionClass = new \ReflectionClass($class);
     }
 
     /**
@@ -46,21 +54,28 @@ class Listing implements \Iterator
      */
     public function add($name, $type = 'string', array $options = array())
     {
-        if($type instanceof TypeInterface) {
-            $this->fields[] = new Field(
-                $name,
-                $type->getName(),
-                $type->getTemplate(),
-                $options
-            );
+        $getMethod = 'get' .ucfirst($name);
+        $isMethod = 'is' . ucfirst($name);
 
-            return $this;
+        $isAccessible = false;
+        if(($this->reflectionClass->hasProperty($name) && $this->reflectionClass->getProperty($name)->isPublic()) ||
+           ($this->reflectionClass->hasMethod($getMethod) && $this->reflectionClass->getMethod($getMethod)->isPublic()) ||
+           ($this->reflectionClass->hasMethod($isMethod) && $this->reflectionClass->getMethod($isMethod)->isPublic())) {
+            $isAccessible = true;
+        }
+
+        if(!$isAccessible) {
+            throw new \InvalidArgumentException(sprintf('There is no public property, get or is method for: %s!', $name));
+        }
+
+        if(!$type instanceof TypeInterface) {
+            $type = $this->getType($type);
         }
 
         $this->fields[] = new Field(
             $name,
-            $this->getType($type)->getName(),
-            $this->getType($type)->getTemplate(),
+            $type->getName(),
+            $type->getTemplate(),
             $options
         );
 

@@ -3,6 +3,7 @@
 namespace Saxulum\Tests\Crud\Data\Controller;
 
 use Saxulum\Crud\Controller\AbstractCrudController;
+use Saxulum\Crud\Listing\Listing;
 use Saxulum\Tests\Crud\Data\Form\SampleListType;
 use Saxulum\Tests\Crud\Data\Form\SampleType;
 use Saxulum\Tests\Crud\Data\Model\Sample;
@@ -15,6 +16,17 @@ class SampleController extends AbstractCrudController
     protected function crudListFormType()
     {
         return new SampleListType();
+    }
+
+    /**
+     * @return Listing
+     */
+    protected function crudListListing()
+    {
+        return parent::crudListListing()
+            ->add('id', 'integer')
+            ->add('title')
+        ;
     }
 
     /**

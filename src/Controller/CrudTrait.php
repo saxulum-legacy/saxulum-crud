@@ -60,7 +60,7 @@ trait CrudTrait
             'request' => $request,
             'pagination' => $pagination,
             'form' => isset($form) ? $form->createView() : null,
-            'listing' => $this->crudListing(),
+            'listing' => $this->crudListListing(),
             'listRoute' => $this->crudListRoute(),
             'createRoute' => $this->crudCreateRoute(),
             'editRoute' => $this->crudEditRoute(),
@@ -296,9 +296,12 @@ trait CrudTrait
     /**
      * @return Listing
      */
-    protected function crudListing()
+    protected function crudListListing()
     {
-        return $this->crudListingFactory()->createByClass($this->crudObjectClass());
+        return $this
+            ->crudListingFactory()
+            ->create($this->crudObjectClass())
+        ;
     }
 
     /**

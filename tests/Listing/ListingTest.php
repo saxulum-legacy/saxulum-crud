@@ -8,6 +8,7 @@ use Saxulum\Crud\Listing\Type\ArrayType;
 use Saxulum\Crud\Listing\Type\FloatType;
 use Saxulum\Crud\Listing\Type\IntegerType;
 use Saxulum\Crud\Listing\Type\StringType;
+use Saxulum\Tests\Crud\Data\Model\Sample;
 
 class ListingTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,29 +21,15 @@ class ListingTest extends \PHPUnit_Framework_TestCase
             new StringType
         ));
 
-        $listing = $listingFactory->create();
+        $listing = $listingFactory->create(Sample::classname);
 
         $listing
-            ->add('array', 'array')
-            ->add('float', 'float')
-            ->add('int', 'int')
-            ->add('string')
+            ->add('id', 'integer')
+            ->add('amount', 'float')
+            ->add('title')
+            ->add('attributes', 'array')
         ;
 
         $this->assertCount(4, $listing);
-    }
-
-    public function testListingForClass()
-    {
-        $listingFactory = new ListingFactory(array(
-            new ArrayType,
-            new FloatType,
-            new IntegerType,
-            new StringType
-        ));
-
-        $listing = $listingFactory->createByClass('Saxulum\Tests\Crud\Data\Model\Sample');
-
-        $this->assertCount(2, $listing);
     }
 }

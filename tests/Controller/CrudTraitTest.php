@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -31,6 +32,8 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $request = new Request();
         $request->setSession(new Session(new MockArraySessionStorage()));
         $request->query->set('sample_list', array('title' => 't'));
+
+        $listFactory = $this->getListingFactory();
 
         $controller = new SampleController(
             $this->getSecurity('ROLE_SAMPLE_LIST'),
@@ -46,7 +49,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'request' => $request,
                 'pagination' => $this->getPagination(),
                 'form' => $this->getFormView(),
-                'listing' => $this->getListingFactory()->createByClass('Saxulum\Tests\Crud\Data\Model\Sample'),
+                'listing' => $listFactory->create('Saxulum\Tests\Crud\Data\Model\Sample')->add('id', 'integer')->add('title'),
                 'listRoute' => 'sample_list',
                 'createRoute' => 'sample_create',
                 'editRoute' => 'sample_edit',
@@ -62,7 +65,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 'transDomain' => 'messages',
                 'objectClass' => 'Saxulum\Tests\Crud\Data\Model\Sample',
             )),
-            $this->getListingFactory()
+            $listFactory
         );
 
         $response = $controller->crudListObjects($request);
@@ -564,12 +567,14 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
      */
     protected function getListingFactory()
     {
-        return new ListingFactory(array(
-            new ArrayType(),
-            new FloatType(),
-            new IntegerType(),
-            new StringType()
-        ));
+        return new ListingFactory(
+            array(
+                new ArrayType(),
+                new FloatType(),
+                new IntegerType(),
+                new StringType()
+            )
+        );
     }
 
     /**

@@ -9,7 +9,7 @@ class IntegerType implements TypeInterface
      */
     public function getName()
     {
-        return 'int';
+        return 'integer';
     }
 
     /**
