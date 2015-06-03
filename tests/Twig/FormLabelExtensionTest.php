@@ -14,7 +14,7 @@ class FormLabelExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param FormTypeInterface $formType
-     * @param string $expectName
+     * @param string            $expectName
      * @dataProvider prepareFormLabelProvider
      */
     public function testPrepareFormLabel(FormTypeInterface $formType, $expectName)
@@ -51,7 +51,7 @@ class FormLabelExtensionTest extends \PHPUnit_Framework_TestCase
             array(
                 new SampleType(),
                 'sample.edit.label',
-            )
+            ),
         );
     }
 }

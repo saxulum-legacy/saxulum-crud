@@ -2,4 +2,6 @@
 
 namespace Saxulum\Crud\Exception;
 
-class ServiceNotFoundException extends \Exception {}
+class ServiceNotFoundException extends \Exception
+{
+}

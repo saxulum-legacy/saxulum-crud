@@ -9,7 +9,8 @@ interface QueryBuilderForFilterFormInterface extends ObjectRepository
     const interfacename = __CLASS__;
 
     /**
-     * @param  array  $filterData
+     * @param array $filterData
+     *
      * @return object
      */
     public function getQueryBuilderForFilterForm(array $filterData = array());

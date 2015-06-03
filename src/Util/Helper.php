@@ -5,7 +5,8 @@ namespace Saxulum\Crud\Util;
 class Helper
 {
     /**
-     * @param  string $input
+     * @param string $input
+     *
      * @return string
      */
     public static function camelCaseToUnderscore($input)

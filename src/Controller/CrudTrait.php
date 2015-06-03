@@ -26,15 +26,17 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 trait CrudTrait
 {
     /**
-     * @param  Request    $request
-     * @param  array      $templateVars
+     * @param Request $request
+     * @param array   $templateVars
+     *
      * @return Response
+     *
      * @throws \Exception
      */
     public function crudListObjects(Request $request, array $templateVars = array())
     {
         if (!$this->crudListIsGranted()) {
-            throw new AccessDeniedException("You need the permission to list entities!");
+            throw new AccessDeniedException('You need the permission to list entities!');
         }
 
         if (null !== $formType = $this->crudListFormType()) {
@@ -82,14 +84,15 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request                   $request
-     * @param  array                     $templateVars
+     * @param Request $request
+     * @param array   $templateVars
+     *
      * @return Response|RedirectResponse
      */
     public function crudCreateObject(Request $request, array $templateVars = array())
     {
         if (!$this->crudCreateIsGranted()) {
-            throw new AccessDeniedException("You need the permission to create an object!");
+            throw new AccessDeniedException('You need the permission to create an object!');
         }
 
         $object = $this->crudCreateFactory();
@@ -142,9 +145,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request                   $request
-     * @param  object|string|int         $object
-     * @param  array                     $templateVars
+     * @param Request           $request
+     * @param object|string|int $object
+     * @param array             $templateVars
+     *
      * @return Response|RedirectResponse
      */
     public function crudEditObject(Request $request, $object, array $templateVars = array())
@@ -156,11 +160,11 @@ trait CrudTrait
         }
 
         if (null === $object) {
-            throw new NotFoundHttpException("There is no object with this id");
+            throw new NotFoundHttpException('There is no object with this id');
         }
 
         if (!$this->crudEditIsGranted($object)) {
-            throw new AccessDeniedException("You need the permission to edit this object!");
+            throw new AccessDeniedException('You need the permission to edit this object!');
         }
 
         $form = $this->crudForm($this->crudEditFormType($object), $object);
@@ -212,9 +216,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request                   $request
-     * @param  object|string|int         $object
-     * @param  array                     $templateVars
+     * @param Request           $request
+     * @param object|string|int $object
+     * @param array             $templateVars
+     *
      * @return Response|RedirectResponse
      */
     public function crudViewObject(Request $request, $object, array $templateVars = array())
@@ -226,11 +231,11 @@ trait CrudTrait
         }
 
         if (null === $object) {
-            throw new NotFoundHttpException("There is no object with this id");
+            throw new NotFoundHttpException('There is no object with this id');
         }
 
         if (!$this->crudViewIsGranted($object)) {
-            throw new AccessDeniedException("You need the permission to view this object!");
+            throw new AccessDeniedException('You need the permission to view this object!');
         }
 
         $baseTemplateVars = array(
@@ -258,8 +263,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request                   $request
-     * @param  object|string|int         $object
+     * @param Request           $request
+     * @param object|string|int $object
+     *
      * @return Response|RedirectResponse
      */
     public function crudDeleteObject(Request $request, $object)
@@ -271,11 +277,11 @@ trait CrudTrait
         }
 
         if (null === $object) {
-            throw new NotFoundHttpException("There is no object with this id");
+            throw new NotFoundHttpException('There is no object with this id');
         }
 
         if (!$this->crudDeleteIsGranted($object)) {
-            throw new AccessDeniedException("You need the permission to delete this object!");
+            throw new AccessDeniedException('You need the permission to delete this object!');
         }
 
         $this->crudDeletePreRemove($object);
@@ -382,8 +388,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  object $object
+     * @param object $object
+     *
      * @return FormTypeInterface
+     *
      * @throws \Exception
      */
     protected function crudCreateFormType($object)
@@ -392,7 +400,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  FormInterface $form
+     * @param FormInterface $form
+     *
      * @return bool
      */
     protected function crudCreateIsSubmitted(FormInterface $form)
@@ -415,6 +424,7 @@ trait CrudTrait
 
     /**
      * @param object
+     *
      * @return string
      */
     protected function crudCreateRedirectUrl($object)
@@ -433,16 +443,14 @@ trait CrudTrait
     }
 
     /**
-     * @param  object $object
-     * @return void
+     * @param object $object
      */
     protected function crudCreatePrePersist($object)
     {
     }
 
     /**
-     * @param  object $object
-     * @return void
+     * @param object $object
      */
     protected function crudCreatePostFlush($object)
     {
@@ -458,6 +466,7 @@ trait CrudTrait
 
     /**
      * @param object
+     *
      * @return bool
      */
     protected function crudEditIsGranted($object)
@@ -474,8 +483,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  object $object
+     * @param object $object
+     *
      * @return FormTypeInterface
+     *
      * @throws \Exception
      */
     protected function crudEditFormType($object)
@@ -484,7 +495,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  FormInterface $form
+     * @param FormInterface $form
+     *
      * @return bool
      */
     protected function crudEditIsSubmitted(FormInterface $form)
@@ -507,6 +519,7 @@ trait CrudTrait
 
     /**
      * @param object
+     *
      * @return string
      */
     protected function crudEditRedirectUrl($object)
@@ -525,16 +538,14 @@ trait CrudTrait
     }
 
     /**
-     * @param  object $object
-     * @return void
+     * @param object $object
      */
     protected function crudEditPrePersist($object)
     {
     }
 
     /**
-     * @param  object $object
-     * @return void
+     * @param object $object
      */
     protected function crudEditPostFlush($object)
     {
@@ -550,6 +561,7 @@ trait CrudTrait
 
     /**
      * @param object
+     *
      * @return bool
      */
     protected function crudViewIsGranted($object)
@@ -583,6 +595,7 @@ trait CrudTrait
 
     /**
      * @param $object
+     *
      * @return bool
      */
     protected function crudDeleteIsGranted($object)
@@ -607,16 +620,14 @@ trait CrudTrait
     }
 
     /**
-     * @param  object $object
-     * @return void
+     * @param object $object
      */
     protected function crudDeletePreRemove($object)
     {
     }
 
     /**
-     * @param  object $object
-     * @return void
+     * @param object $object
      */
     protected function crudDeletePostFlush($object)
     {
@@ -648,6 +659,7 @@ trait CrudTrait
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     protected function crudTemplatePattern()
@@ -670,6 +682,7 @@ trait CrudTrait
 
     /**
      * @return AuthorizationCheckerInterface
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudAuthorizationChecker()
@@ -682,6 +695,7 @@ trait CrudTrait
 
     /**
      * @return SecurityContextInterface
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudSecurity()
@@ -694,6 +708,7 @@ trait CrudTrait
 
     /**
      * @return ManagerRegistry
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudDoctrine()
@@ -706,6 +721,7 @@ trait CrudTrait
 
     /**
      * @return FormFactoryInterface
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudFormFactory()
@@ -718,6 +734,7 @@ trait CrudTrait
 
     /**
      * @return PaginatorInterface
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudPaginator()
@@ -730,6 +747,7 @@ trait CrudTrait
 
     /**
      * @return UrlGeneratorInterface
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudUrlGenerator()
@@ -742,6 +760,7 @@ trait CrudTrait
 
     /**
      * @return \Twig_Environment
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudTwig()
@@ -755,21 +774,25 @@ trait CrudTrait
     /**
      * @param mixed $attributes
      * @param mixed $object
+     *
      * @return bool
+     *
      * @throws \Exception
      */
     protected function crudIsGranted($attributes, $object = null)
     {
         try {
             return $this->crudAuthorizationChecker()->isGranted($attributes, $object);
-        } catch(ServiceNotFoundException $e) {
+        } catch (ServiceNotFoundException $e) {
             return $this->crudSecurity()->isGranted($attributes, $object);
         }
     }
 
     /**
-     * @param  string        $class
+     * @param string $class
+     *
      * @return ObjectManager
+     *
      * @throws \Exception
      */
     protected function crudManagerForClass($class)
@@ -784,7 +807,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  string           $class
+     * @param string $class
+     *
      * @return ObjectRepository
      */
     protected function crudRepositoryForClass($class)
@@ -794,6 +818,7 @@ trait CrudTrait
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     protected function crudIdentifier()
@@ -812,6 +837,7 @@ trait CrudTrait
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     protected function crudIdentifierMethod()
@@ -822,9 +848,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  FormTypeInterface $type
-     * @param  mixed             $data
-     * @param  array             $options
+     * @param FormTypeInterface $type
+     * @param mixed             $data
+     * @param array             $options
+     *
      * @return FormInterface
      */
     protected function crudForm(FormTypeInterface $type, $data = null, array $options = array())
@@ -833,8 +860,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object              $qb
-     * @param  Request             $request
+     * @param object  $qb
+     * @param Request $request
+     *
      * @return PaginationInterface
      */
     protected function crudPaginate($qb, Request $request)
@@ -847,8 +875,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  string $name
-     * @param  array  $parameters
+     * @param string $name
+     * @param array  $parameters
+     *
      * @return string
      */
     protected function crudGenerateRoute($name, array $parameters = array())
@@ -857,8 +886,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  string   $view
-     * @param  array    $parameters
+     * @param string $view
+     * @param array  $parameters
+     *
      * @return Response
      */
     protected function crudRender($view, array $parameters = array())

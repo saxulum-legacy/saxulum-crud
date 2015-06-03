@@ -11,7 +11,6 @@ use Saxulum\Tests\Crud\Data\Model\Sample;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class SampleController
 {
@@ -49,11 +48,11 @@ class SampleController
 
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param ManagerRegistry          $doctrine
-     * @param FormFactoryInterface     $formFactory
-     * @param PaginatorInterface       $paginator
-     * @param UrlGeneratorInterface    $urlGenerator
-     * @param \Twig_Environment        $twig
+     * @param ManagerRegistry               $doctrine
+     * @param FormFactoryInterface          $formFactory
+     * @param PaginatorInterface            $paginator
+     * @param UrlGeneratorInterface         $urlGenerator
+     * @param \Twig_Environment             $twig
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -129,6 +128,7 @@ class SampleController
 
     /**
      * @param Sample $object
+     *
      * @return SampleType
      */
     protected function crudCreateFormType($object)
@@ -138,6 +138,7 @@ class SampleController
 
     /**
      * @param Sample $object
+     *
      * @return SampleType
      */
     protected function crudEditFormType($object)
@@ -147,6 +148,7 @@ class SampleController
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     protected function crudTemplatePattern()
