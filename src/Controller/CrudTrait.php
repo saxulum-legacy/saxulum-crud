@@ -5,6 +5,7 @@ namespace Saxulum\Crud\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Saxulum\Crud\Exception\ServiceNotFoundException;
 use Saxulum\Crud\Listing\Listing;
 use Saxulum\Crud\Listing\ListingFactory;
 use Saxulum\Crud\Pagination\PaginatorInterface;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -33,7 +35,7 @@ trait CrudTrait
     public function crudListObjects(Request $request, array $templateVars = array())
     {
         $crudListRole = $this->crudListRole();
-        if (!$this->crudSecurity()->isGranted($crudListRole)) {
+        if (!$this->crudIsGranted($crudListRole)) {
             throw new AccessDeniedException(sprintf('You need the permission to list entities, role: %s!', $crudListRole));
         }
 
@@ -92,7 +94,7 @@ trait CrudTrait
     public function crudCreateObject(Request $request, array $templateVars = array())
     {
         $crudCreateRole = $this->crudCreateRole();
-        if (!$this->crudSecurity()->isGranted($crudCreateRole)) {
+        if (!$this->crudIsGranted($crudCreateRole)) {
             throw new AccessDeniedException(sprintf('You need the permission to create an object, role: %s!', $crudCreateRole));
         }
 
@@ -161,7 +163,7 @@ trait CrudTrait
         $object = $this->crudEditLoadObject($object, $request);
 
         $crudEditRole = $this->crudEditRole();
-        if (!$this->crudSecurity()->isGranted($crudEditRole, $object)) {
+        if (!$this->crudIsGranted($crudEditRole, $object)) {
             throw new AccessDeniedException(sprintf('You need the permission to edit this object, role: %s!', $crudEditRole));
         }
 
@@ -229,7 +231,7 @@ trait CrudTrait
         $object = $this->crudViewLoadObject($object, $request);
 
         $crudViewRole = $this->crudViewRole();
-        if (!$this->crudSecurity()->isGranted($crudViewRole, $object)) {
+        if (!$this->crudIsGranted($crudViewRole, $object)) {
             throw new AccessDeniedException(sprintf('You need the permission to view this object, role: %s!', $crudViewRole));
         }
 
@@ -269,7 +271,7 @@ trait CrudTrait
         $object = $this->crudDeleteLoadObject($object, $request);
 
         $crudDeleteRole = $this->crudDeleteRole();
-        if (!$this->crudSecurity()->isGranted($crudDeleteRole, $object)) {
+        if (!$this->crudIsGranted($crudDeleteRole, $object)) {
             throw new AccessDeniedException(sprintf('You need the permission to delete this object, role: %s!', $crudDeleteRole));
         }
 
@@ -857,12 +859,25 @@ trait CrudTrait
     abstract protected function crudObjectClass();
 
     /**
+     * @return AuthorizationCheckerInterface
+     *
+     * @throws ServiceNotFoundException
+     */
+    protected function crudAuthorizationChecker()
+    {
+        throw new ServiceNotFoundException(sprintf(
+            'For actions using authorization checker you need: %s',
+            'Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
+        ));
+    }
+
+    /**
      * @return SecurityContextInterface
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudSecurity()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using security you need: %s',
             'Symfony\Component\Security\Core\SecurityContextInterface'
         ));
@@ -870,11 +885,11 @@ trait CrudTrait
 
     /**
      * @return ManagerRegistry
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudDoctrine()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using doctrine you need: %s',
             'Doctrine\Common\Persistence\ManagerRegistry'
         ));
@@ -882,11 +897,11 @@ trait CrudTrait
 
     /**
      * @return FormFactoryInterface
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudFormFactory()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using form you need: %s',
             'Symfony\Component\Form\FormFactoryInterface'
         ));
@@ -894,11 +909,11 @@ trait CrudTrait
 
     /**
      * @return PaginatorInterface
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudPaginator()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using pagination you need: %s',
             'Saxulum\Crud\Pagination\PaginatorInterface'
         ));
@@ -906,11 +921,11 @@ trait CrudTrait
 
     /**
      * @return UrlGeneratorInterface
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudUrlGenerator()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using url generation you need: %s',
             'Symfony\Component\Routing\Generator\UrlGeneratorInterface'
         ));
@@ -918,11 +933,11 @@ trait CrudTrait
 
     /**
      * @return \Twig_Environment
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudTwig()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using twig you need: %s',
             '\Twig_Environment'
         ));
@@ -930,14 +945,31 @@ trait CrudTrait
 
     /**
      * @return ListingFactory
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudListingFactory()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using listing factory you need: %s',
             'Saxulum\Crud\Listing\ListingFactory'
         ));
+    }
+
+    /**
+     * @param mixed $attributes
+     * @param mixed $object
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    protected function crudIsGranted($attributes, $object = null)
+    {
+        try {
+            return $this->crudAuthorizationChecker()->isGranted($attributes, $object);
+        } catch (ServiceNotFoundException $e) {
+            return $this->crudSecurity()->isGranted($attributes, $object);
+        }
     }
 
     /**

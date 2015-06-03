@@ -7,6 +7,7 @@ use Saxulum\Crud\Listing\ListingFactory;
 use Saxulum\Crud\Pagination\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 abstract class AbstractCrudController
@@ -14,9 +15,9 @@ abstract class AbstractCrudController
     use CrudTrait;
 
     /**
-     * @var SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
-    protected $security;
+    protected $authorizationChecker;
 
     /**
      * @var ManagerRegistry
@@ -49,7 +50,7 @@ abstract class AbstractCrudController
     protected $listingFactory;
 
     /**
-     * @param SecurityContextInterface $security
+     * @param AuthorizationCheckerInterface $authorizationChecker
      * @param ManagerRegistry          $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param PaginatorInterface       $paginator
@@ -58,7 +59,7 @@ abstract class AbstractCrudController
      * @param ListingFactory $listingFactory
      */
     public function __construct(
-        SecurityContextInterface $security,
+        AuthorizationCheckerInterface $authorizationChecker,
         ManagerRegistry $doctrine,
         FormFactoryInterface $formFactory = null,
         PaginatorInterface $paginator = null,
@@ -66,13 +67,21 @@ abstract class AbstractCrudController
         \Twig_Environment $twig = null,
         ListingFactory $listingFactory = null
     ) {
+        $this->authorizationChecker = $authorizationChecker;
         $this->doctrine = $doctrine;
         $this->paginator = $paginator;
         $this->formFactory = $formFactory;
         $this->urlGenerator = $urlGenerator;
-        $this->security = $security;
         $this->twig = $twig;
         $this->listingFactory = $listingFactory;
+    }
+
+    /**
+     * @return AuthorizationCheckerInterface
+     */
+    protected function crudAuthorizationChecker()
+    {
+        return $this->authorizationChecker;
     }
 
     /**
@@ -105,14 +114,6 @@ abstract class AbstractCrudController
     protected function crudUrlGenerator()
     {
         return $this->urlGenerator;
-    }
-
-    /**
-     * @return SecurityContextInterface
-     */
-    protected function crudSecurity()
-    {
-        return $this->security;
     }
 
     /**
