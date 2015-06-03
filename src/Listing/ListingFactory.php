@@ -9,7 +9,7 @@ class ListingFactory
     /**
      * @var TypeInterface[]
      */
-    protected $types;
+    protected $types = array();
 
     /**
      * @param TypeInterface[] $types
