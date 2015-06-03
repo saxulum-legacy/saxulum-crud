@@ -3,6 +3,9 @@
 namespace Saxulum\Tests\Crud\Pagination;
 
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Knp\Component\Pager\Paginator;
@@ -16,7 +19,7 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
      * @param PaginatorInterface $paginator
      * @dataProvider paginationProvider
      */
-    public function testPrepareFormLabel(PaginatorInterface $paginator)
+    public function testPaginate(PaginatorInterface $paginator)
     {
         $this->setExpectedException(
             'Doctrine\ORM\Query\QueryException',
@@ -59,9 +62,18 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
             ->willReturn($this->getConfiguration())
         ;
 
+        $entityManagerMock
+            ->expects($this->any())
+            ->method('getConnection')
+            ->willReturn($this->getConnection())
+        ;
+
         return $entityManagerMock;
     }
 
+    /**
+     * @return Configuration
+     */
     protected function getConfiguration()
     {
         $configurationMock = $this->getMock('Doctrine\ORM\Configuration');
@@ -72,7 +84,49 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
             ->willReturn(new ArrayCache())
         ;
 
+        $configurationMock
+            ->expects($this->any())
+            ->method('getDefaultQueryHints')
+            ->willReturn(array())
+        ;
+
         return $configurationMock;
+    }
+
+    /**
+     * @return Connection
+     */
+    protected function getConnection()
+    {
+        $connectionMock = $this
+            ->getMockBuilder('Doctrine\DBAL\Connection')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $connectionMock
+            ->expects($this->any())
+            ->method('getDatabasePlatform')
+            ->willReturn($this->getDatabasePlatform())
+        ;
+
+        return $connectionMock;
+    }
+
+    /**
+     * @return AbstractPlatform
+     */
+    protected function getDatabasePlatform()
+    {
+        $databasePlattformMock = $this->getMock('Doctrine\DBAL\Platforms\AbstractPlatform');
+
+        $databasePlattformMock
+            ->expects($this->any())
+            ->method('getName')
+            ->willReturn('mysql')
+        ;
+
+        return $databasePlattformMock;
     }
 
     /**
