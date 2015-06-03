@@ -52,7 +52,7 @@ Use the following trait within your controller: [Saxulum\Crud\Controller\CrudTra
  * `crudPaginator`: contains an instance of a knp paginator
  * `crudFormFactory`: contais an instance of a symfony form factory
  * `crudUrlGenerator`: contains an instance of symfony routing url generator
- * ~crudSecurity~: deprecated by symfony 2.7, use `crudAuthorizationChecker`
+ * ~~`crudSecurity`~~: deprecated by symfony 2.7, use `crudAuthorizationChecker`
  * `crudTwig`: contains an instance of the twig environment
 
 ### Twig: form label generation
