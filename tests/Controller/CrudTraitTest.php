@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CrudTraitTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,7 +29,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $request->query->set('sample_list', array('title' => 't'));
 
         $controller = new SampleController(
-            $this->getSecurity('ROLE_SAMPLE_LIST'),
+            $this->getAuthorizationChecker('ROLE_SAMPLE_LIST'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
                 'Saxulum\Tests\Crud\Data\Form\SampleListType',
@@ -73,7 +73,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $model = new Sample();
 
         $controller = new SampleController(
-            $this->getSecurity('ROLE_SAMPLE_CREATE'),
+            $this->getAuthorizationChecker('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
                 'Saxulum\Tests\Crud\Data\Form\SampleType',
@@ -119,7 +119,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $model->setTitle('title');
 
         $controller = new SampleController(
-            $this->getSecurity('ROLE_SAMPLE_CREATE'),
+            $this->getAuthorizationChecker('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
                 'Saxulum\Tests\Crud\Data\Form\SampleType',
@@ -152,7 +152,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $this->setModelId($model, 1);
 
         $controller = new SampleController(
-            $this->getSecurity('ROLE_SAMPLE_EDIT'),
+            $this->getAuthorizationChecker('ROLE_SAMPLE_EDIT'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
                 'Saxulum\Tests\Crud\Data\Form\SampleType',
@@ -199,7 +199,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $this->setModelId($model, 1);
 
         $controller = new SampleController(
-            $this->getSecurity('ROLE_SAMPLE_EDIT'),
+            $this->getAuthorizationChecker('ROLE_SAMPLE_EDIT'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
                 'Saxulum\Tests\Crud\Data\Form\SampleType',
@@ -232,7 +232,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $this->setModelId($model, 1);
 
         $controller = new SampleController(
-            $this->getSecurity('ROLE_SAMPLE_VIEW'),
+            $this->getAuthorizationChecker('ROLE_SAMPLE_VIEW'),
             $this->getDoctrine(Sample::classname),
             null,
             null,
@@ -272,7 +272,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $this->setModelId($model, 1);
 
         $controller = new SampleController(
-            $this->getSecurity('ROLE_SAMPLE_DELETE'),
+            $this->getAuthorizationChecker('ROLE_SAMPLE_DELETE'),
             $this->getDoctrine(Sample::classname),
             null,
             null,
@@ -509,11 +509,11 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param  string                   $expectedRole
-     * @return SecurityContextInterface
+     * @return AuthorizationCheckerInterface
      */
-    protected function getSecurity($expectedRole)
+    protected function getAuthorizationChecker($expectedRole)
     {
-        $mock = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $mock = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
         $mock
             ->expects($this->once())
             ->method('isGranted')

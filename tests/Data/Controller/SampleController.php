@@ -10,6 +10,7 @@ use Saxulum\Tests\Crud\Data\Form\SampleType;
 use Saxulum\Tests\Crud\Data\Model\Sample;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class SampleController
@@ -17,9 +18,9 @@ class SampleController
     use CrudTrait;
 
     /**
-     * @var SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
-    protected $security;
+    protected $authorizationChecker;
 
     /**
      * @var ManagerRegistry
@@ -47,7 +48,7 @@ class SampleController
     protected $twig;
 
     /**
-     * @param SecurityContextInterface $security
+     * @param AuthorizationCheckerInterface $authorizationChecker
      * @param ManagerRegistry          $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param PaginatorInterface       $paginator
@@ -55,19 +56,27 @@ class SampleController
      * @param \Twig_Environment        $twig
      */
     public function __construct(
-        SecurityContextInterface $security,
+        AuthorizationCheckerInterface $authorizationChecker,
         ManagerRegistry $doctrine,
         FormFactoryInterface $formFactory = null,
         PaginatorInterface $paginator = null,
         UrlGeneratorInterface $urlGenerator = null,
         \Twig_Environment $twig = null
     ) {
+        $this->authorizationChecker = $authorizationChecker;
         $this->doctrine = $doctrine;
         $this->paginator = $paginator;
         $this->formFactory = $formFactory;
         $this->urlGenerator = $urlGenerator;
-        $this->security = $security;
         $this->twig = $twig;
+    }
+
+    /**
+     * @return AuthorizationCheckerInterface
+     */
+    protected function crudAuthorizationChecker()
+    {
+        return $this->authorizationChecker;
     }
 
     /**
@@ -100,14 +109,6 @@ class SampleController
     protected function crudUrlGenerator()
     {
         return $this->urlGenerator;
-    }
-
-    /**
-     * @return SecurityContextInterface
-     */
-    protected function crudSecurity()
-    {
-        return $this->security;
     }
 
     /**

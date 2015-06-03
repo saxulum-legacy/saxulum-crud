@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -310,7 +311,7 @@ trait CrudTrait
      */
     protected function crudListIsGranted()
     {
-        return $this->crudSecurity()->isGranted($this->crudListRole());
+        return $this->crudIsGranted($this->crudListRole());
     }
 
     /**
@@ -358,7 +359,7 @@ trait CrudTrait
      */
     protected function crudCreateIsGranted()
     {
-        return $this->crudSecurity()->isGranted($this->crudCreateRole());
+        return $this->crudIsGranted($this->crudCreateRole());
     }
 
     /**
@@ -460,7 +461,7 @@ trait CrudTrait
      */
     protected function crudEditIsGranted($object)
     {
-        return $this->crudSecurity()->isGranted($this->crudEditRole(), $object);
+        return $this->crudIsGranted($this->crudEditRole(), $object);
     }
 
     /**
@@ -552,7 +553,7 @@ trait CrudTrait
      */
     protected function crudViewIsGranted($object)
     {
-        return $this->crudSecurity()->isGranted($this->crudViewRole(), $object);
+        return $this->crudIsGranted($this->crudViewRole(), $object);
     }
 
     /**
@@ -585,7 +586,7 @@ trait CrudTrait
      */
     protected function crudDeleteIsGranted($object)
     {
-        return $this->crudSecurity()->isGranted($this->crudDeleteRole(), $object);
+        return $this->crudIsGranted($this->crudDeleteRole(), $object);
     }
 
     /**
@@ -667,12 +668,24 @@ trait CrudTrait
     abstract protected function crudObjectClass();
 
     /**
+     * @return AuthorizationCheckerInterface
+     * @throws ServiceNotFoundException
+     */
+    protected function crudAuthorizationChecker()
+    {
+        throw new ServiceNotFoundException(sprintf(
+            'For actions using authorization checker you need: %s',
+            'Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
+        ));
+    }
+
+    /**
      * @return SecurityContextInterface
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudSecurity()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using security you need: %s',
             'Symfony\Component\Security\Core\SecurityContextInterface'
         ));
@@ -680,11 +693,11 @@ trait CrudTrait
 
     /**
      * @return ManagerRegistry
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudDoctrine()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using doctrine you need: %s',
             'Doctrine\Common\Persistence\ManagerRegistry'
         ));
@@ -692,11 +705,11 @@ trait CrudTrait
 
     /**
      * @return FormFactoryInterface
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudFormFactory()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using form you need: %s',
             'Symfony\Component\Form\FormFactoryInterface'
         ));
@@ -704,11 +717,11 @@ trait CrudTrait
 
     /**
      * @return PaginatorInterface
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudPaginator()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using pagination you need: %s',
             'Knp\Component\Pager\PaginatorInterface'
         ));
@@ -716,11 +729,11 @@ trait CrudTrait
 
     /**
      * @return UrlGeneratorInterface
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudUrlGenerator()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using url generation you need: %s',
             'Symfony\Component\Routing\Generator\UrlGeneratorInterface'
         ));
@@ -728,14 +741,29 @@ trait CrudTrait
 
     /**
      * @return \Twig_Environment
-     * @throws \Exception
+     * @throws ServiceNotFoundException
      */
     protected function crudTwig()
     {
-        throw new \Exception(sprintf(
+        throw new ServiceNotFoundException(sprintf(
             'For actions using twig you need: %s',
             '\Twig_Environment'
         ));
+    }
+
+    /**
+     * @param mixed $attributes
+     * @param mixed $object
+     * @return bool
+     * @throws \Exception
+     */
+    protected function crudIsGranted($attributes, $object = null)
+    {
+        try {
+            return $this->crudAuthorizationChecker()->isGranted($attributes, $object);
+        } catch(ServiceNotFoundException $e) {
+            return $this->crudSecurity()->isGranted($attributes, $object);
+        }
     }
 
     /**

@@ -47,11 +47,12 @@ Use the following trait within your controller: [Saxulum\Crud\Controller\CrudTra
 
 #### Services
 
+ * `crudAuthorizationChecker`: contains an instance of the symfony authorization checker
  * `crudDoctrine`: contains an instance of the doctrine manager registry
  * `crudPaginator`: contains an instance of a knp paginator
  * `crudFormFactory`: contais an instance of a symfony form factory
  * `crudUrlGenerator`: contains an instance of symfony routing url generator
- * `crudSecurity`: contains an instance of a symfony security context
+ * `crudSecurity`: contains an instance of a symfony security context (replaced by `crudAuthorizationChecker`)
  * `crudTwig`: contains an instance of the twig environment
 
 ### Twig: form label generation
