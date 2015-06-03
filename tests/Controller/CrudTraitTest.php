@@ -20,11 +20,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class CrudTraitTest extends \PHPUnit_Framework_TestCase
 {
@@ -423,9 +421,10 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  FormTypeInterface    $expectedType
-     * @param  mixed                $expectedData
-     * @param  string               $requestProperty
+     * @param FormTypeInterface $expectedType
+     * @param mixed             $expectedData
+     * @param string            $requestProperty
+     *
      * @return FormFactoryInterface
      */
     protected function getFormFactory($expectedType, $expectedData, $requestProperty = null)
@@ -500,13 +499,14 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  string                $expectedName
-     * @param  array                 $expectedParameters
+     * @param string $expectedName
+     * @param array  $expectedParameters
+     *
      * @return UrlGeneratorInterface
      */
     protected function getUrlGenerator($expectedName, array $expectedParameters = array())
     {
-        $mock =  $this->getMock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
+        $mock = $this->getMock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
 
         $mock
             ->expects($this->any())
@@ -524,7 +524,8 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  string                   $expectedRole
+     * @param string $expectedRole
+     *
      * @return AuthorizationCheckerInterface
      */
     protected function getAuthorizationChecker($expectedRole)
@@ -542,8 +543,9 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  string            $expectedView
-     * @param  array             $expectedParameters
+     * @param string $expectedView
+     * @param array  $expectedParameters
+     *
      * @return \Twig_Environment
      */
     protected function getTwig($expectedView, array $expectedParameters)
@@ -573,7 +575,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 new ArrayType(),
                 new FloatType(),
                 new IntegerType(),
-                new StringType()
+                new StringType(),
             )
         );
     }

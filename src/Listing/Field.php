@@ -28,7 +28,7 @@ class Field
      * @param string $name
      * @param string $type
      * @param string $template
-     * @param array $options
+     * @param array  $options
      */
     public function __construct($name, $type, $template, array $options)
     {

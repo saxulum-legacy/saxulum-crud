@@ -16,8 +16,8 @@ class ListingFactory
      */
     public function __construct(array $types)
     {
-        foreach($types as $type) {
-            if(!$type instanceof TypeInterface) {
+        foreach ($types as $type) {
+            if (!$type instanceof TypeInterface) {
                 throw new \InvalidArgumentException(sprintf(
                     'Type must be an instance of %s, %s given!',
                     'Saxulum\Crud\Listing\Type\TypeInterface',
@@ -30,6 +30,7 @@ class ListingFactory
 
     /**
      * @param string $class
+     *
      * @return Listing
      */
     public function create($class)

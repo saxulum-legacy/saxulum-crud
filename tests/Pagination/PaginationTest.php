@@ -34,7 +34,8 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  string $dql
+     * @param string $dql
+     *
      * @return Query
      */
     protected function getQuery($dql)

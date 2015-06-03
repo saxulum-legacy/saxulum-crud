@@ -8,7 +8,6 @@ use Saxulum\Crud\Pagination\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 abstract class AbstractCrudController
 {
@@ -51,12 +50,12 @@ abstract class AbstractCrudController
 
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param ManagerRegistry          $doctrine
-     * @param FormFactoryInterface     $formFactory
-     * @param PaginatorInterface       $paginator
-     * @param UrlGeneratorInterface    $urlGenerator
-     * @param \Twig_Environment        $twig
-     * @param ListingFactory $listingFactory
+     * @param ManagerRegistry               $doctrine
+     * @param FormFactoryInterface          $formFactory
+     * @param PaginatorInterface            $paginator
+     * @param UrlGeneratorInterface         $urlGenerator
+     * @param \Twig_Environment             $twig
+     * @param ListingFactory                $listingFactory
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,

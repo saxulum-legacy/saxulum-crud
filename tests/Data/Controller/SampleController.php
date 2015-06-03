@@ -47,6 +47,7 @@ class SampleController extends AbstractCrudController
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     protected function crudTemplatePattern()

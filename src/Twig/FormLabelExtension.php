@@ -18,7 +18,8 @@ class FormLabelExtension extends \Twig_Extension
     }
 
     /**
-     * @param  FormView $formView
+     * @param FormView $formView
+     *
      * @return string
      */
     public function prepareFormLabel(FormView $formView)
@@ -43,7 +44,8 @@ class FormLabelExtension extends \Twig_Extension
     }
 
     /**
-     * @param  FormView $formView
+     * @param FormView $formView
+     *
      * @return array
      */
     protected function getLabelParts(FormView $formView)

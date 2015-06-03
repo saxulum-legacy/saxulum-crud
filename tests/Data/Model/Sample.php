@@ -44,6 +44,7 @@ class Sample
 
     /**
      * @param float $amount
+     *
      * @return $this
      */
     public function setAmount($amount)
@@ -62,7 +63,8 @@ class Sample
     }
 
     /**
-     * @param  string $title
+     * @param string $title
+     *
      * @return Sample
      */
     public function setTitle($title)
@@ -82,6 +84,7 @@ class Sample
 
     /**
      * @param array $attributes
+     *
      * @return $this
      */
     public function setAttributes(array $attributes)

@@ -2,7 +2,6 @@
 
 namespace Saxulum\Tests\Crud\Listing;
 
-use Saxulum\Crud\Listing\Listing;
 use Saxulum\Crud\Listing\ListingFactory;
 use Saxulum\Crud\Listing\Type\ArrayType;
 use Saxulum\Crud\Listing\Type\FloatType;
@@ -15,10 +14,10 @@ class ListingTest extends \PHPUnit_Framework_TestCase
     public function testListing()
     {
         $listingFactory = new ListingFactory(array(
-            new ArrayType,
-            new FloatType,
-            new IntegerType,
-            new StringType
+            new ArrayType(),
+            new FloatType(),
+            new IntegerType(),
+            new StringType(),
         ));
 
         $listing = $listingFactory->create(Sample::classname);

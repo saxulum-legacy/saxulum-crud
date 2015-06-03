@@ -27,9 +27,11 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 trait CrudTrait
 {
     /**
-     * @param  Request    $request
-     * @param  array      $templateVars
+     * @param Request $request
+     * @param array   $templateVars
+     *
      * @return Response
+     *
      * @throws \Exception
      */
     public function crudListObjects(Request $request, array $templateVars = array())
@@ -87,8 +89,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request                   $request
-     * @param  array                     $templateVars
+     * @param Request $request
+     * @param array   $templateVars
+     *
      * @return Response|RedirectResponse
      */
     public function crudCreateObject(Request $request, array $templateVars = array())
@@ -153,9 +156,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request                   $request
-     * @param  object|string|int         $object
-     * @param  array                     $templateVars
+     * @param Request           $request
+     * @param object|string|int $object
+     * @param array             $templateVars
+     *
      * @return Response|RedirectResponse
      */
     public function crudEditObject(Request $request, $object, array $templateVars = array())
@@ -221,9 +225,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request                   $request
-     * @param  object|string|int         $object
-     * @param  array                     $templateVars
+     * @param Request           $request
+     * @param object|string|int $object
+     * @param array             $templateVars
+     *
      * @return Response|RedirectResponse
      */
     public function crudViewObject(Request $request, $object, array $templateVars = array())
@@ -262,8 +267,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request                   $request
-     * @param  object|string|int         $object
+     * @param Request           $request
+     * @param object|string|int $object
+     *
      * @return Response|RedirectResponse
      */
     public function crudDeleteObject(Request $request, $object)
@@ -323,7 +329,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request            $request
+     * @param Request $request
+     *
      * @return FormInterface|null
      */
     protected function crudListForm(Request $request)
@@ -344,8 +351,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request $request
-     * @param  array   $formData
+     * @param Request $request
+     * @param array   $formData
+     *
      * @return array
      */
     protected function crudListFormDataEnrich(Request $request, array $formData)
@@ -354,9 +362,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request  $request
-     * @param  array    $baseTemplateVars
-     * @param  array    $templateVars
+     * @param Request $request
+     * @param array   $baseTemplateVars
+     * @param array   $templateVars
+     *
      * @return Response
      */
     protected function crudListRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
@@ -392,7 +401,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return object
      */
     protected function crudCreateFactory(Request $request)
@@ -403,8 +413,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  Request       $request
+     * @param object  $object
+     * @param Request $request
+     *
      * @return FormInterface
      */
     protected function crudCreateForm($object, Request $request)
@@ -414,6 +425,7 @@ trait CrudTrait
 
     /**
      * @return FormTypeInterface
+     *
      * @throws \Exception
      */
     protected function crudCreateFormType()
@@ -422,9 +434,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
+     *
      * @return bool
      */
     protected function crudCreateIsSubmitted($object, FormInterface $form, Request $request)
@@ -446,10 +459,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
-     * @return void
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
      */
     protected function crudCreateSuccessFlashMesssage($object, FormInterface $form, Request $request)
     {
@@ -457,10 +469,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
-     * @return void
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
      */
     protected function crudCreateErrorFlashMesssage($object, FormInterface $form, Request $request)
     {
@@ -468,9 +479,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  object                    $object
-     * @param  FormInterface             $form
-     * @param  Request                   $request
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
+     *
      * @return RedirectResponse|Response
      */
     protected function crudCreateSuccessResponse($object, FormInterface $form, Request $request)
@@ -482,9 +494,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  object                         $object
-     * @param  FormInterface                  $form
-     * @param  Request                        $request
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
+     *
      * @return RedirectResponse|Response|null
      */
     protected function crudCreateErrorResponse($object, FormInterface $form, Request $request)
@@ -493,9 +506,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request  $request
-     * @param  array    $baseTemplateVars
-     * @param  array    $templateVars
+     * @param Request $request
+     * @param array   $baseTemplateVars
+     * @param array   $templateVars
+     *
      * @return Response
      */
     protected function crudCreateRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
@@ -515,20 +529,18 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
-     * @return void
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
      */
     protected function crudCreatePrePersist($object, FormInterface $form, Request $request)
     {
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
-     * @return void
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
      */
     protected function crudCreatePostFlush($object, FormInterface $form, Request $request)
     {
@@ -543,8 +555,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object|string|int $object
-     * @param  Request           $request
+     * @param object|string|int $object
+     * @param Request           $request
+     *
      * @return object
      */
     protected function crudEditLoadObject($object, Request $request)
@@ -561,8 +574,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  Request       $request
+     * @param object  $object
+     * @param Request $request
+     *
      * @return FormInterface
      */
     protected function crudEditForm($object, Request $request)
@@ -572,6 +586,7 @@ trait CrudTrait
 
     /**
      * @return FormTypeInterface
+     *
      * @throws \Exception
      */
     protected function crudEditFormType()
@@ -580,9 +595,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
+     *
      * @return bool
      */
     protected function crudEditIsSubmitted($object, FormInterface $form, Request $request)
@@ -604,10 +620,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
-     * @return void
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
      */
     protected function crudEditSuccessFlashMesssage($object, FormInterface $form, Request $request)
     {
@@ -615,10 +630,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
-     * @return void
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
      */
     protected function crudEditErrorFlashMesssage($object, FormInterface $form, Request $request)
     {
@@ -626,9 +640,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  object                    $object
-     * @param  FormInterface             $form
-     * @param  Request                   $request
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
+     *
      * @return RedirectResponse|Response
      */
     protected function crudEditSuccessResponse($object, FormInterface $form, Request $request)
@@ -640,9 +655,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  object                         $object
-     * @param  FormInterface                  $form
-     * @param  Request                        $request
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
+     *
      * @return RedirectResponse|Response|null
      */
     protected function crudEditErrorResponse($object, FormInterface $form, Request $request)
@@ -651,9 +667,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request  $request
-     * @param  array    $baseTemplateVars
-     * @param  array    $templateVars
+     * @param Request $request
+     * @param array   $baseTemplateVars
+     * @param array   $templateVars
+     *
      * @return Response
      */
     protected function crudEditRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
@@ -673,20 +690,18 @@ trait CrudTrait
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
-     * @return void
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
      */
     protected function crudEditPrePersist($object, FormInterface $form, Request $request)
     {
     }
 
     /**
-     * @param  object        $object
-     * @param  FormInterface $form
-     * @param  Request       $request
-     * @return void
+     * @param object        $object
+     * @param FormInterface $form
+     * @param Request       $request
      */
     protected function crudEditPostFlush($object, FormInterface $form, Request $request)
     {
@@ -701,8 +716,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object|string|int $object
-     * @param  Request           $request
+     * @param object|string|int $object
+     * @param Request           $request
+     *
      * @return object
      */
     protected function crudViewLoadObject($object, Request $request)
@@ -719,9 +735,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  Request  $request
-     * @param  array    $baseTemplateVars
-     * @param  array    $templateVars
+     * @param Request $request
+     * @param array   $baseTemplateVars
+     * @param array   $templateVars
+     *
      * @return Response
      */
     protected function crudViewRenderTemplateResponse(Request $request, array $baseTemplateVars, array $templateVars)
@@ -749,8 +766,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object|string|int $object
-     * @param  Request           $request
+     * @param object|string|int $object
+     * @param Request           $request
+     *
      * @return object
      */
     protected function crudDeleteLoadObject($object, Request $request)
@@ -767,9 +785,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  object  $object
-     * @param  Request $request
-     * @return void
+     * @param object  $object
+     * @param Request $request
      */
     protected function crudDeleteSuccessFlashMesssage($object, Request $request)
     {
@@ -777,8 +794,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object                    $object
-     * @param  Request                   $request
+     * @param object  $object
+     * @param Request $request
+     *
      * @return RedirectResponse|Response
      */
     protected function crudDeleteSuccessResponse($object, Request $request)
@@ -787,18 +805,16 @@ trait CrudTrait
     }
 
     /**
-     * @param  object  $object
-     * @param  Request $request
-     * @return void
+     * @param object  $object
+     * @param Request $request
      */
     protected function crudDeletePreRemove($object, Request $request)
     {
     }
 
     /**
-     * @param  object  $object
-     * @param  Request $request
-     * @return void
+     * @param object  $object
+     * @param Request $request
      */
     protected function crudDeletePostFlush($object, Request $request)
     {
@@ -838,6 +854,7 @@ trait CrudTrait
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     protected function crudTemplatePattern()
@@ -873,6 +890,7 @@ trait CrudTrait
 
     /**
      * @return SecurityContextInterface
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudSecurity()
@@ -885,6 +903,7 @@ trait CrudTrait
 
     /**
      * @return ManagerRegistry
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudDoctrine()
@@ -897,6 +916,7 @@ trait CrudTrait
 
     /**
      * @return FormFactoryInterface
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudFormFactory()
@@ -909,6 +929,7 @@ trait CrudTrait
 
     /**
      * @return PaginatorInterface
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudPaginator()
@@ -921,6 +942,7 @@ trait CrudTrait
 
     /**
      * @return UrlGeneratorInterface
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudUrlGenerator()
@@ -933,6 +955,7 @@ trait CrudTrait
 
     /**
      * @return \Twig_Environment
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudTwig()
@@ -945,6 +968,7 @@ trait CrudTrait
 
     /**
      * @return ListingFactory
+     *
      * @throws ServiceNotFoundException
      */
     protected function crudListingFactory()
@@ -973,9 +997,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  object|string|int $object
-     * @param  Request           $request
-     * @return object            object
+     * @param object|string|int $object
+     * @param Request           $request
+     *
+     * @return object object
      */
     protected function crudLoadObject($object, Request $request)
     {
@@ -988,15 +1013,17 @@ trait CrudTrait
         $object = $repo->find($object);
 
         if (null === $object) {
-            throw new NotFoundHttpException("There is no object with this id");
+            throw new NotFoundHttpException('There is no object with this id');
         }
 
         return $object;
     }
 
     /**
-     * @param  string        $class
+     * @param string $class
+     *
      * @return ObjectManager
+     *
      * @throws \Exception
      */
     protected function crudManagerForClass($class)
@@ -1011,7 +1038,8 @@ trait CrudTrait
     }
 
     /**
-     * @param  string           $class
+     * @param string $class
+     *
      * @return ObjectRepository
      */
     protected function crudRepositoryForClass($class)
@@ -1021,6 +1049,7 @@ trait CrudTrait
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     protected function crudIdentifier()
@@ -1039,6 +1068,7 @@ trait CrudTrait
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     protected function crudIdentifierMethod()
@@ -1049,9 +1079,10 @@ trait CrudTrait
     }
 
     /**
-     * @param  FormTypeInterface $type
-     * @param  mixed             $data
-     * @param  array             $options
+     * @param FormTypeInterface $type
+     * @param mixed             $data
+     * @param array             $options
+     *
      * @return FormInterface
      */
     protected function crudForm(FormTypeInterface $type, $data = null, array $options = array())
@@ -1060,8 +1091,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  object       $target
-     * @param  Request      $request
+     * @param object  $target
+     * @param Request $request
+     *
      * @return \Traversable
      */
     protected function crudPaginate($target, Request $request)
@@ -1074,8 +1106,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  string $name
-     * @param  array  $parameters
+     * @param string $name
+     * @param array  $parameters
+     *
      * @return string
      */
     protected function crudGenerateRoute($name, array $parameters = array())
@@ -1084,8 +1117,9 @@ trait CrudTrait
     }
 
     /**
-     * @param  string   $view
-     * @param  array    $parameters
+     * @param string $view
+     * @param array  $parameters
+     *
      * @return Response
      */
     protected function crudRender($view, array $parameters = array())
