@@ -1,5 +1,5 @@
 <?php
 
-namespace Saxulum\Crud\Controller;
+namespace Saxulum\Crud\Exception;
 
 class ServiceNotFoundException extends \Exception {}

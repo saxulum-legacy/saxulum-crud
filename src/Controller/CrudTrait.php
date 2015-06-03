@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Saxulum\Crud\Exception\ServiceNotFoundException;
 use Saxulum\Crud\Repository\QueryBuilderForFilterFormInterface;
 use Saxulum\Crud\Util\Helper;
 use Symfony\Component\Form\FormInterface;
