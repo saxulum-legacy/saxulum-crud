@@ -361,7 +361,7 @@ trait CrudTrait
      */
     protected function crudListFormDataEnrich(Request $request, array $formData)
     {
-        return array_replace_recursive($formData, array());
+        return $formData;
     }
 
     /**
