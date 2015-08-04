@@ -34,20 +34,22 @@ class SampleController extends AbstractCrudController
 
     /**
      * @param Request $request
+     * @param object $object
      *
      * @return SampleType
      */
-    protected function crudCreateFormType(Request $request)
+    protected function crudCreateFormType(Request $request, $object)
     {
         return new SampleType();
     }
 
     /**
      * @param Request $request
-     * 
+     * @param object $object
+     *
      * @return SampleType
      */
-    protected function crudEditFormType(Request $request)
+    protected function crudEditFormType(Request $request, $object)
     {
         return new SampleType();
     }
