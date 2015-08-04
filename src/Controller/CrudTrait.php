@@ -5,6 +5,7 @@ namespace Saxulum\Crud\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Knp\Component\Pager\Pagination\AbstractPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Saxulum\Crud\Exception\ServiceNotFoundException;
 use Saxulum\Crud\Listing\Listing;
@@ -1101,7 +1102,7 @@ trait CrudTrait
      * @param object  $target
      * @param Request $request
      *
-     * @return \Traversable
+     * @return AbstractPagination
      */
     protected function crudPaginate($target, Request $request)
     {
