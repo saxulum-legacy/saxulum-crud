@@ -443,13 +443,15 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                 $formMock
                     ->expects($this->any())
                     ->method('getData')
-                    ->willReturn($givenData)
+                    ->will($this->returnCallback(function() use(&$givenData) {
+                        return $givenData;
+                    }))
                 ;
 
                 $formMock
                     ->expects($this->any())
                     ->method('handleRequest')
-                    ->will($this->returnCallback(function (Request $request) use ($givenData, $expectedData, $requestProperty, $formName) {
+                    ->will($this->returnCallback(function (Request $request) use (&$givenData, $expectedData, $requestProperty, $formName) {
 
                         if (null === $requestProperty) {
                             return $givenData;
@@ -466,8 +468,6 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
                             }
                             $propertyAccessor->setValue($givenData, $property, $value);
                         }
-
-                        return $givenData;
                     }))
                 ;
 
