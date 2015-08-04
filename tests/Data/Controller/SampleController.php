@@ -7,13 +7,16 @@ use Saxulum\Crud\Listing\Listing;
 use Saxulum\Tests\Crud\Data\Form\SampleListType;
 use Saxulum\Tests\Crud\Data\Form\SampleType;
 use Saxulum\Tests\Crud\Data\Model\Sample;
+use Symfony\Component\HttpFoundation\Request;
 
 class SampleController extends AbstractCrudController
 {
     /**
+     * @param Request $request
+     *
      * @return SampleListType
      */
-    protected function crudListFormType()
+    protected function crudListFormType(Request $request)
     {
         return new SampleListType();
     }
@@ -30,17 +33,21 @@ class SampleController extends AbstractCrudController
     }
 
     /**
+     * @param Request $request
+     *
      * @return SampleType
      */
-    protected function crudCreateFormType()
+    protected function crudCreateFormType(Request $request)
     {
         return new SampleType();
     }
 
     /**
+     * @param Request $request
+     * 
      * @return SampleType
      */
-    protected function crudEditFormType()
+    protected function crudEditFormType(Request $request)
     {
         return new SampleType();
     }

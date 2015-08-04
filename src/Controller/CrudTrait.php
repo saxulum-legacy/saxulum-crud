@@ -335,7 +335,7 @@ trait CrudTrait
      */
     protected function crudListForm(Request $request)
     {
-        if (null === $formType = $this->crudListFormType()) {
+        if (null === $formType = $this->crudListFormType($request)) {
             return null;
         }
 
@@ -343,9 +343,11 @@ trait CrudTrait
     }
 
     /**
+     * @param Request $request
+     *
      * @return FormTypeInterface|null
      */
-    protected function crudListFormType()
+    protected function crudListFormType(Request $request)
     {
         return null;
     }
@@ -420,15 +422,16 @@ trait CrudTrait
      */
     protected function crudCreateForm($object, Request $request)
     {
-        return $this->crudForm($this->crudCreateFormType(), $object);
+        return $this->crudForm($this->crudCreateFormType($request), $object);
     }
 
     /**
+     * @param Request $request
      * @return FormTypeInterface
      *
      * @throws \Exception
      */
-    protected function crudCreateFormType()
+    protected function crudCreateFormType(Request $request)
     {
         throw new \Exception('You need to implement this method, if you use the createObject method!');
     }
@@ -581,15 +584,17 @@ trait CrudTrait
      */
     protected function crudEditForm($object, Request $request)
     {
-        return $this->crudForm($this->crudEditFormType(), $object);
+        return $this->crudForm($this->crudEditFormType($request), $object);
     }
 
     /**
+     * @param Request $request
+     *
      * @return FormTypeInterface
      *
      * @throws \Exception
      */
-    protected function crudEditFormType()
+    protected function crudEditFormType(Request $request)
     {
         throw new \Exception('You need to implement this method, if you use the editObject method!');
     }
