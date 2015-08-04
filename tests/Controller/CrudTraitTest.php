@@ -395,7 +395,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
      */
     protected function getPaginator($expectedTarget, $expectedPage, $expectedLimit, $expectedOptions)
     {
-        $mock = $this->getMock('Saxulum\Crud\Pagination\PaginatorInterface');
+        $mock = $this->getMock('Knp\Component\Pager\PaginatorInterface');
 
         $mock
             ->expects($this->any())

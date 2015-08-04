@@ -3,8 +3,8 @@
 namespace Saxulum\Crud\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Saxulum\Crud\Listing\ListingFactory;
-use Saxulum\Crud\Pagination\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
