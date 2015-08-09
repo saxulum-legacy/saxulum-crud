@@ -480,7 +480,7 @@ trait CrudTrait
      */
     protected function crudCreateErrorFlashMesssage($object, FormInterface $form, Request $request)
     {
-        $this->crudFlashMessage($request, 'success', sprintf('%s.create.flash.error', $this->crudTransPrefix()));
+        $this->crudFlashMessage($request, 'error', sprintf('%s.create.flash.error', $this->crudTransPrefix()));
     }
 
     /**
@@ -644,7 +644,7 @@ trait CrudTrait
      */
     protected function crudEditErrorFlashMesssage($object, FormInterface $form, Request $request)
     {
-        $this->crudFlashMessage($request, 'success', sprintf('%s.edit.flash.error', $this->crudTransPrefix()));
+        $this->crudFlashMessage($request, 'error', sprintf('%s.edit.flash.error', $this->crudTransPrefix()));
     }
 
     /**
