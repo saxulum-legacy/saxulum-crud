@@ -16,11 +16,11 @@
 ## Requirements
 
  * php: >=5.4,
- * doctrine/common: ~2.4,
- * symfony/form: ~2.3,
- * symfony/http-kernel: ~2.3,
- * symfony/routing: ~2.3,
- * symfony/security: ~2.3
+ * doctrine/common: ~2.5,
+ * symfony/form: ~2.7,
+ * symfony/http-kernel: ~2.7,
+ * symfony/routing: ~2.7,
+ * symfony/security: ~2.7
  * twig/twig: ~1.2
 
 ## Installation
