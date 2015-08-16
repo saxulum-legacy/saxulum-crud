@@ -54,7 +54,7 @@ trait CrudTrait
 
         $repo = $this->crudRepositoryForClass($this->crudObjectClass());
         if (!$repo instanceof QueryBuilderForFilterFormInterface) {
-            throw new \Exception(sprintf('A repo used for crudListObjects needs to implement: %s', QueryBuilderForFilterFormInterface::interfacename));
+            throw new \Exception(sprintf('A repo used for crudListObjects needs to implement: %s', QueryBuilderForFilterFormInterface::classname));
         }
 
         $qb = $repo->getQueryBuilderForFilterForm($formData);

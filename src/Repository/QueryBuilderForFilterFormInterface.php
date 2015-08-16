@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 interface QueryBuilderForFilterFormInterface extends ObjectRepository
 {
-    const interfacename = __CLASS__;
+    const classname = __CLASS__;
 
     /**
      * @param array $filterData
