@@ -76,7 +76,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getAuthorizationChecker('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Data\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleEditType',
                 $model
             ),
             null,
@@ -122,7 +122,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getAuthorizationChecker('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Data\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleEditType',
                 $model,
                 'request'
             ),
@@ -155,7 +155,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getAuthorizationChecker('ROLE_SAMPLE_EDIT'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Data\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleEditType',
                 $model
             ),
             null,
@@ -202,7 +202,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getAuthorizationChecker('ROLE_SAMPLE_EDIT'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Data\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleEditType',
                 $model,
                 'request'
             ),
@@ -423,7 +423,10 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function (AbstractType $givenType, $givenData) use ($expectedType, $expectedData, $requestProperty) {
                 $this->assertInstanceOf($expectedType, $givenType);
 
-                $formName = $givenType->getName();
+                $reflection = new \ReflectionObject($givenType);
+                $className = $reflection->getName();
+                $name = substr($className, strlen($reflection->getNamespaceName()) + 1, -4);
+                $formName = $this->camelCaseToUnderscore($name);
 
                 $formMock = $this->getMock('Symfony\Component\Form\FormInterface');
                 $formMock
@@ -563,5 +566,21 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($model, $id);
         $reflectionProperty->setAccessible(false);
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    protected function camelCaseToUnderscore($string)
+    {
+        $output = '';
+        $stringParts = preg_split('/(?=[A-Z])/', $string);
+        foreach ($stringParts as $inputPart) {
+            if ('' !== $inputPart) {
+                $output .= rtrim($inputPart . '_', '_') . '_';
+            }
+        }
+        return strtolower(substr($output, 0, -1));
     }
 }

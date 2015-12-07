@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Saxulum\Crud\Controller\CrudTrait;
 use Saxulum\Tests\Crud\Data\Form\SampleListType;
-use Saxulum\Tests\Crud\Data\Form\SampleType;
+use Saxulum\Tests\Crud\Data\Form\SampleEditType;
 use Saxulum\Tests\Crud\Data\Model\Sample;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -129,21 +129,21 @@ class SampleController
     /**
      * @param Sample $object
      *
-     * @return SampleType
+     * @return SampleEditType
      */
     protected function crudCreateFormType($object)
     {
-        return new SampleType();
+        return new SampleEditType();
     }
 
     /**
      * @param Sample $object
      *
-     * @return SampleType
+     * @return SampleEditType
      */
     protected function crudEditFormType($object)
     {
-        return new SampleType();
+        return new SampleEditType();
     }
 
     /**

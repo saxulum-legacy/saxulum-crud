@@ -4,7 +4,7 @@ namespace Saxulum\Tests\Crud\Twig;
 
 use Saxulum\Crud\Twig\FormLabelExtension;
 use Saxulum\Tests\Crud\Data\Form\SampleListType;
-use Saxulum\Tests\Crud\Data\Form\SampleType;
+use Saxulum\Tests\Crud\Data\Form\SampleEditType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormTypeInterface;
@@ -13,11 +13,11 @@ use Symfony\Component\Form\ResolvedFormTypeFactory;
 class FormLabelExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param FormTypeInterface $formType
+     * @param string            $formType
      * @param string            $expectName
      * @dataProvider prepareFormLabelProvider
      */
-    public function testPrepareFormLabel(FormTypeInterface $formType, $expectName)
+    public function testPrepareFormLabel($formType, $expectName)
     {
         $formFactory = $this->getFormFactory();
         $form = $formFactory->create($formType);
@@ -45,11 +45,11 @@ class FormLabelExtensionTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new SampleListType(),
+                'Saxulum\Tests\Crud\Data\Form\SampleListType',
                 'sample.list.label',
             ),
             array(
-                new SampleType(),
+                'Saxulum\Tests\Crud\Data\Form\SampleEditType',
                 'sample.edit.label',
             ),
         );
