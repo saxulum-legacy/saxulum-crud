@@ -18,10 +18,10 @@
  * php: >=5.4,
  * doctrine/common: ~2.4,
  * knplabs/knp-components: ~1.3,>=1.3.1,
- * symfony/form: ~2.3,
- * symfony/http-kernel: ~2.3,
- * symfony/routing: ~2.3,
- * symfony/security: ~2.3
+ * symfony/form: ~2.8|~3.0,
+ * symfony/http-kernel: ~2.8|~3.0,
+ * symfony/routing: ~2.8|~3.0,
+ * symfony/security: ~2.8|~3.0
  * twig/twig: ~1.2
 
 ## Installation
