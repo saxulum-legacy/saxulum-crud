@@ -15,10 +15,10 @@ class SampleListType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text', array('required' => false))
+            ->add('title', 'Symfony\Component\Form\Extension\Core\Type\TextType', array('required' => false))
         ;
 
-        $builder->add('submit', 'submit');
+        $builder->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType');
     }
 
     /**

@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SampleType extends AbstractType
+class SampleEditType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -19,7 +19,7 @@ class SampleType extends AbstractType
             ->add('title')
         ;
 
-        $builder->add('submit', 'submit');
+        $builder->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType');
     }
 
     /**
@@ -37,7 +37,7 @@ class SampleType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'sample_edit';
     }

@@ -85,7 +85,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getAuthorizationChecker('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Data\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleEditType',
                 $model
             ),
             null,
@@ -133,7 +133,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getAuthorizationChecker('ROLE_SAMPLE_CREATE'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Data\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleEditType',
                 $model,
                 'request'
             ),
@@ -167,7 +167,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getAuthorizationChecker('ROLE_SAMPLE_EDIT'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Data\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleEditType',
                 $model
             ),
             null,
@@ -216,7 +216,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             $this->getAuthorizationChecker('ROLE_SAMPLE_EDIT'),
             $this->getDoctrine(Sample::classname),
             $this->getFormFactory(
-                'Saxulum\Tests\Crud\Data\Form\SampleType',
+                'Saxulum\Tests\Crud\Data\Form\SampleEditType',
                 $model,
                 'request'
             ),
@@ -437,7 +437,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function (AbstractType $givenType, $givenData) use ($expectedType, $expectedData, $requestProperty) {
                 $this->assertInstanceOf($expectedType, $givenType);
 
-                $formName = $givenType->getName();
+                $formName = $givenType->getBlockPrefix();
 
                 $formMock = $this->getMock('Symfony\Component\Form\FormInterface');
                 $formMock

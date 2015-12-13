@@ -5,7 +5,7 @@ namespace Saxulum\Tests\Crud\Data\Controller;
 use Saxulum\Crud\Controller\AbstractCrudController;
 use Saxulum\Crud\Listing\Listing;
 use Saxulum\Tests\Crud\Data\Form\SampleListType;
-use Saxulum\Tests\Crud\Data\Form\SampleType;
+use Saxulum\Tests\Crud\Data\Form\SampleEditType;
 use Saxulum\Tests\Crud\Data\Model\Sample;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -36,22 +36,22 @@ class SampleController extends AbstractCrudController
      * @param Request $request
      * @param object $object
      *
-     * @return SampleType
+     * @return SampleEditType
      */
     protected function crudCreateFormType(Request $request, $object)
     {
-        return new SampleType();
+        return new SampleEditType();
     }
 
     /**
      * @param Request $request
      * @param object $object
      *
-     * @return SampleType
+     * @return SampleEditType
      */
     protected function crudEditFormType(Request $request, $object)
     {
-        return new SampleType();
+        return new SampleEditType();
     }
 
     /**
