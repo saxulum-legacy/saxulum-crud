@@ -423,10 +423,7 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function (AbstractType $givenType, $givenData) use ($expectedType, $expectedData, $requestProperty) {
                 $this->assertInstanceOf($expectedType, $givenType);
 
-                $reflection = new \ReflectionObject($givenType);
-                $className = $reflection->getName();
-                $name = substr($className, strlen($reflection->getNamespaceName()) + 1, -4);
-                $formName = $this->camelCaseToUnderscore($name);
+                $formName = $givenType->getBlockPrefix();
 
                 $formMock = $this->getMock('Symfony\Component\Form\FormInterface');
                 $formMock
@@ -566,21 +563,5 @@ class CrudTraitTest extends \PHPUnit_Framework_TestCase
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($model, $id);
         $reflectionProperty->setAccessible(false);
-    }
-
-    /**
-     * @param string $string
-     * @return string
-     */
-    protected function camelCaseToUnderscore($string)
-    {
-        $output = '';
-        $stringParts = preg_split('/(?=[A-Z])/', $string);
-        foreach ($stringParts as $inputPart) {
-            if ('' !== $inputPart) {
-                $output .= rtrim($inputPart . '_', '_') . '_';
-            }
-        }
-        return strtolower(substr($output, 0, -1));
     }
 }
